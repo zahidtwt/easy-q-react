@@ -12,7 +12,7 @@ const configuration: UserConfig = {
     "header-max-length": [RuleConfigSeverity.Error, "always", 100],
     "scope-case": [RuleConfigSeverity.Error, "always", "lower-case"],
     "scope-empty": [RuleConfigSeverity.Disabled, "always"],
-    "subject-case": [RuleConfigSeverity.Error, "never", ["lower-case", "start-case", "pascal-case", "upper-case"]],
+    "subject-case": [RuleConfigSeverity.Error, "never", ["pascal-case", "upper-case"]],
     "subject-empty": [RuleConfigSeverity.Error, "never"],
     "subject-full-stop": [RuleConfigSeverity.Error, "never", "."],
     "type-case": [RuleConfigSeverity.Error, "always", "sentence-case"],

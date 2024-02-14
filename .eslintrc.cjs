@@ -16,7 +16,7 @@ module.exports = {
     "plugin:react-hooks/recommended",
   ],
   ignorePatterns: ["dist", ".eslintrc.cjs", "src/**/*.test.ts"],
-  plugins: ["react-refresh", "@typescript-eslint", "react-hooks"],
+  plugins: ["react-refresh", "@typescript-eslint", "react-hooks", "prettier"],
   globals: {
     React: "readonly",
   },
@@ -26,7 +26,7 @@ module.exports = {
     },
   },
   rules: {
-    "react-refresh/only-export-components": ["warn", { allowConstantExport: true }],
+    "react-refresh/only-export-components": ["off", { allowConstantExport: true }],
     "prettier/prettier": ["error"],
     "no-console": ["error", { allow: ["warn", "error"] }],
     "no-irregular-whitespace": "warn",
