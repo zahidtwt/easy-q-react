@@ -3,7 +3,6 @@ import NotFoundPage from "@/components/not-found";
 import AuthLayout from "@/pages/auth/layout";
 import LoginPage from "@/pages/auth/login";
 import SignUpPage from "@/pages/auth/sign-up";
-
 import { createBrowserRouter } from "react-router-dom";
 
 export const routes = createBrowserRouter([
