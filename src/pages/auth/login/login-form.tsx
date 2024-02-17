@@ -4,6 +4,9 @@ import { Form, FormControl, FormField, FormItem, FormMessage } from "@/component
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
+
+import { toast } from "sonner";
+import { loginUser } from "./api";
 import { LoginFormFields, LoginFormSchema } from "./validation";
 
 const LoginForm = () => {
@@ -22,13 +25,13 @@ const LoginForm = () => {
     formState: { errors, isSubmitting, isDirty },
   } = formMethods;
 
-  const submitForm: SubmitHandler<LoginFormFields> = () => {
-    return new Promise<void>((resolve) => {
-      setTimeout(() => {
-        resolve();
-        // console.log("data", data);
-      }, 2000);
-    });
+  const submitForm: SubmitHandler<LoginFormFields> = async () => {
+    const res = await loginUser();
+    if (!res || res?.message !== "success") {
+      toast.error("An error occurred");
+      return;
+    }
+    toast.success("Successfully logged in!");
   };
 
   return (
@@ -62,7 +65,6 @@ const LoginForm = () => {
                   {...field}
                 />
               </FormControl>
-
               <FormMessage>{errors.password?.message}</FormMessage>
             </FormItem>
           )}
