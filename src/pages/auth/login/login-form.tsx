@@ -4,17 +4,15 @@ import { Form, FormControl, FormField, FormItem, FormMessage } from "@/component
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { SignUpFormFields, SignUpFormSchema } from "./validation";
+import { LoginFormFields, LoginFormSchema } from "./validation";
 
-const SignUpForm = () => {
-  const formMethods = useForm<SignUpFormFields>({
-    resolver: zodResolver(SignUpFormSchema),
+const LoginForm = () => {
+  const formMethods = useForm<LoginFormFields>({
+    resolver: zodResolver(LoginFormSchema),
     mode: "all",
     defaultValues: {
-      name: "",
       mobileNumber: "",
       password: "",
-      confirmPassword: "",
     },
   });
 
@@ -24,7 +22,7 @@ const SignUpForm = () => {
     formState: { errors, isSubmitting, isDirty },
   } = formMethods;
 
-  const submitForm: SubmitHandler<SignUpFormFields> = () => {
+  const submitForm: SubmitHandler<LoginFormFields> = () => {
     return new Promise<void>((resolve) => {
       setTimeout(() => {
         resolve();
@@ -38,21 +36,6 @@ const SignUpForm = () => {
       <form
         onSubmit={handleSubmit(submitForm)}
         className="space-y-4 sm:space-y-6 p-1 w-[300px] sm:w-[350px] lg:w-[450px]">
-        <FormField
-          control={control}
-          name="name"
-          render={({ field }) => (
-            <FormItem>
-              <FormControl>
-                <Input
-                  placeholder="Write your name here"
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage>{errors.name?.message}</FormMessage>
-            </FormItem>
-          )}
-        />
         <FormField
           control={control}
           name="mobileNumber"
@@ -79,25 +62,12 @@ const SignUpForm = () => {
                   {...field}
                 />
               </FormControl>
+
               <FormMessage>{errors.password?.message}</FormMessage>
             </FormItem>
           )}
         />
-        <FormField
-          control={control}
-          name="confirmPassword"
-          render={({ field }) => (
-            <FormItem>
-              <FormControl>
-                <PasswordInput
-                  placeholder="Write your password here"
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage>{errors.confirmPassword?.message}</FormMessage>
-            </FormItem>
-          )}
-        />
+
         <div className="flex justify-center">
           <SubmitButton
             isSubmitting={isSubmitting}
@@ -109,4 +79,4 @@ const SignUpForm = () => {
   );
 };
 
-export default SignUpForm;
+export default LoginForm;

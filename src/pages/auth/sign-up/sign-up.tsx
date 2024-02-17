@@ -1,10 +1,8 @@
-import Logo from "@/components/logo";
 import SignUpForm from "./sign-up-form";
 
 const SignUpPage = () => {
   return (
-    <div className="max-w-[450px] space-y-12">
-      <Logo label />
+    <div className="max-w-[450px]">
       <SignUpForm />
     </div>
   );

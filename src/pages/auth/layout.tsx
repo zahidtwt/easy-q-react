@@ -1,8 +1,10 @@
+import Logo from "@/components/logo";
 import { Outlet } from "react-router-dom";
 
 const AuthLayout = () => {
   return (
-    <main className="flex justify-center items-center h-[100dvh]">
+    <main className="flex flex-col justify-center items-center h-[100dvh] space-y-12">
+      <Logo label />
       <Outlet />
     </main>
   );
