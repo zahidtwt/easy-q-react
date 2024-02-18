@@ -5,13 +5,13 @@ const mobileNumberValidationRegex = "^\\+8801[3-9]\\d{8}$";
 
 export const SignUpFormSchema = zod
   .object({
-    name: zod.string().min(1, "Name must contain atleast one character"),
+    name: zod.string().min(1, "Must contain atleast one character"),
     mobileNumber: zod
       .string()
       .regex(new RegExp(mobileNumberValidationRegex), { message: "Must be a valid Bangladeshi mobile number" }),
     password: zod.string().regex(new RegExp(passwordValidationRegex), {
       message:
-        "Password must be at least 8 characters long and include at least one letter, one digit, and one special character (@$!%*?&)",
+        "Must be at least 8 characters long and include at least one letter, one digit, and one special character (@$!%*?&)",
     }),
     confirmPassword: zod.string().regex(new RegExp(passwordValidationRegex), {
       message: "Invalid password",

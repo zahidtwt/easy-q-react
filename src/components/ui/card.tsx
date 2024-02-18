@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils/tw-merge";
 import * as React from "react";
 
 export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {}
