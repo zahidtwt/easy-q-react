@@ -1,44 +1,9 @@
-# EditorConfig helps developers define and maintain consistent coding styles between different editors and IDEs
-# For more information about the EditorConfig project, please visit http://editorconfig.org
-
-# Top-most EditorConfig file
 root = true
 
 [*]
-# Default indentation set to 2 spaces
+charset = utf-8
+end_of_line = lf
 indent_style = space
 indent_size = 2
-
-# End each file with a single newline
-insert_final_newline = true
-
-# Use LF (Unix) line endings
-end_of_line = lf
-
-# Ensure trailing whitespaces are removed
 trim_trailing_whitespace = true
-
-# Prettier configurations
-# Always use parentheses around arrow function parameters
-# Place the opening bracket of a block in the same line as the preceding code
-# Use single quotes for strings
-# Add a space inside curly braces
-# Use consistent quotes for object properties
-# Use semicolons at the end of statements
-# Place each HTML attribute on a new line
-# Place each CSS attribute on a new line
-# Wrap prose (comments) as per original formatting
-# Use double quotes for JSX attributes
-# Ensure a comma is placed after the last element in an array or object
-# Preserve formatting of embedded languages (e.g., HTML in JavaScript)
-[*.{js,jsx,ts,tsx,json}]
-arrow_parens = always
-bracket_same_line = true
-bracket_spacing = true
-embedded_language_formatting = auto
-html_whitespace_sensitivity = css
-quote_props = consistent
-semi = true
-single_attribute_per_line = true
-single_quote = false
-trailing_comma = es5
+insert_final_newline = true
