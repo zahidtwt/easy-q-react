@@ -3,7 +3,8 @@ import NotFoundPage from "@/components/not-found";
 import AuthLayout from "@/pages/auth/layout";
 import LoginPage from "@/pages/auth/login";
 import SignUpPage from "@/pages/auth/sign-up";
-import DashboardPage from "@/pages/dashboard/dashboard";
+import Home from "@/pages/dashboard/home";
+import DashboardLayout from "@/pages/dashboard/layout";
 import { createBrowserRouter } from "react-router-dom";
 
 export const routes = createBrowserRouter([
@@ -15,6 +16,7 @@ export const routes = createBrowserRouter([
       {
         path: "auth",
         element: <AuthLayout />,
+
         children: [
           {
             path: "login",
@@ -28,7 +30,13 @@ export const routes = createBrowserRouter([
       },
       {
         path: "dashboard",
-        element: <DashboardPage />,
+        element: <DashboardLayout />,
+        children: [
+          {
+            path: "home",
+            element: <Home />,
+          },
+        ],
       },
     ],
   },

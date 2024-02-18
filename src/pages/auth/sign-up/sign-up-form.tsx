@@ -68,6 +68,7 @@ const SignUpForm = () => {
             </FormItem>
           )}
         />
+
         <FormField
           control={control}
           name="password"
