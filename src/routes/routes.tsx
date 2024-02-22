@@ -6,6 +6,7 @@ import SignUpPage from "@/pages/auth/sign-up";
 import Home from "@/pages/dashboard/home";
 import DashboardLayout from "@/pages/dashboard/layout";
 import Profile from "@/pages/dashboard/profile";
+import Questions from "@/pages/dashboard/questions";
 import { createBrowserRouter } from "react-router-dom";
 
 export const routes = createBrowserRouter([
@@ -42,6 +43,10 @@ export const routes = createBrowserRouter([
           {
             path: "profile",
             element: <Profile />,
+          },
+          {
+            path: "questions",
+            element: <Questions />,
           },
         ],
       },
