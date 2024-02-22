@@ -1,5 +1,5 @@
 import { DownloadIcon, FilesIcon, HomeIcon, UserCircle } from "lucide-react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 const navbarMenus = [
   {
@@ -27,15 +27,16 @@ const navbarMenus = [
 const NavBar = () => {
   return (
     <nav
-      className="fixed bottom-0 left-0 right-0  bg-gray-200 "
+      className="fixed bottom-0 left-0 right-0  bg-gray-200"
       style={{ boxShadow: "inset 0 0 10px rgba(0,0,0,0.1)" }}>
-      <ul className="flex justify-around py-1">
+      <ul className="grid grid-cols-4 justify-items-center divide-x divide-gray-400">
         {navbarMenus.map((menu) => (
-          <li
+          <NavLink
+            to={menu.path}
             key={menu.title}
-            className="p-1">
-            <Link to={menu.path}>{menu.icon}</Link>
-          </li>
+            className="px-6 py-2 cursor-pointer hover:text-gray-800">
+            <li>{menu.icon}</li>
+          </NavLink>
         ))}
       </ul>
     </nav>

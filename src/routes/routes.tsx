@@ -5,6 +5,7 @@ import LoginPage from "@/pages/auth/login";
 import SignUpPage from "@/pages/auth/sign-up";
 import Home from "@/pages/dashboard/home";
 import DashboardLayout from "@/pages/dashboard/layout";
+import Profile from "@/pages/dashboard/profile";
 import { createBrowserRouter } from "react-router-dom";
 
 export const routes = createBrowserRouter([
@@ -31,10 +32,16 @@ export const routes = createBrowserRouter([
       {
         path: "dashboard",
         element: <DashboardLayout />,
+
         children: [
           {
             path: "home",
             element: <Home />,
+            index: true,
+          },
+          {
+            path: "profile",
+            element: <Profile />,
           },
         ],
       },
