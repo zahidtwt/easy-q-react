@@ -69,6 +69,8 @@ const Profile = () => {
           <Button>Add new class</Button>
         </CardFooter>
       </Card>
+
+      <Button className="mt-4">Save</Button>
     </div>
   );
 };

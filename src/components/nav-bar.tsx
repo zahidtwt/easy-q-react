@@ -34,7 +34,7 @@ const NavBar = () => {
           <NavLink
             to={menu.path}
             key={menu.title}
-            className="px-6 py-2 cursor-pointer hover:text-gray-800">
+            className="px-[1.67rem] py-2 cursor-pointer hover:text-gray-800">
             <li>{menu.icon}</li>
           </NavLink>
         ))}
