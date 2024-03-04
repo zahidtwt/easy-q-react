@@ -9,7 +9,7 @@ const Profile = () => {
     <div className=" py-2 text-center space-y-8 overflow-x-scroll">
       <Card>
         <CardContent className="flex flex-col justify-center items-center gap-2 shadow-lg rounded-md p-2 relative">
-          <Edit className="absolute top-1 right-1" />
+          <Edit className="absolute top-1.5 right-1.5" />
           <Avatar className="border border-slate-500 size-16">
             <AvatarImage src={imagePlaceholder} />
             <AvatarFallback>CN</AvatarFallback>
