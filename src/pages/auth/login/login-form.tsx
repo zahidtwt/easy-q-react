@@ -25,8 +25,8 @@ const LoginForm = () => {
     formState: { errors, isSubmitting, isDirty },
   } = formMethods;
 
-  const submitForm: SubmitHandler<LoginFormFields> = async () => {
-    const res = await loginUser();
+  const submitForm: SubmitHandler<LoginFormFields> = async (data) => {
+    const res = await loginUser(data);
     if (!res || res?.message !== "success") {
       toast.error("An error occurred");
       return;
