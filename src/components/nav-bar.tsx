@@ -27,7 +27,7 @@ const navbarMenus = [
 const NavBar = () => {
   return (
     <nav
-      className="fixed bottom-0 left-0 z-50 w-full h-16 bg-gray-200 border-t border-gray-200 dark:bg-gray-700 dark:border-gray-600"
+      className="fixed bottom-0 left-0 z-50 w-full h-14 bg-gray-200 border-t border-gray-200 dark:bg-gray-700 dark:border-gray-600"
       style={{ boxShadow: "inset 0 0 10px rgba(0,0,0,0.1)" }}>
       <ul className="grid h-full max-w-2xl grid-cols-4 mx-auto font-medium divide-x divide-gray-400">
         {navbarMenus.map((menu) => (

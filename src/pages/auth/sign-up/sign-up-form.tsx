@@ -5,11 +5,13 @@ import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Cookies from "js-cookie";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { registerUser } from "./api";
 import { SignUpFormFields, SignUpFormSchema } from "./validation";
 
 const SignUpForm = () => {
+  const navigate = useNavigate();
   const formMethods = useForm<SignUpFormFields>({
     resolver: zodResolver(SignUpFormSchema),
     mode: "all",
@@ -43,6 +45,7 @@ const SignUpForm = () => {
     toast.success("Successfully registered user!");
     const token = res?.data?.token;
     Cookies.set("token", token, { secure: true });
+    navigate("/dashboard/home");
   };
 
   return (
