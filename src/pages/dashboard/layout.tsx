@@ -1,14 +1,25 @@
 import NavBar from "@/components/nav-bar";
-import { Outlet } from "react-router-dom";
+import { useAuth } from "@/hooks/useAuth";
+import { Navigate, Outlet } from "react-router-dom";
 
 const DashboardLayout = () => {
+  const { isAuthenticated } = useAuth();
   return (
-    <div>
-      <div className="container pb-[60px]">
-        <Outlet />
-      </div>
-      <NavBar />
-    </div>
+    <>
+      {isAuthenticated ? (
+        <div>
+          <div className="container pb-[60px]">
+            <Outlet />
+          </div>
+          <NavBar />
+        </div>
+      ) : (
+        <Navigate
+          to={"/auth/login"}
+          replace
+        />
+      )}
+    </>
   );
 };
 
