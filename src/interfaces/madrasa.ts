@@ -1,10 +1,10 @@
 export interface IMadrasa {
-  id: number;
+  id: string;
   name: string;
   address: string;
   mobile: string;
   email: string;
-  educationBoardIds: number[];
-  classIds: number[];
-  userId: number;
+  educationBoardIds: string[];
+  classIds: string[];
+  userId: string;
 }

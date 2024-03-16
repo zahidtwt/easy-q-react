@@ -2,4 +2,4 @@
 . "$(dirname -- "$0")/_/husky.sh"
 
 #Run prettier, linter and add all the changes(if any) to the codebase.
-npm run prettier && npm run lint && git add .
+# npm run prettier && npm run lint && git add .

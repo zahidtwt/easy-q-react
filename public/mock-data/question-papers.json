@@ -1,0 +1,80 @@
+[
+  {
+    "Class_id": "10",
+    "Education_Board_id": "1",
+    "Exam_name": "Sample Exam",
+    "Institution_id": "1",
+    "Questions": [
+      {
+        "Category_id": "5",
+        "Class_id": "10",
+        "Education_Board_id": "1",
+        "Subject_id": "123",
+        "answer": "Paris",
+        "id": "1",
+        "question": "What is the capital of France?"
+      },
+      {
+        "Category_id": "5",
+        "Class_id": "10",
+        "Education_Board_id": "1",
+        "Subject_id": "123",
+        "answer": "William Shakespeare",
+        "id": "2",
+        "question": "Who wrote Hamlet?"
+      },
+      {
+        "Category_id": "5",
+        "Class_id": "10",
+        "Education_Board_id": "1",
+        "Subject_id": "123",
+        "answer": "H2O",
+        "id": "3",
+        "question": "What is the chemical symbol for water?"
+      }
+    ],
+    "Subject_id": "123",
+    "Time": 90,
+    "Total_Marks": 100,
+    "id": "1"
+  },
+  {
+    "Class_id": "10",
+    "Education_Board_id": "1",
+    "Exam_name": "Sample Exam",
+    "Institution_id": "1",
+    "Questions": [
+      {
+        "Category_id": "5",
+        "Class_id": "10",
+        "Education_Board_id": "1",
+        "Subject_id": "123",
+        "answer": "Paris",
+        "id": "1",
+        "question": "What is the capital of France?"
+      },
+      {
+        "Category_id": "5",
+        "Class_id": "10",
+        "Education_Board_id": "1",
+        "Subject_id": "123",
+        "answer": "William Shakespeare",
+        "id": "2",
+        "question": "Who wrote Hamlet?"
+      },
+      {
+        "Category_id": "5",
+        "Class_id": "10",
+        "Education_Board_id": "1",
+        "Subject_id": "123",
+        "answer": "H2O",
+        "id": "3",
+        "question": "What is the chemical symbol for water?"
+      }
+    ],
+    "Subject_id": "123",
+    "Time": 90,
+    "Total_Marks": 100,
+    "id": "1"
+  }
+]
