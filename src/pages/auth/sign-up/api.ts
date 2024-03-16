@@ -1,4 +1,4 @@
-import { endpoints } from "@/lib/config";
+import { endpoints } from "@/configs/config";
 import { axiosInstance } from "@/utils/axios";
 import { AxiosError } from "axios";
 import { SignUpFormFields } from "./validation";
