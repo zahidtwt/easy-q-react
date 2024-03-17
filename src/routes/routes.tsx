@@ -3,6 +3,7 @@ import NotFoundPage from "@/components/not-found";
 import AuthLayout from "@/pages/auth/layout";
 import LoginPage from "@/pages/auth/login";
 import SignUpPage from "@/pages/auth/sign-up";
+import Download from "@/pages/dashboard/download";
 import Home from "@/pages/dashboard/home";
 import DashboardLayout from "@/pages/dashboard/layout";
 import Profile from "@/pages/dashboard/profile";
@@ -58,6 +59,11 @@ export const routes = createBrowserRouter([
           {
             path: "dashboard/questions",
             element: <Questions />,
+          },
+
+          {
+            path: "dashboard/download",
+            element: <Download />,
           },
 
           {

@@ -1,8 +1,8 @@
-import { Card } from "@/components/ui/card";
-import MadrasaList from "./madrasa-list";
 import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 import axios from "axios";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
+import MadrasaList from "./madrasa-list";
 
 const Madrasas = () => {
   const [madrasas, setMadrasas] = useState([]);
@@ -36,7 +36,7 @@ const Madrasas = () => {
     return () => {
       if (!madrasas) controller.abort();
     };
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   if (error) return <>Error while fetching data!</>;
   if (loading) return <>Loading...</>;
@@ -45,7 +45,7 @@ const Madrasas = () => {
       <MadrasaList madrasas={madrasas} />
       <Button
         className="self-center"
-        onClick={() => console.log("Adding question button is working!")}>
+        onClick={() => {}}>
         Add new madrasa
       </Button>
     </Card>

@@ -20,16 +20,16 @@ const QuestionPaperCard = ({ questionPaper }: { questionPaper: IQuestionPaper })
 
 const QuestionPaperList = ({ questionPapers }: { questionPapers: IQuestionPaper[] }) => {
   return (
-    <CardContent className="grid grid-cols-3 gap-4 mt-4">
+    <CardContent>
       <RenderListItems
         items={questionPapers}
+        className="grid grid-cols-3 gap-4 mt-4 "
         renderItem={(questionPaper: IQuestionPaper) => (
           <QuestionPaperCard
             questionPaper={questionPaper}
             key={questionPaper.id}
           />
         )}
-        // className="space-y-6"
       />
     </CardContent>
   );

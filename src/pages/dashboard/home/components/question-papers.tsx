@@ -36,12 +36,12 @@ const QuestionPapers = () => {
     return () => {
       if (!questionPapers) controller.abort();
     };
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   if (error) return <>Error while fetching data!</>;
   if (loading) return <>Loading...</>;
   return (
-    <Card className="p-2 rounded-md shadow-lg">
+    <Card className="p-2 rounded-md shadow-lg ">
       <CardTitle className="border border-gray-400 rounded-md bg-slate-100 text-md font-medium mt-2">
         Your work
       </CardTitle>
@@ -50,8 +50,8 @@ const QuestionPapers = () => {
 
       <Button
         className="self-center"
-        onClick={() => console.log("Adding question button is working!")}>
-        Add new work
+        onClick={() => {}}>
+        Add new question
       </Button>
     </Card>
   );

@@ -5,7 +5,7 @@ type RenderListItemsProps<T> = {
 };
 const RenderListItems = <T,>({ items, renderItem, className }: RenderListItemsProps<T>) => {
   return (
-    <ul className={className}>
+    <ul className={className ?? ""}>
       {items.map((item: T, index: number) => (
         <li key={index}>{renderItem(item)}</li>
       ))}
