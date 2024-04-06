@@ -3,7 +3,12 @@ import NotFoundPage from "@/components/not-found";
 import AuthLayout from "@/pages/auth/layout";
 import LoginPage from "@/pages/auth/login";
 import SignUpPage from "@/pages/auth/sign-up";
-import { createBrowserRouter } from "react-router-dom";
+import Download from "@/pages/dashboard/download";
+import Home from "@/pages/dashboard/home";
+import DashboardLayout from "@/pages/dashboard/layout";
+import Profile from "@/pages/dashboard/profile";
+import Questions from "@/pages/dashboard/questions";
+import { Navigate, Route, Routes, createBrowserRouter } from "react-router-dom";
 
 export const routes = createBrowserRouter([
   {
@@ -12,16 +17,65 @@ export const routes = createBrowserRouter([
     errorElement: <NotFoundPage />,
     children: [
       {
-        path: "auth",
         element: <AuthLayout />,
+
         children: [
           {
-            path: "login",
+            path: "auth/login",
             element: <LoginPage />,
+            index: true,
           },
           {
-            path: "signup",
+            path: "auth/signup",
             element: <SignUpPage />,
+          },
+
+          {
+            path: "auth",
+            element: (
+              <Routes>
+                <Route
+                  path="*"
+                  element={<Navigate to="/auth/login" />}
+                />
+              </Routes>
+            ),
+          },
+        ],
+      },
+      {
+        element: <DashboardLayout />,
+
+        children: [
+          {
+            path: "dashboard/home",
+            element: <Home />,
+            index: true,
+          },
+          {
+            path: "dashboard/profile",
+            element: <Profile />,
+          },
+          {
+            path: "dashboard/questions",
+            element: <Questions />,
+          },
+
+          {
+            path: "dashboard/download",
+            element: <Download />,
+          },
+
+          {
+            path: "dashboard",
+            element: (
+              <Routes>
+                <Route
+                  path="*"
+                  element={<Navigate to="/dashboard/home" />}
+                />
+              </Routes>
+            ),
           },
         ],
       },

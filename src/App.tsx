@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
+import { Toaster } from "sonner";
 import { ThemeProvider } from "./components/theme-provider";
-import { Toaster } from "./components/ui/sonner";
 
 function App() {
   return (

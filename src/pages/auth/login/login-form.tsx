@@ -3,10 +3,15 @@ import { PasswordInput } from "@/components/custom-inputs";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
+import Cookies from "js-cookie";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
+import { loginUser } from "./api";
 import { LoginFormFields, LoginFormSchema } from "./validation";
 
 const LoginForm = () => {
+  const navigate = useNavigate();
   const formMethods = useForm<LoginFormFields>({
     resolver: zodResolver(LoginFormSchema),
     mode: "all",
@@ -22,13 +27,22 @@ const LoginForm = () => {
     formState: { errors, isSubmitting, isDirty },
   } = formMethods;
 
-  const submitForm: SubmitHandler<LoginFormFields> = () => {
-    return new Promise<void>((resolve) => {
-      setTimeout(() => {
-        resolve();
-        // console.log("data", data);
-      }, 2000);
-    });
+  const submitForm: SubmitHandler<LoginFormFields> = async (data) => {
+    const res = await loginUser(data);
+
+    if (!res) {
+      toast.error("An unknown error occurred!");
+      return;
+    }
+    if (res && res.message) {
+      toast.error(res.message);
+      return;
+    }
+
+    toast.success("Successfully logged in!");
+    const token = res?.data?.token;
+    Cookies.set("token", token, { secure: true });
+    navigate("/dashboard/home");
   };
 
   return (
@@ -62,7 +76,6 @@ const LoginForm = () => {
                   {...field}
                 />
               </FormControl>
-
               <FormMessage>{errors.password?.message}</FormMessage>
             </FormItem>
           )}

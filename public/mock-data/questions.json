@@ -1,0 +1,29 @@
+[
+      {
+            "Category_id": "5",
+            "Class_id": "10",
+            "Education_Board_id": "1",
+            "Subject_id": "123",
+            "answer": "Paris",
+            "id": "1",
+            "question": "What is the capital of France?"
+      },
+      {
+            "Category_id": "5",
+            "Class_id": "10",
+            "Education_Board_id": "1",
+            "Subject_id": "123",
+            "answer": "William Shakespeare",
+            "id": "2",
+            "question": "Who wrote Hamlet?"
+      },
+      {
+            "Category_id": "5",
+            "Class_id": "10",
+            "Education_Board_id": "1",
+            "Subject_id": "123",
+            "answer": "H2O",
+            "id": "3",
+            "question": "What is the chemical symbol for water?"
+      }
+]
