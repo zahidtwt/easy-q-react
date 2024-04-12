@@ -1,9 +1,11 @@
 import NavBar from "@/components/nav-bar";
 import { useAuth } from "@/hooks/useAuth";
-import { Navigate, Outlet } from "react-router-dom";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
 
 const DashboardLayout = () => {
   const { isAuthenticated } = useAuth();
+  const { pathname } = useLocation();
+
   return (
     <>
       {isAuthenticated ? (
@@ -16,7 +18,7 @@ const DashboardLayout = () => {
       ) : (
         <Navigate
           to={"/auth/login"}
-          replace
+          state={{ path: pathname }}
         />
       )}
     </>

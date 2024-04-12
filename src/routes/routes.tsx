@@ -21,6 +21,17 @@ export const routes = createBrowserRouter([
 
         children: [
           {
+            path: "",
+            element: (
+              <Routes>
+                <Route
+                  path="*"
+                  element={<Navigate to="/auth/login" />}
+                />
+              </Routes>
+            ),
+          },
+          {
             path: "auth/login",
             element: <LoginPage />,
             index: true,
@@ -29,7 +40,6 @@ export const routes = createBrowserRouter([
             path: "auth/signup",
             element: <SignUpPage />,
           },
-
           {
             path: "auth",
             element: (
@@ -48,6 +58,17 @@ export const routes = createBrowserRouter([
 
         children: [
           {
+            path: "",
+            element: (
+              <Routes>
+                <Route
+                  path="*"
+                  element={<Navigate to="/dashboard/home" />}
+                />
+              </Routes>
+            ),
+          },
+          {
             path: "dashboard/home",
             element: <Home />,
             index: true,
@@ -60,12 +81,10 @@ export const routes = createBrowserRouter([
             path: "dashboard/questions",
             element: <Questions />,
           },
-
           {
             path: "dashboard/download",
             element: <Download />,
           },
-
           {
             path: "dashboard",
             element: (

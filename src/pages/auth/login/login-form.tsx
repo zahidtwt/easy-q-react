@@ -5,13 +5,16 @@ import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Cookies from "js-cookie";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { loginUser } from "./api";
 import { LoginFormFields, LoginFormSchema } from "./validation";
 
 const LoginForm = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const { path } = location.state || { path: "/dashboard/home" };
+
   const formMethods = useForm<LoginFormFields>({
     resolver: zodResolver(LoginFormSchema),
     mode: "all",
@@ -42,7 +45,7 @@ const LoginForm = () => {
     toast.success("Successfully logged in!");
     const token = res?.data?.token;
     Cookies.set("token", token, { secure: true });
-    navigate("/dashboard/home");
+    navigate(path, { replace: true });
   };
 
   return (
