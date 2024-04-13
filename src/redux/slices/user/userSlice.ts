@@ -8,13 +8,10 @@ const initialState = {
 };
 
 export const createUser = createAsyncThunk("userSlice/createUser", async (payload) => {
-  const data = await (() => {
-    setTimeout(() => {
-      return payload;
-    }, 3000);
-  });
-
-  return data;
+  return {
+    data: payload,
+    name: "done",
+  };
 });
 
 const userSlice = createSlice({

@@ -7,13 +7,21 @@ import Cookies from "js-cookie";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { loginUser } from "./api";
 import { LoginFormFields, LoginFormSchema } from "./validation";
+import useLogin from "../hooks/useLogin";
 
 const LoginForm = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { path } = location.state || { path: "/dashboard/home" };
+
+  const onSuccessLogin = (token: string) => {
+    toast.success("Successfully logged in!");
+    Cookies.set("token", token, { secure: true });
+    navigate(path, { replace: true });
+  };
+
+  const { mutate: loginUser } = useLogin({ onSuccessLogin });
 
   const formMethods = useForm<LoginFormFields>({
     resolver: zodResolver(LoginFormSchema),
@@ -31,21 +39,7 @@ const LoginForm = () => {
   } = formMethods;
 
   const submitForm: SubmitHandler<LoginFormFields> = async (data) => {
-    const res = await loginUser(data);
-
-    if (!res) {
-      toast.error("An unknown error occurred!");
-      return;
-    }
-    if (res && res.message) {
-      toast.error(res.message);
-      return;
-    }
-
-    toast.success("Successfully logged in!");
-    const token = res?.data?.token;
-    Cookies.set("token", token, { secure: true });
-    navigate(path, { replace: true });
+    loginUser(data);
   };
 
   return (

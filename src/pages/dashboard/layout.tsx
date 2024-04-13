@@ -10,7 +10,7 @@ const DashboardLayout = () => {
     <>
       {isAuthenticated ? (
         <div>
-          <div className="container pb-[60px]">
+          <div className="container pb-[60px] h-[100dvh] overflow-scroll">
             <Outlet />
           </div>
           <NavBar />
