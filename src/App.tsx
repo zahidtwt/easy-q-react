@@ -5,7 +5,11 @@ import { ThemeProvider } from "./components/theme-provider";
 function App() {
   return (
     <ThemeProvider defaultTheme="light">
-      <Outlet />
+      <div className="flex justify-center">
+        <div className="w-full max-w-[600px] h-[100dvh] relative">
+          <Outlet />
+        </div>
+      </div>
       <Toaster
         richColors
         position="top-right"

@@ -3,4 +3,7 @@ export const endpoints = {
     login: "api/auth/login",
     signup: "api/auth/signup",
   },
+  dashboard: {
+    getAllInstitute: "api/institution/",
+  },
 };

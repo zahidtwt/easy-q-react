@@ -7,11 +7,19 @@ import Cookies from "js-cookie";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { registerUser } from "./api";
 import { SignUpFormFields, SignUpFormSchema } from "./validation";
+import useSignUp from "../hooks/useSignUp";
 
 const SignUpForm = () => {
   const navigate = useNavigate();
+
+  const onSuccessReg = (token: string) => {
+    toast.success("Successfully registered user!");
+    Cookies.set("token", token, { secure: true });
+    navigate("/dashboard/home");
+  };
+
+  const { mutate: registerUser } = useSignUp({ onSuccessReg });
   const formMethods = useForm<SignUpFormFields>({
     resolver: zodResolver(SignUpFormSchema),
     mode: "all",
@@ -31,21 +39,7 @@ const SignUpForm = () => {
   } = formMethods;
 
   const submitForm: SubmitHandler<SignUpFormFields> = async (data) => {
-    const res = await registerUser(data);
-
-    if (!res) {
-      toast.error("An unknown error occurred!");
-      return;
-    }
-    if (res && res.message) {
-      toast.error(res.message);
-      return;
-    }
-
-    toast.success("Successfully registered user!");
-    const token = res?.data?.token;
-    Cookies.set("token", token, { secure: true });
-    navigate("/dashboard/home");
+    registerUser(data);
   };
 
   return (
