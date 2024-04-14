@@ -9,7 +9,11 @@ const Madrasas = () => {
 
   if (loading) return <>Loading...</>;
   if (isError) return <>{errorHandler(error)}!</>;
-  return <Card className="shadow-lg rounded-md space-y-6 p-2">{isSuccess && <MadrasaList madrasas={madrasas} />}</Card>;
+  return (
+    <Card className="shadow-lg rounded-md space-y-6 p-2 bg-white/20">
+      {isSuccess && <MadrasaList madrasas={madrasas} />}
+    </Card>
+  );
 };
 
 export default Madrasas;

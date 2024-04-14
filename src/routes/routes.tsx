@@ -6,6 +6,7 @@ import SignUpPage from "@/pages/auth/sign-up";
 import Download from "@/pages/dashboard/download";
 import Home from "@/pages/dashboard/home";
 import DashboardLayout from "@/pages/dashboard/layout";
+import MadrasaDetail from "@/pages/dashboard/madrasa/MadrasaDetail";
 import Profile from "@/pages/dashboard/profile";
 import Questions from "@/pages/dashboard/questions";
 import { Navigate, Route, Routes, createBrowserRouter } from "react-router-dom";
@@ -71,6 +72,11 @@ export const routes = createBrowserRouter([
           {
             path: "dashboard/home",
             element: <Home />,
+            index: true,
+          },
+          {
+            path: "dashboard/madrasa/:id",
+            element: <MadrasaDetail />,
             index: true,
           },
           {
