@@ -27,6 +27,7 @@ module.exports = {
   },
   rules: {
     "react-refresh/only-export-components": ["off", { allowConstantExport: true }],
+    "react/prop-types": "off",
     "prettier/prettier": ["error"],
     "no-console": ["error", { allow: ["warn", "error"] }],
     "no-irregular-whitespace": "warn",
