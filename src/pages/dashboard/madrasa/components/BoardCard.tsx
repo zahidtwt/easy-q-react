@@ -2,6 +2,7 @@ import Clip from "@/components/Clip";
 import { Plus } from "lucide-react";
 
 type BoardCard<T> = {
+  name: string;
   title: string;
   addNewFunc: () => void;
   list: T[];
@@ -15,6 +16,7 @@ type itemType = {
 };
 
 const BoardCard = ({
+  name,
   title,
   addNewFunc,
   list,
@@ -29,7 +31,7 @@ const BoardCard = ({
           onClick={() => addNewFunc()}
           className={`flex justify-center align-middle px-2 py-1 ${bgColor} rounded-lg text-white`}>
           <Plus size={18} />
-          <small className="ml-1">New Class</small>
+          <small className="ml-1">New {name}</small>
         </button>
       </div>
       <div className="w-full border-2 border-spacing-1 border-gray-50 rounded-md min-h-10">

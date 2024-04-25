@@ -9,9 +9,17 @@ import useGetMadrasaDetail from "./hooks/useGetMadrasaDetail";
 import { toast } from "sonner";
 import MyBoards from "./components/MyBoards";
 import MyClasses from "./components/MyClasses";
+import { Button } from "@/components/ui/button";
+import { useState } from "react";
 
 const FormSchema = z.object({
   email: z.string().min(2, {
+    message: "Username must be at least 2 characters.",
+  }),
+  madrasaName: z.string().min(2, {
+    message: "Username must be at least 2 characters.",
+  }),
+  madrasaAddress: z.string().min(2, {
     message: "Username must be at least 2 characters.",
   }),
   mobile: z.string().min(2, {
@@ -21,14 +29,16 @@ const FormSchema = z.object({
 
 const MadrasaDetail = () => {
   const { id } = useParams();
-
   const { isLoading } = useGetMadrasaDetail({ Id: id });
+  const [editable, setEditable] = useState(false);
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      email: "",
-      mobile: "",
+      email: "email@gmail.com",
+      mobile: "01772536411",
+      madrasaName: "Jamia Islamia Rowjatul Ulum Madrasa",
+      madrasaAddress: "Hat Govindpur, Faridpur",
     },
   });
 
@@ -50,7 +60,25 @@ const MadrasaDetail = () => {
   }
 
   return (
-    <div className="p-3">
+    <div className="p-3 relative">
+      <div className="absolute top-0 right-0">
+        {!editable ? (
+          <Button
+            variant="ghost"
+            className="text-red-500"
+            onClick={() => setEditable(true)}>
+            Edit
+          </Button>
+        ) : (
+          <Button
+            variant="ghost"
+            className="text-green-500"
+            onClick={() => setEditable(false)}>
+            Save
+          </Button>
+        )}
+      </div>
+
       <div className="grid grid-cols-12 gap-2 items-center mb-5">
         <div className="col-span-12 grid justify-center">
           <Avatar className="h-24 w-24 rounded-sm">
@@ -58,10 +86,12 @@ const MadrasaDetail = () => {
             <AvatarFallback>{"Ja".toUpperCase()}</AvatarFallback>
           </Avatar>
         </div>
-        <div className="col-span-12 grid ">
-          <h3 className="text-center font-semibold text-xl mb-1">Jamia Islamia Rowjatul Ulum Madrasa</h3>
-          <small className="text-center text-gray-500">Hat Govindpur, Faridpur</small>
-        </div>
+        {!editable && (
+          <div className="col-span-12 grid ">
+            <h3 className="text-center font-semibold text-xl mb-1">Jamia Islamia Rowjatul Ulum Madrasa</h3>
+            <small className="text-center text-gray-500">Hat Govindpur, Faridpur</small>
+          </div>
+        )}
       </div>
 
       <div className="grid gap-5">
@@ -70,6 +100,45 @@ const MadrasaDetail = () => {
             <form
               onSubmit={form.handleSubmit(onSubmit)}
               className="w-full space-y-3">
+              {editable && (
+                <>
+                  <FormField
+                    control={form.control}
+                    name="madrasaName"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Madrasa Name</FormLabel>
+                        <FormControl>
+                          <Input
+                            placeholder="abcd..@.mail.com"
+                            {...field}
+                          />
+                        </FormControl>
+                        {/* <FormDescription>This is your public display name.</FormDescription> */}
+                        <FormMessage>{form?.formState?.errors.email?.message}</FormMessage>
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="madrasaAddress"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Madrasa Address</FormLabel>
+                        <FormControl>
+                          <Input
+                            placeholder="01......"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage>{form?.formState?.errors.email?.message}</FormMessage>
+                      </FormItem>
+                    )}
+                  />
+                </>
+              )}
+
               <FormField
                 control={form.control}
                 name="email"
@@ -80,6 +149,7 @@ const MadrasaDetail = () => {
                       <Input
                         placeholder="abcd..@.mail.com"
                         {...field}
+                        disabled={!editable}
                       />
                     </FormControl>
                     {/* <FormDescription>This is your public display name.</FormDescription> */}
@@ -98,6 +168,7 @@ const MadrasaDetail = () => {
                       <Input
                         placeholder="01......"
                         {...field}
+                        disabled={!editable}
                       />
                     </FormControl>
                     <FormMessage>{form?.formState?.errors.email?.message}</FormMessage>
@@ -107,31 +178,6 @@ const MadrasaDetail = () => {
             </form>
           </Form>
         </div>
-
-        {/* <div className="col-span-12">
-          <Form {...form}>
-            <form
-              onSubmit={form.handleSubmit(onSubmit)}
-              className="w-full space-y-3">
-              <FormField
-                control={form.control}
-                name="mobile"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Mobile</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="01......"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage>{form?.formState?.errors.email?.message}</FormMessage>
-                  </FormItem>
-                )}
-              />
-            </form>
-          </Form>
-        </div> */}
 
         <div className="col-span-12">
           <MyBoards />

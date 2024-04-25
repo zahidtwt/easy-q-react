@@ -1,4 +1,6 @@
+import { useState } from "react";
 import BoardCard from "./BoardCard";
+import SelectItemsForBoardCard from "./SelectItemsForBoardCard";
 type classListType = {
   id: string;
   name: string;
@@ -6,7 +8,6 @@ type classListType = {
 
 const MyClasses = () => {
   const title = "Classes";
-  const addNewClass = () => {};
   const classList: classListType[] = [
     {
       id: "srg987sf",
@@ -21,13 +22,29 @@ const MyClasses = () => {
       name: "Classes Three",
     },
   ];
+
+  const [open, setOpen] = useState(false);
+  const modalToggoler = () => {
+    setOpen(true);
+  };
+
   return (
     <>
       <BoardCard
+        name={"Class"}
         title={title}
-        addNewFunc={addNewClass}
+        addNewFunc={modalToggoler}
         list={classList}
       />
+
+      {open && (
+        <SelectItemsForBoardCard
+          title={"Classes"}
+          open={open}
+          setOpen={setOpen}
+          itemList={classList}
+        />
+      )}
     </>
   );
 };

@@ -1,11 +1,13 @@
+import { useState } from "react";
 import BoardCard from "./BoardCard";
+import SelectItemsForBoardCard from "./SelectItemsForBoardCard";
 type boardListType = {
   id: string;
   name: string;
 };
 const MyBoards = () => {
   const title = "Education Board";
-  const addNewMadrasa = () => {};
+  // const addNewMadrasa = () => {};
   const boardList: boardListType[] = [
     {
       id: "srg987sf",
@@ -20,13 +22,28 @@ const MyBoards = () => {
       name: "board Name",
     },
   ];
+  const [open, setOpen] = useState(false);
+  const modalToggoler = () => {
+    setOpen(true);
+  };
+
   return (
     <>
       <BoardCard
+        name={"Board"}
         title={title}
-        addNewFunc={addNewMadrasa}
+        addNewFunc={modalToggoler}
         list={boardList}
       />
+
+      {open && (
+        <SelectItemsForBoardCard
+          title={"Education Boards"}
+          open={open}
+          setOpen={setOpen}
+          itemList={boardList}
+        />
+      )}
     </>
   );
 };
