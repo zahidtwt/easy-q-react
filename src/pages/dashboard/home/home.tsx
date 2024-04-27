@@ -34,11 +34,11 @@ const Home = () => {
       </div>
 
       <button
-        className="self-center rounded-full absolute bottom-3 right-0 bg-slate-950 px-3 py-2 text-white"
+        className="self-center rounded-full absolute bottom-3 right-2 bg-slate-950 px-3 py-2 text-white"
         onClick={() => {
           // onCLickFunc(activeTab);
           {
-            activeTab === 1 ? navigate("/") : navigate("/");
+            activeTab === 1 ? navigate("/dashboard/add-madrasa") : navigate("/");
           }
         }}>
         {activeTab === 1 ? "Add Madrasa" : "Add New Question"}

@@ -30,7 +30,7 @@ const MadrasaForm = ({
 }: {
   editable: boolean;
   defaultValues: formValuesType;
-  updateMadrasaDetail: () => void;
+  updateMadrasaDetail?: () => void;
 }) => {
   const form = useForm<formValuesType>({
     resolver: zodResolver(FormSchema),
@@ -47,7 +47,9 @@ const MadrasaForm = ({
     //   ),
     // });
 
-    updateMadrasaDetail();
+    if (updateMadrasaDetail) {
+      updateMadrasaDetail();
+    }
     toast.success(data.email);
   }
 
