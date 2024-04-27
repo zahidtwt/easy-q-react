@@ -21,12 +21,7 @@ const FormSchema = z.object({
   }),
 });
 
-type defaultValues = {
-  email: string;
-  madrasaName: string;
-  madrasaAddress: string;
-  mobile: string;
-};
+type formValuesType = z.infer<typeof FormSchema>;
 
 const MadrasaForm = ({
   editable,
@@ -34,15 +29,15 @@ const MadrasaForm = ({
   updateMadrasaDetail,
 }: {
   editable: boolean;
-  defaultValues: defaultValues;
+  defaultValues: formValuesType;
   updateMadrasaDetail: () => void;
 }) => {
-  const form = useForm<z.infer<typeof FormSchema>>({
+  const form = useForm<formValuesType>({
     resolver: zodResolver(FormSchema),
     defaultValues: defaultValues,
   });
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
+  function onSubmit(data: formValuesType) {
     // toast({
     //   title: "You submitted the following values:",
     //   description: (
