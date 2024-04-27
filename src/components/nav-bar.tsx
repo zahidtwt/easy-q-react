@@ -1,26 +1,27 @@
 import { DownloadIcon, FilesIcon, HomeIcon, UserCircle } from "lucide-react";
 import { NavLink } from "react-router-dom";
 
+const iconSize = 30;
 const navbarMenus = [
   {
     path: "/dashboard/home",
     title: "Home",
-    icon: <HomeIcon size={40} />,
+    icon: <HomeIcon size={iconSize} />,
   },
   {
     path: "/dashboard/profile",
     title: "Profile",
-    icon: <UserCircle size={40} />,
+    icon: <UserCircle size={iconSize} />,
   },
   {
     path: "/dashboard/download",
     title: "Download",
-    icon: <DownloadIcon size={40} />,
+    icon: <DownloadIcon size={iconSize} />,
   },
   {
     path: "/dashboard/questions",
     title: "Questions",
-    icon: <FilesIcon size={40} />,
+    icon: <FilesIcon size={iconSize} />,
   },
 ] as const;
 
@@ -34,7 +35,13 @@ const NavBar = () => {
           <NavLink
             to={menu.path}
             key={menu.title}
-            className="inline-flex flex-col items-center justify-center px-5 border-gray-200 border-x hover:bg-gray-50 dark:hover:bg-gray-800 group dark:border-gray-600">
+            className={({ isActive }) =>
+              isActive
+                ? "active bg-emerald-400 mt-[-6px] shadow-inner hover:bg-emerald-600 dark:hover:bg-gray-800 group dark:border-gray-600 rounded-t-lg text-white  inline-flex flex-col items-center justify-center px-5 border-gray-200 border-x "
+                : "inline-flex flex-col items-center justify-center px-5 border-gray-200 border-x hover:bg-gray-50 dark:hover:bg-gray-800 group dark:border-gray-600"
+            }
+            // className="inline-flex flex-col items-center justify-center px-5 border-gray-200 border-x hover:bg-gray-50 dark:hover:bg-gray-800 group dark:border-gray-600"
+          >
             <li>{menu.icon}</li>
             <span className="text-sm sr-only text-gray-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-500">
               {menu.title}

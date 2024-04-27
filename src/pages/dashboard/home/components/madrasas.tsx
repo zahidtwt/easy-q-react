@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+// import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import MadrasaList from "./madrasa-list";
 import useGetInstitution from "../hooks/useGetInstitution";
@@ -10,13 +10,8 @@ const Madrasas = () => {
   if (loading) return <>Loading...</>;
   if (isError) return <>{errorHandler(error)}!</>;
   return (
-    <Card className="shadow-lg rounded-md space-y-6 p-2">
+    <Card className="shadow-lg rounded-md space-y-6 p-2 bg-white/20">
       {isSuccess && <MadrasaList madrasas={madrasas} />}
-      <Button
-        className="self-center"
-        onClick={() => {}}>
-        Add new madrasa
-      </Button>
     </Card>
   );
 };
