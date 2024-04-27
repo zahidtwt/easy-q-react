@@ -1,9 +1,11 @@
 import { useState } from "react";
 import Madrasas from "./components/madrasas";
 import QuestionPapers from "./components/question-papers";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
   const [activeTab, setActiveTab] = useState(1);
+  const navigate = useNavigate();
 
   // const onCLickFunc = (vurrentTab: number) => {
   //   if(activeTab === 1){
@@ -11,8 +13,8 @@ const Home = () => {
   //   }
   // };
   return (
-    <div className="text-center relative max-h-full h-full">
-      <div className="absolute top-1 w-full z-10">
+    <div className="relative max-h-full h-full px-2">
+      <div className="absolute top-2 right-1 left-1 z-10">
         <div className="grid grid-cols-2 gap-4 justify-between p-1 mx-0 sm:mx-10 rounded-full bg-gradient-to-r from-indigo-200 via-purple-200 to-indigo-200">
           <button
             onClick={() => {
@@ -35,6 +37,9 @@ const Home = () => {
         className="self-center rounded-full absolute bottom-3 right-0 bg-slate-950 px-3 py-2 text-white"
         onClick={() => {
           // onCLickFunc(activeTab);
+          {
+            activeTab === 1 ? navigate("/") : navigate("/");
+          }
         }}>
         {activeTab === 1 ? "Add Madrasa" : "Add New Question"}
       </button>

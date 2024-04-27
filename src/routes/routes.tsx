@@ -4,6 +4,7 @@ import AuthLayout from "@/pages/auth/layout";
 import LoginPage from "@/pages/auth/login";
 import SignUpPage from "@/pages/auth/sign-up";
 import Download from "@/pages/dashboard/download";
+import EducationBoard from "@/pages/dashboard/educationBoard/EducationBoard";
 import Home from "@/pages/dashboard/home";
 import DashboardLayout from "@/pages/dashboard/layout";
 import MadrasaDetail from "@/pages/dashboard/madrasa/MadrasaDetail";
@@ -70,12 +71,28 @@ export const routes = createBrowserRouter([
             ),
           },
           {
+            path: "dashboard",
+            element: (
+              <Routes>
+                <Route
+                  path="*"
+                  element={<Navigate to="/dashboard/home" />}
+                />
+              </Routes>
+            ),
+          },
+          {
             path: "dashboard/home",
             element: <Home />,
             index: true,
           },
           {
             path: "dashboard/madrasa/:id",
+            element: <MadrasaDetail />,
+            index: true,
+          },
+          {
+            path: "dashboard/add-madrasa",
             element: <MadrasaDetail />,
             index: true,
           },
@@ -92,15 +109,8 @@ export const routes = createBrowserRouter([
             element: <Download />,
           },
           {
-            path: "dashboard",
-            element: (
-              <Routes>
-                <Route
-                  path="*"
-                  element={<Navigate to="/dashboard/home" />}
-                />
-              </Routes>
-            ),
+            path: "dashboard/education-board",
+            element: <EducationBoard />,
           },
         ],
       },

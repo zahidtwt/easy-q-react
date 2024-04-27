@@ -28,9 +28,9 @@ const apiCallingFunc = async () => {
 
 const useGetMadrasaDetail = ({ Id, dataDecorator }: { Id?: string; dataDecorator?: (data: unknown) => void }) => {
   return useQuery({
-    queryKey: ["dataLakeData"],
+    queryKey: ["dataLakeData", Id],
     queryFn: () => apiCallingFunc(),
-    // enabled: !!Id,
+    enabled: !!Id,
     staleTime: 10000,
     select: (data) => {
       if (dataDecorator) {
@@ -38,7 +38,6 @@ const useGetMadrasaDetail = ({ Id, dataDecorator }: { Id?: string; dataDecorator
       }
       return data;
     },
-    enabled: !!Id,
   });
 };
 

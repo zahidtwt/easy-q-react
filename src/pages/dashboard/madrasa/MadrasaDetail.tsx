@@ -1,59 +1,33 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useParams } from "react-router-dom";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { Input } from "@/components/ui/input";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import useGetMadrasaDetail from "./hooks/useGetMadrasaDetail";
-import { toast } from "sonner";
 import MyBoards from "./components/MyBoards";
 import MyClasses from "./components/MyClasses";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
-
-const FormSchema = z.object({
-  email: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
-  }),
-  madrasaName: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
-  }),
-  madrasaAddress: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
-  }),
-  mobile: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
-  }),
-});
+import React, { useState } from "react";
+import MadrasaForm from "./components/MadrasaForm";
+import { HardDriveUpload } from "lucide-react";
 
 const MadrasaDetail = () => {
   const { id } = useParams();
-  const { isLoading } = useGetMadrasaDetail({ Id: id });
+  const { isLoading, refetch: reFetchMadrasaDetail } = useGetMadrasaDetail({ Id: id });
   const [editable, setEditable] = useState(false);
 
-  const form = useForm<z.infer<typeof FormSchema>>({
-    resolver: zodResolver(FormSchema),
-    defaultValues: {
-      email: "email@gmail.com",
-      mobile: "01772536411",
-      madrasaName: "Jamia Islamia Rowjatul Ulum Madrasa",
-      madrasaAddress: "Hat Govindpur, Faridpur",
-    },
-  });
+  const defaultValues = {
+    email: "email@gmail.com",
+    mobile: "01772536411",
+    madrasaName: "Jamia Islamia Rowjatul Ulum Madrasa",
+    madrasaAddress: "Hat Govindpur, Faridpur",
+  };
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-    // toast({
-    //   title: "You submitted the following values:",
-    //   description: (
-    //     <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-    //       <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-    //     </pre>
-    //   ),
-    // });
+  const uploadImage = (event: React.ChangeEvent<HTMLInputElement>) => {
+    console.log("object", event.target.files![0]);
+  };
 
-    toast.success(data.email);
-  }
+  const updateMadrasaDetail = () => {
+    setEditable(false);
+    reFetchMadrasaDetail();
+  };
 
   if (isLoading) {
     return <p> loading ...</p>;
@@ -62,30 +36,44 @@ const MadrasaDetail = () => {
   return (
     <div className="p-3 relative">
       <div className="absolute top-0 right-0">
-        {!editable ? (
+        {!editable && (
           <Button
             variant="ghost"
             className="text-red-500"
             onClick={() => setEditable(true)}>
             Edit
           </Button>
-        ) : (
-          <Button
-            variant="ghost"
-            className="text-green-500"
-            onClick={() => setEditable(false)}>
-            Save
-          </Button>
         )}
       </div>
 
       <div className="grid grid-cols-12 gap-2 items-center mb-5">
         <div className="col-span-12 grid justify-center">
-          <Avatar className="h-24 w-24 rounded-sm">
-            <AvatarImage src="https://github.com/shadcn.png" />
-            <AvatarFallback>{"Ja".toUpperCase()}</AvatarFallback>
-          </Avatar>
+          <div className="h-24 w-24 rounded-sm overflow-hidden imageArea relative">
+            <Avatar className="h-24 w-24 rounded-sm">
+              <AvatarImage src="https://github.com/shadcn.png" />
+              <AvatarFallback>{"Ja".toUpperCase()}</AvatarFallback>
+            </Avatar>
+            <input
+              className="hidden"
+              type="file"
+              id="madrasaImage"
+              accept="image/png, image/jpeg"
+              onChange={uploadImage}
+            />
+            <label
+              className="bg-black/30 absolute top-0 bottom-0 left-0 right-0 z-10 overflow-hidden"
+              htmlFor="madrasaImage">
+              <div className="h-[100%] w-[100%] flex flex-col items-center justify-center rounded-sm border-2 border-white">
+                <HardDriveUpload
+                  size={40}
+                  color="white"
+                />
+                <small className="text-center uppercase text-white mt-4">Update Profile</small>
+              </div>
+            </label>
+          </div>
         </div>
+
         {!editable && (
           <div className="col-span-12 grid ">
             <h3 className="text-center font-semibold text-xl mb-1">Jamia Islamia Rowjatul Ulum Madrasa</h3>
@@ -96,87 +84,11 @@ const MadrasaDetail = () => {
 
       <div className="grid gap-5">
         <div className="col-span-12">
-          <Form {...form}>
-            <form
-              onSubmit={form.handleSubmit(onSubmit)}
-              className="w-full space-y-3">
-              {editable && (
-                <>
-                  <FormField
-                    control={form.control}
-                    name="madrasaName"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Madrasa Name</FormLabel>
-                        <FormControl>
-                          <Input
-                            placeholder="abcd..@.mail.com"
-                            {...field}
-                          />
-                        </FormControl>
-                        {/* <FormDescription>This is your public display name.</FormDescription> */}
-                        <FormMessage>{form?.formState?.errors.email?.message}</FormMessage>
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="madrasaAddress"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Madrasa Address</FormLabel>
-                        <FormControl>
-                          <Input
-                            placeholder="01......"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage>{form?.formState?.errors.email?.message}</FormMessage>
-                      </FormItem>
-                    )}
-                  />
-                </>
-              )}
-
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Email</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="abcd..@.mail.com"
-                        {...field}
-                        disabled={!editable}
-                      />
-                    </FormControl>
-                    {/* <FormDescription>This is your public display name.</FormDescription> */}
-                    <FormMessage>{form?.formState?.errors.email?.message}</FormMessage>
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="mobile"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Mobile</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="01......"
-                        {...field}
-                        disabled={!editable}
-                      />
-                    </FormControl>
-                    <FormMessage>{form?.formState?.errors.email?.message}</FormMessage>
-                  </FormItem>
-                )}
-              />
-            </form>
-          </Form>
+          <MadrasaForm
+            defaultValues={defaultValues}
+            editable={editable}
+            updateMadrasaDetail={updateMadrasaDetail}
+          />
         </div>
 
         <div className="col-span-12">
