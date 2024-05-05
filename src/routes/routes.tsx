@@ -7,6 +7,7 @@ import Download from "@/pages/dashboard/download";
 import EducationBoard from "@/pages/dashboard/educationBoard/EducationBoard";
 import Home from "@/pages/dashboard/home";
 import DashboardLayout from "@/pages/dashboard/layout";
+import CreateMadrasa from "@/pages/dashboard/madrasa/CreateMadrasa";
 import MadrasaDetail from "@/pages/dashboard/madrasa/MadrasaDetail";
 import Profile from "@/pages/dashboard/profile";
 import Questions from "@/pages/dashboard/questions";
@@ -93,7 +94,7 @@ export const routes = createBrowserRouter([
           },
           {
             path: "dashboard/add-madrasa",
-            element: <MadrasaDetail />,
+            element: <CreateMadrasa />,
             index: true,
           },
           {

@@ -12,6 +12,7 @@ const MadrasaDetail = () => {
   const { id } = useParams();
   const { isLoading, refetch: reFetchMadrasaDetail } = useGetMadrasaDetail({ Id: id });
   const [editable, setEditable] = useState(false);
+  const [uploadedFile, setUploadedFile] = useState<File>();
 
   const defaultValues = {
     email: "email@gmail.com",
@@ -21,7 +22,10 @@ const MadrasaDetail = () => {
   };
 
   const uploadImage = (event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log("object", event.target.files![0]);
+    // console.log("object", event.target.files![0]);
+    const file = event.target.files![0];
+    setUploadedFile(file);
+    reFetchMadrasaDetail();
   };
 
   const updateMadrasaDetail = () => {
@@ -50,7 +54,11 @@ const MadrasaDetail = () => {
         <div className="col-span-12 grid justify-center">
           <div className="h-24 w-24 rounded-sm overflow-hidden imageArea relative">
             <Avatar className="h-24 w-24 rounded-sm">
-              <AvatarImage src="https://github.com/shadcn.png" />
+              {uploadedFile ? (
+                <AvatarImage src="https://github.com/shadcn.png" />
+              ) : (
+                <AvatarImage src="https://github.com/shadcn.png" />
+              )}
               <AvatarFallback>{"Ja".toUpperCase()}</AvatarFallback>
             </Avatar>
             <input
