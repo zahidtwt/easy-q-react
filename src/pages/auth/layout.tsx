@@ -9,14 +9,18 @@ const AuthLayout = () => {
     <>
       {isAuthenticated ? (
         <Navigate
-          to={"/dashboard/home"}
+          to={"/home"}
           replace
         />
       ) : (
-        <main className="flex flex-col justify-center items-center h-[100dvh] space-y-12">
-          <Logo label />
-          <Outlet />
-        </main>
+        <div className="flex justify-center">
+          <div className="w-full max-w-[600px] h-[100dvh] relative">
+            <main className="flex flex-col justify-center items-center h-[100dvh] space-y-12">
+              <Logo label />
+              <Outlet />
+            </main>
+          </div>
+        </div>
       )}
     </>
   );
