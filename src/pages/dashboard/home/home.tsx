@@ -38,7 +38,7 @@ const Home = () => {
         onClick={() => {
           // onCLickFunc(activeTab);
           {
-            activeTab === 1 ? navigate("/dashboard/add-madrasa") : navigate("/");
+            activeTab === 1 ? navigate("/add-madrasa") : navigate("/");
           }
         }}>
         {activeTab === 1 ? "Add Madrasa" : "Add New Question"}

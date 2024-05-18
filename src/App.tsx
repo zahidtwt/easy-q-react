@@ -6,11 +6,11 @@ import "./App.css";
 function App() {
   return (
     <ThemeProvider defaultTheme="light">
-      <div className="flex justify-center">
+      {/* <div className="flex justify-center">
         <div className="w-full max-w-[600px] h-[100dvh] relative">
-          <Outlet />
         </div>
-      </div>
+      </div> */}
+      <Outlet />
       <Toaster
         richColors
         position="top-right"

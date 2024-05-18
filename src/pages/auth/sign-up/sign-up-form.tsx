@@ -16,7 +16,7 @@ const SignUpForm = () => {
   const onSuccessReg = (token: string) => {
     toast.success("Successfully registered user!");
     Cookies.set("token", token, { secure: true });
-    navigate("/dashboard/home");
+    navigate("/home");
   };
 
   const { mutate: registerUser } = useSignUp({ onSuccessReg });

@@ -3,10 +3,27 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Edit } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 
 const Profile = () => {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    Cookies.remove("token");
+    localStorage.removeItem("userData");
+    navigate("/auth/login", { replace: true });
+  };
+
   return (
     <div className=" py-2 text-center space-y-8 overflow-x-scroll">
+      <Button
+        onClick={handleLogout}
+        type="submit"
+        className="mt-4 cursor-pointer bg-red-700/50">
+        Logout
+      </Button>
+
       <Card>
         <CardContent className="flex flex-col justify-center items-center gap-2 shadow-lg rounded-md p-2 relative">
           <Edit className="absolute top-1.5 right-1.5" />

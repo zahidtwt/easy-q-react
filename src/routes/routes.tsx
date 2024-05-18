@@ -1,4 +1,6 @@
 import App from "@/App";
+import AdminDashboardLayout from "@/Modules/AdminDashboard/Layout/AdminDashboardLayout";
+import BoardList from "@/Modules/AdminDashboard/Pages/BoardList/BoardList";
 import NotFoundPage from "@/components/not-found";
 import AuthLayout from "@/pages/auth/layout";
 import LoginPage from "@/pages/auth/login";
@@ -21,7 +23,6 @@ export const routes = createBrowserRouter([
     children: [
       {
         element: <AuthLayout />,
-
         children: [
           {
             path: "",
@@ -66,52 +67,64 @@ export const routes = createBrowserRouter([
               <Routes>
                 <Route
                   path="*"
-                  element={<Navigate to="/dashboard/home" />}
+                  element={<Navigate to="/home" />}
                 />
               </Routes>
             ),
           },
           {
-            path: "dashboard",
-            element: (
-              <Routes>
-                <Route
-                  path="*"
-                  element={<Navigate to="/dashboard/home" />}
-                />
-              </Routes>
-            ),
-          },
-          {
-            path: "dashboard/home",
+            path: "home",
             element: <Home />,
             index: true,
           },
           {
-            path: "dashboard/madrasa/:id",
+            path: "madrasa/:id",
             element: <MadrasaDetail />,
             index: true,
           },
           {
-            path: "dashboard/add-madrasa",
+            path: "add-madrasa",
             element: <CreateMadrasa />,
             index: true,
           },
           {
-            path: "dashboard/profile",
+            path: "profile",
             element: <Profile />,
           },
           {
-            path: "dashboard/questions",
+            path: "questions",
             element: <Questions />,
           },
           {
-            path: "dashboard/download",
+            path: "download",
             element: <Download />,
           },
           {
-            path: "dashboard/education-board",
+            path: "education-board",
             element: <EducationBoard />,
+          },
+        ],
+      },
+      {
+        path: "/dashboard", // admin dashboard
+        element: <AdminDashboardLayout />,
+
+        children: [
+          {
+            path: "",
+            element: (
+              <Routes>
+                <Route
+                  path="*"
+                  element={<Navigate to="/dashboard/boardList" />}
+                />
+              </Routes>
+            ),
+          },
+          {
+            path: "boardList",
+            element: <BoardList />,
+            index: true,
           },
         ],
       },
