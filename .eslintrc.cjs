@@ -14,6 +14,7 @@ module.exports = {
     "plugin:@typescript-eslint/recommended",
     "plugin:react/recommended",
     "plugin:react-hooks/recommended",
+    "plugin:prettier/recommended",
   ],
   ignorePatterns: ["dist", ".eslintrc.cjs", "src/**/*.test.ts"],
   plugins: ["react-refresh", "@typescript-eslint", "react-hooks", "prettier"],
@@ -28,7 +29,13 @@ module.exports = {
   rules: {
     "react-refresh/only-export-components": ["off", { allowConstantExport: true }],
     "react/prop-types": "off",
-    "prettier/prettier": ["error"],
+    "prettier/prettier": [
+      "error",
+      {},
+      {
+        usePrettierrc: true,
+      },
+    ],
     "no-console": ["error", { allow: ["warn", "error"] }],
     "no-irregular-whitespace": "warn",
     "no-self-assign": "error",
