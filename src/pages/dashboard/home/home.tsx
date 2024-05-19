@@ -7,11 +7,6 @@ const Home = () => {
   const [activeTab, setActiveTab] = useState(1);
   const navigate = useNavigate();
 
-  // const onCLickFunc = (vurrentTab: number) => {
-  //   if(activeTab === 1){
-
-  //   }
-  // };
   return (
     <div className="relative max-h-full h-full px-2">
       <div className="absolute top-2 right-1 left-1 z-10">
@@ -36,7 +31,6 @@ const Home = () => {
       <button
         className="self-center rounded-full absolute bottom-3 right-2 bg-slate-950 px-3 py-2 text-white"
         onClick={() => {
-          // onCLickFunc(activeTab);
           {
             activeTab === 1 ? navigate("/add-madrasa") : navigate("/");
           }

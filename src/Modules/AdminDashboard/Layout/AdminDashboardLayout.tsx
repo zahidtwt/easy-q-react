@@ -9,9 +9,11 @@ const AdminDashboardLayout: React.FC = () => {
   return (
     <>
       {isAuthenticated ? (
-        <div>
-          <Navbar />
-          <div className="p-0 h-[100dvh] overflow-y-auto bg-gradient-to-t from-indigo-200 via-purple-200 to-pink-200">
+        <div className="bg-gray-200 ">
+          <div className="fixed w-full z-50">
+            <Navbar />
+          </div>
+          <div className="p-0 pt-14">
             <Outlet />
           </div>
         </div>
