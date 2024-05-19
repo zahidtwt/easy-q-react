@@ -13,15 +13,27 @@ import useLogin from "../hooks/useLogin";
 const LoginForm = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { path } = location.state || { path: "/dashboard/home" };
+  const { path } = location.state || { path: "/home" };
+
+  const getPublicDataFromJwtToken = (token: string) => {
+    try {
+      const parts = token.split(".");
+      const payload = JSON.parse(atob(parts[1]));
+      return JSON.stringify(payload);
+    } catch (error) {
+      console.error("Error decoding JWT token:", error);
+      return "";
+    }
+  };
 
   const onSuccessLogin = (token: string) => {
     toast.success("Successfully logged in!");
     Cookies.set("token", token, { secure: true });
+    localStorage.setItem("userData", getPublicDataFromJwtToken(token));
     navigate(path, { replace: true });
   };
 
-  const { mutate: loginUser } = useLogin({ onSuccessLogin });
+  const { mutate: loginUser, isPending } = useLogin({ onSuccessLogin });
 
   const formMethods = useForm<LoginFormFields>({
     resolver: zodResolver(LoginFormSchema),
@@ -80,7 +92,7 @@ const LoginForm = () => {
 
         <div className="flex justify-center">
           <SubmitButton
-            isSubmitting={isSubmitting}
+            isSubmitting={isPending || isSubmitting}
             isDirty={isDirty}
           />
         </div>

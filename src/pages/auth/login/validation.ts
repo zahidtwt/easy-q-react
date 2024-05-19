@@ -1,6 +1,7 @@
 import zod from "zod";
 
-const passwordValidationRegex = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$";
+// const passwordValidationRegex = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$";
+const passwordValidationRegex = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d@$!%*?&]{8,}$";
 // const mobileNumberValidationRegex = "^\\+8801[3-9]\\d{8}$";
 const mobileNumberValidationRegex = "^01[3-9]\\d{8}$";
 

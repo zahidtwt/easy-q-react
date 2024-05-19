@@ -50,6 +50,102 @@
   {
     "address": "Hat Govindpur, Faridpur",
     "classIds": [
+      "1",
+      "2",
+      "3"
+    ],
+    "educationBoardIds": [
+      "2"
+    ],
+    "email": "lmn@example.com",
+    "id": "3",
+    "mobile": "555-555-5555",
+    "name": "Jamia Islamia Rowjatul Ulum Madrasa",
+    "userId": "3"
+  },
+  {
+    "address": "Hat Govindpur, Faridpur",
+    "classIds": [
+      "1",
+      "2",
+      "3"
+    ],
+    "educationBoardIds": [
+      "2"
+    ],
+    "email": "lmn@example.com",
+    "id": "3",
+    "mobile": "555-555-5555",
+    "name": "Jamia Islamia Rowjatul Ulum Madrasa",
+    "userId": "3"
+  },
+  {
+    "address": "Hat Govindpur, Faridpur",
+    "classIds": [
+      "1",
+      "2",
+      "3"
+    ],
+    "educationBoardIds": [
+      "2"
+    ],
+    "email": "lmn@example.com",
+    "id": "3",
+    "mobile": "555-555-5555",
+    "name": "Jamia Islamia Rowjatul Ulum Madrasa",
+    "userId": "3"
+  },
+  {
+    "address": "Hat Govindpur, Faridpur",
+    "classIds": [
+      "1",
+      "2",
+      "3"
+    ],
+    "educationBoardIds": [
+      "2"
+    ],
+    "email": "lmn@example.com",
+    "id": "3",
+    "mobile": "555-555-5555",
+    "name": "Jamia Islamia Rowjatul Ulum Madrasa",
+    "userId": "3"
+  },
+  {
+    "address": "Hat Govindpur, Faridpur",
+    "classIds": [
+      "1",
+      "2",
+      "3"
+    ],
+    "educationBoardIds": [
+      "2"
+    ],
+    "email": "lmn@example.com",
+    "id": "3",
+    "mobile": "555-555-5555",
+    "name": "Jamia Islamia Rowjatul Ulum Madrasa",
+    "userId": "3"
+  },
+  {
+    "address": "Hat Govindpur, Faridpur",
+    "classIds": [
+      "1",
+      "2",
+      "3"
+    ],
+    "educationBoardIds": [
+      "2"
+    ],
+    "email": "lmn@example.com",
+    "id": "3",
+    "mobile": "555-555-5555",
+    "name": "Jamia Islamia Rowjatul Ulum Madrasa",
+    "userId": "3"
+  },
+  {
+    "address": "Hat Govindpur, Faridpur",
+    "classIds": [
       "2",
       "3"
     ],
