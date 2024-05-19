@@ -37,13 +37,15 @@ const Navbar = () => {
             key={menu.title}
             className={({ isActive }) =>
               isActive
-                ? "active bg-emerald-400 mt-[-6px] shadow-inner hover:bg-emerald-600 dark:hover:bg-gray-800 group dark:border-gray-600 rounded-t-lg text-white  inline-flex flex-col items-center justify-center px-5 border-gray-200 border-x "
+                ? "active bg-emerald-400 shadow-inner hover:bg-emerald-600 dark:hover:bg-gray-800 group dark:border-gray-600 text-white  inline-flex flex-col items-center justify-center px-5 border-gray-200 border-x "
                 : "inline-flex flex-col items-center justify-center px-5 border-gray-200 border-x hover:bg-gray-50 dark:hover:bg-gray-800 group dark:border-gray-600"
             }>
-            {menu.icon && <li>{menu.icon}</li>}
+            {menu.title}
+
+            {/* {menu.icon && <li>{menu.icon}</li>}
             <span className="text-sm sr-only text-gray-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-500">
               {menu.title}
-            </span>
+            </span> */}
           </NavLink>
         ))}
       </ul>
