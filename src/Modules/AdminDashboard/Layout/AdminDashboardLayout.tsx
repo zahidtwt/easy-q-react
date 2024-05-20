@@ -9,7 +9,7 @@ const AdminDashboardLayout: React.FC = () => {
   return (
     <>
       {isAuthenticated ? (
-        <div className="bg-gray-200 ">
+        <div className="bg-gray-200 min-h-[100dvh]">
           <div className="fixed w-full z-50">
             <Navbar />
           </div>
