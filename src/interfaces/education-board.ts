@@ -6,3 +6,6 @@ export interface EducationBoard {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface ICreateEducationBoardPayload extends Omit<EducationBoard, "id" | "createdAt" | "updatedAt"> {}
+export interface IEditEducationBoardPayload extends Omit<EducationBoard, "createdAt" | "updatedAt"> {}

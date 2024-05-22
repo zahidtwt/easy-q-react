@@ -7,10 +7,9 @@ import { Button } from "@/components/ui/button";
 import { useGetEducationBoardList } from "../../../../hooks/useEducationBoard";
 import { Skeleton } from "@/components/ui/skeleton";
 import { EducationBoard } from "@/interfaces/education-board";
-import { Avatar, AvatarImage } from "@/components/ui/avatar";
-import { AvatarFallback } from "@radix-ui/react-avatar";
 import { useState } from "react";
 import AddBoardModal from "./Components/AddBoardModal";
+import BoardCard from "./Components/BoardCard";
 
 const BoardCardSkeleton = () => {
   return (
@@ -91,20 +90,11 @@ const BoardList = () => {
                 <BoardCardSkeleton />
               </>
             )}
-            {eduBoardList?.map((item: EducationBoard) => (
-              <div
-                key={item.id}
-                className="w-full rounded-md shadow-md hover:shadow-lg min-h-10 flex flex-col items-center justify-center bg-white p-4 border border-gray-200 transition-all duration-300">
-                <Avatar className="border border-gray-200 flex justify-center items-center h-[50px] w-[50px]">
-                  <AvatarImage
-                    src={item.imageURL}
-                    alt={`${item.name}'s Picture`}
-                  />
-                  <AvatarFallback className="uppercase">{item.name.slice(0, 2)}</AvatarFallback>
-                </Avatar>
-                <h5 className="p-1 font-medium text-center capitalize">{item.name}</h5>
-                <small className="text-gray-500">{item.address}</small>
-              </div>
+            {eduBoardList?.map((board: EducationBoard) => (
+              <BoardCard
+                key={board.id}
+                board={board}
+              />
             ))}
           </div>
         </CardContent>

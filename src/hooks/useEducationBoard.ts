@@ -4,7 +4,7 @@ import Cookies from "js-cookie";
 import { endpoints } from "@/configs/config";
 import { errorHandler } from "@/utils/errorHandler";
 import { toast } from "sonner";
-import { EducationBoard } from "@/interfaces/education-board";
+import { EducationBoard, ICreateEducationBoardPayload, IEditEducationBoardPayload } from "@/interfaces/education-board";
 
 const fetchBoardList = async () => {
   return (
@@ -17,8 +17,18 @@ const fetchBoardList = async () => {
   ).data;
 };
 
-const createNewBoard = async (payload: { name: string }) => {
+const createNewBoard = async (payload: ICreateEducationBoardPayload) => {
   const res = await axiosInstance.post(`${endpoints.dashboard.educationBoard}create`, payload, {
+    headers: {
+      ...axiosInstance.defaults.headers.common, // Merge existing common headers
+      Authorization: `Bearer ${Cookies.get("token")}`, // Add authorization header
+    },
+  });
+  return res.data;
+};
+
+const updateBoard = async ({ id, ...restPayload }: IEditEducationBoardPayload) => {
+  const res = await axiosInstance.put(`${endpoints.dashboard.educationBoard}update/${id}`, restPayload, {
     headers: {
       ...axiosInstance.defaults.headers.common, // Merge existing common headers
       Authorization: `Bearer ${Cookies.get("token")}`, // Add authorization header
@@ -43,7 +53,30 @@ export const useGetEducationBoardList = ({ dataDecorator }: { dataDecorator?: (d
 export const useCreateEducationBoard = ({ dataDecorator }: { dataDecorator?: (data: unknown) => void }) => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (payload: { name: string }) => createNewBoard(payload),
+    mutationFn: (payload: ICreateEducationBoardPayload) => createNewBoard(payload),
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({
+        queryKey: ["educationBoardList"],
+      });
+
+      if (dataDecorator) {
+        return dataDecorator(data);
+      }
+
+      return data;
+    },
+    onError: (error) => {
+      const errorMessage = errorHandler(error);
+      toast.error(errorMessage);
+      return error;
+    },
+  });
+};
+
+export const useUpdateEducationBoard = ({ dataDecorator }: { dataDecorator?: (data: unknown) => void }) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (payload: IEditEducationBoardPayload) => updateBoard(payload),
     onSuccess: (data) => {
       queryClient.invalidateQueries({
         queryKey: ["educationBoardList"],
