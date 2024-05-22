@@ -9,7 +9,7 @@ const navbarMenus = [
     icon: null,
   },
   {
-    path: "/dashboard/Classes",
+    path: "/dashboard/classes",
     title: "Classes",
     icon: null,
   },

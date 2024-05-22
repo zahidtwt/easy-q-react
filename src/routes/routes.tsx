@@ -1,6 +1,7 @@
 import App from "@/App";
 import AdminDashboardLayout from "@/Modules/AdminDashboard/Layout/AdminDashboardLayout";
 import BoardList from "@/Modules/AdminDashboard/Pages/BoardList/BoardList";
+import ClassList from "@/Modules/AdminDashboard/Pages/ClassList/ClassList";
 import NotFoundPage from "@/components/not-found";
 import AuthLayout from "@/pages/auth/layout";
 import LoginPage from "@/pages/auth/login";
@@ -124,6 +125,11 @@ export const routes = createBrowserRouter([
           {
             path: "boardList",
             element: <BoardList />,
+            index: true,
+          },
+          {
+            path: "classes",
+            element: <ClassList />,
             index: true,
           },
         ],
