@@ -2,6 +2,9 @@ import App from "@/App";
 import AdminDashboardLayout from "@/Modules/AdminDashboard/Layout/AdminDashboardLayout";
 import BoardList from "@/Modules/AdminDashboard/Pages/BoardList/BoardList";
 import ClassList from "@/Modules/AdminDashboard/Pages/ClassList/ClassList";
+import InstitutionList from "@/Modules/AdminDashboard/Pages/InstitutionList/InstitutionList";
+import QuestionsList from "@/Modules/AdminDashboard/Pages/QuestionsList/QuestionsList";
+import UserList from "@/Modules/AdminDashboard/Pages/UserList/UserList";
 import NotFoundPage from "@/components/not-found";
 import AuthLayout from "@/pages/auth/layout";
 import LoginPage from "@/pages/auth/login";
@@ -130,6 +133,21 @@ export const routes = createBrowserRouter([
           {
             path: "classes",
             element: <ClassList />,
+            index: true,
+          },
+          {
+            path: "institutes",
+            element: <InstitutionList />,
+            index: true,
+          },
+          {
+            path: "questions",
+            element: <QuestionsList />,
+            index: true,
+          },
+          {
+            path: "users",
+            element: <UserList />,
             index: true,
           },
         ],

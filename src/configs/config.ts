@@ -8,5 +8,8 @@ export const endpoints = {
     educationBoard: "api/education-board/",
     class: "api/class/",
     storage: "api/storage/",
+    institution: "api/institution/",
+    users: "api/user/",
+    questions: "api/questions/",
   },
 };

@@ -14,13 +14,18 @@ const navbarMenus = [
     icon: null,
   },
   {
-    path: "/dashboard/Institutes",
+    path: "/dashboard/institutes",
     title: "Institutes",
     icon: null,
   },
   {
-    path: "/dashboard/Questions",
+    path: "/dashboard/questions",
     title: "Questions",
+    icon: null,
+  },
+  {
+    path: "/dashboard/users",
+    title: "Users",
     icon: null,
   },
 ] as const;
@@ -30,7 +35,7 @@ const Navbar = () => {
     <nav
       className="w-full h-14 bg-gray-200 dark:bg-gray-700"
       style={{ boxShadow: "inset 0 0 10px rgba(0,0,0,0.1)" }}>
-      <ul className="grid h-full max-w-2xl grid-cols-4 font-medium">
+      <ul className="grid h-full max-w-2xl grid-cols-6 font-medium">
         {navbarMenus.map((menu) => (
           <NavLink
             to={menu.path}
