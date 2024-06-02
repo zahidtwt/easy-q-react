@@ -1,9 +1,8 @@
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { EducationBoard } from "@/interfaces/education-board";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
-type itemType = { id: string; name: string; checked?: boolean };
-
-type itemDetailType = Omit<itemType, "id"> & {
+type itemDetailType = Pick<EducationBoard, "name"> & {
   onClickFunc: () => void;
 };
 
@@ -37,11 +36,11 @@ const SelectItemsForBoardCard = ({
   title: string;
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
-  itemList: itemType[];
+  itemList: EducationBoard[];
 }) => {
   const [cardList, setCardList] = useState(itemList);
 
-  const removeItem = (removeItem: itemType) => {
+  const removeItem = (removeItem: EducationBoard) => {
     setCardList((prev) => prev.filter((item) => item.id !== removeItem.id));
   };
 

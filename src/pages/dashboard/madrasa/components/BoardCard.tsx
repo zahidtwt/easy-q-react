@@ -1,4 +1,5 @@
 import Clip from "@/components/Clip";
+import { EducationBoard } from "@/interfaces/education-board";
 import { Plus } from "lucide-react";
 
 type BoardCard<T> = {
@@ -10,11 +11,6 @@ type BoardCard<T> = {
   bgColor?: string;
 };
 
-type itemType = {
-  name: string;
-  id: string;
-};
-
 const BoardCard = ({
   name,
   title,
@@ -22,7 +18,7 @@ const BoardCard = ({
   list,
   borderColor = "border-red-400",
   bgColor = "bg-red-400",
-}: BoardCard<itemType>) => {
+}: BoardCard<EducationBoard>) => {
   return (
     <div className="w-full">
       <div className="w-full flex justify-between items-center mb-2">
@@ -36,7 +32,7 @@ const BoardCard = ({
       </div>
       <div className="w-full border-2 border-spacing-1 border-gray-50 rounded-md min-h-10">
         <div className="flex flex-wrap gap-3 p-2">
-          {list.map((item: itemType) => (
+          {list.map((item: EducationBoard) => (
             <Clip
               key={item.id}
               name={item.name}

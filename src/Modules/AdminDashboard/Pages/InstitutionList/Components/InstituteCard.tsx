@@ -2,6 +2,7 @@ import { IInstitution } from "@/interfaces/institution";
 import InstituteFormModal from "./InstituteFormModal";
 import { Pencil } from "lucide-react";
 import { useState } from "react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const InstituteCard = ({ institutionItem }: { institutionItem: IInstitution }) => {
   const [open, setOpen] = useState(false);
@@ -16,7 +17,15 @@ const InstituteCard = ({ institutionItem }: { institutionItem: IInstitution }) =
             <Pencil className="h-5 w-5" />
           </button>
         </div>
+        <Avatar className="border border-gray-200 flex justify-center items-center h-[50px] w-[50px]">
+          <AvatarImage
+            src={institutionItem.imageURL}
+            alt={`${institutionItem.name}'s Picture`}
+          />
+          <AvatarFallback className="uppercase">{institutionItem.name.slice(0, 2)}</AvatarFallback>
+        </Avatar>
         <h5 className="p-1 font-medium text-center capitalize">{institutionItem.name}</h5>
+        <small className="text-gray-500">{institutionItem.address}</small>
       </div>
 
       {open && (

@@ -6,11 +6,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm, Controller } from "react-hook-form";
 import zod from "zod";
 import { useCreateEducationBoard, useUpdateEducationBoard } from "@/hooks/useEducationBoard";
-import { UploadCloud } from "lucide-react";
 import { IEditEducationBoardPayload } from "@/interfaces/education-board";
 import { useFileUpload } from "@/hooks/useFileUpload";
 import { Button } from "@/components/ui/button";
 import SpinningLoader from "@/components/loader";
+import ImageUploadField from "@/components/ImageUploadField";
 
 const EduBoardFormSchema = zod.object({
   name: zod.string().min(2, {
@@ -110,63 +110,13 @@ const AddBoardModal = ({
                 control={formMethods.control}
                 name="imageURL"
                 render={({ field }) => (
-                  <div className="w-full flex justify-center">
-                    <input
-                      type="file"
-                      onChange={async (e) => {
-                        const fileUrl = await handleImageUpload(e);
-                        // e.target.value = fileUrl;
-                        field.onChange(fileUrl);
-                      }}
-                      className="hidden"
-                      id="boardImage"
-                      accept="image/*"
-                    />
-                    <label htmlFor="boardImage">
-                      {imageFile ? (
-                        <div className="group relative flex flex-col justify-center items-center gap-2 bg-gray-100 p-2 rounded-md cursor-pointer h-[100px] w-[100px] text-center overflow-hidden">
-                          <img
-                            src={URL.createObjectURL(imageFile)}
-                            alt="Board Image"
-                            className="h-[100px] w-[100px] object-cover rounded-md"
-                          />
-                          {fileUploading && (
-                            <span className="absolute bottom-0 transform transition-all duration-200 ease-in-out">
-                              <div className="flex flex-col justify-center items-center gap-2 bg-gray-500/50 p-2 rounded-md cursor-pointer h-[100px] w-[100px] text-center text-white">
-                                <SpinningLoader />
-                                <span>Image Uploading ..</span>
-                              </div>
-                            </span>
-                          )}
-                          <span className="absolute bottom-0 transform translate-y-full transition-all duration-200 ease-in-out group-hover:-translate-y-0 ">
-                            <div className="flex flex-col justify-center items-center gap-2 bg-gray-500/50 p-2 rounded-md cursor-pointer h-[100px] w-[100px] text-center text-white">
-                              <UploadCloud className="h-5 w-5" />
-                              <span>Upload Image</span>
-                            </div>
-                          </span>
-                        </div>
-                      ) : initialValues?.imageURL ? (
-                        <div className="group relative flex flex-col justify-center items-center gap-2 bg-gray-100 p-2 rounded-md cursor-pointer h-[100px] w-[100px] text-center overflow-hidden">
-                          <img
-                            src={initialValues?.imageURL}
-                            alt="Board Image"
-                            className="h-[100px] w-[100px] object-cover rounded-md"
-                          />
-                          <span className="absolute bottom-0 transform translate-y-full transition-all duration-200 ease-in-out group-hover:-translate-y-0 ">
-                            <div className="flex flex-col justify-center items-center gap-2 bg-gray-500/50 p-2 rounded-md cursor-pointer h-[100px] w-[100px] text-center text-white">
-                              <UploadCloud className="h-5 w-5" />
-                              <span>Upload Image</span>
-                            </div>
-                          </span>
-                        </div>
-                      ) : (
-                        <div className="flex flex-col justify-center items-center gap-2 bg-gray-100 p-2 rounded-md cursor-pointer h-[100px] w-[100px] text-center">
-                          <UploadCloud className="h-5 w-5" />
-                          <span>Upload Image</span>
-                        </div>
-                      )}
-                    </label>
-                  </div>
+                  <ImageUploadField
+                    handleImageUpload={handleImageUpload}
+                    field={field}
+                    imageFile={imageFile}
+                    fileUploading={fileUploading}
+                    initialValues={initialValues}
+                  />
                 )}
               />
               <FormField

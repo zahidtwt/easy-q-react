@@ -2,13 +2,19 @@ import SpinningLoader from "@/components/loader";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
 import zod from "zod";
 import { IEditInstitutionPayload } from "@/interfaces/institution";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useMemo, useState } from "react";
 import { useCreateInstitution, useUpdateInstitution } from "@/hooks/useInstitution";
+import ImageUploadField from "@/components/ImageUploadField";
+import { useFileUpload } from "@/hooks/useFileUpload";
+import Select from "react-select";
+import { useGetEducationBoardList } from "@/hooks/useEducationBoard";
+import { useGetClassList } from "@/hooks/useClass";
+// import { EducationBoard } from "@/interfaces/education-board";
 
 const InstitutionBoardFormSchema = zod.object({
   name: zod.string().min(2, {
@@ -23,7 +29,10 @@ const InstitutionBoardFormSchema = zod.object({
   email: zod.string().email({
     message: "Invalid email.",
   }),
-  educationBoardId: zod.array(zod.string()).min(1, {
+  // educationBoardId: zod.array(zod.string()).min(1, {
+  //   message: "educationBoardId must be at least 1 characters.",
+  // }),
+  educationBoardId: zod.string().min(1, {
     message: "educationBoardId must be at least 1 characters.",
   }),
   classes: zod.array(zod.string()).min(1, {
@@ -32,6 +41,7 @@ const InstitutionBoardFormSchema = zod.object({
   userId: zod.string().min(2, {
     message: "userId must be at least 2 characters.",
   }),
+  imageURL: zod.string(),
 });
 
 type InstitutionBoardFormFields = zod.infer<typeof InstitutionBoardFormSchema>;
@@ -45,6 +55,8 @@ const InstituteFormModal = ({
   setOpen: Dispatch<SetStateAction<boolean>>;
   initialValues?: IEditInstitutionPayload;
 }) => {
+  const [imageFile, setImageFile] = useState<File | null>(null);
+
   const formMethods = useForm<InstitutionBoardFormFields>({
     resolver: zodResolver(InstitutionBoardFormSchema),
     mode: "all",
@@ -53,9 +65,10 @@ const InstituteFormModal = ({
       address: "",
       phoneNumber: "",
       email: "",
-      educationBoardId: [],
+      educationBoardId: "",
       classes: [],
       userId: "",
+      imageURL: "",
     },
   });
 
@@ -70,9 +83,6 @@ const InstituteFormModal = ({
     return data;
   };
 
-  const { mutate: createInstitution } = useCreateInstitution({ dataDecorator });
-  const { mutate: updateInstitution } = useUpdateInstitution({ dataDecorator });
-
   const submitForm: SubmitHandler<InstitutionBoardFormFields> = async (data) => {
     if (initialValues) {
       updateInstitution({ ...data, id: initialValues.id });
@@ -81,6 +91,64 @@ const InstituteFormModal = ({
     }
   };
 
+  const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    try {
+      const file = event.target.files![0];
+      setImageFile(file);
+
+      const formData = new FormData();
+      formData.append("image", file);
+
+      const resData = await fileUploadFunc(formData);
+      if (isError) {
+        setImageFile(null);
+        return;
+      }
+
+      return resData;
+    } catch (error) {
+      if (isError) {
+        setImageFile(null);
+      }
+    }
+  };
+
+  const {
+    // isLoading,
+    data: eduBoardList,
+    // error: edBoardList,
+    // refetch: getAgainBoardList,
+  } = useGetEducationBoardList({});
+  const { data: classList } = useGetClassList({});
+
+  const { mutate: createInstitution } = useCreateInstitution({ dataDecorator });
+  const { mutate: updateInstitution } = useUpdateInstitution({ dataDecorator });
+  const { mutateAsync: fileUploadFunc, isError, isPending: fileUploading } = useFileUpload({});
+
+  const decoratedEducationList = useMemo(() => {
+    const educationListDecorator = (): { value: string; label: string }[] | [] => {
+      if (eduBoardList === undefined) return [];
+
+      return eduBoardList.map((item) => ({
+        value: item.id,
+        label: item.name,
+      }));
+    };
+    return educationListDecorator();
+  }, [eduBoardList]);
+
+  const decoratedClassList = useMemo(() => {
+    const educationListDecorator = (): { value: string; label: string }[] | [] => {
+      if (classList === undefined) return [];
+
+      return classList.map((item) => ({
+        value: item.id,
+        label: item.name,
+      }));
+    };
+    return educationListDecorator();
+  }, [classList]);
+
   return (
     <Dialog
       open={open}
@@ -88,7 +156,7 @@ const InstituteFormModal = ({
       <DialogContent>
         <DialogHeader>
           <DialogTitle>
-            <h5 className="text-center">Create New Class</h5>
+            <h5 className="text-center">Create New Institution</h5>
           </DialogTitle>
         </DialogHeader>
         <DialogDescription className="">
@@ -96,6 +164,20 @@ const InstituteFormModal = ({
             <form
               onSubmit={handleSubmit(submitForm)}
               className="space-y-4 sm:space-y-6 p-1 w-[300px] sm:w-[350px] lg:w-[450px]">
+              <Controller
+                control={formMethods.control}
+                name="imageURL"
+                render={({ field }) => (
+                  <ImageUploadField
+                    handleImageUpload={handleImageUpload}
+                    field={field}
+                    imageFile={imageFile}
+                    fileUploading={fileUploading}
+                    initialValues={initialValues}
+                  />
+                )}
+              />
+
               <FormField
                 control={control}
                 name="name"
@@ -103,7 +185,7 @@ const InstituteFormModal = ({
                   <FormItem>
                     <FormControl>
                       <Input
-                        placeholder="Class Name here..."
+                        placeholder="Institute Name here..."
                         {...field}
                       />
                     </FormControl>
@@ -119,7 +201,7 @@ const InstituteFormModal = ({
                   <FormItem>
                     <FormControl>
                       <Input
-                        placeholder="Class Address here..."
+                        placeholder="Institute Address here..."
                         {...field}
                       />
                     </FormControl>
@@ -135,7 +217,7 @@ const InstituteFormModal = ({
                   <FormItem>
                     <FormControl>
                       <Input
-                        placeholder="Class Phone Number here..."
+                        placeholder="Institute Phone Number here..."
                         {...field}
                       />
                     </FormControl>
@@ -151,7 +233,7 @@ const InstituteFormModal = ({
                   <FormItem>
                     <FormControl>
                       <Input
-                        placeholder="Class Email here..."
+                        placeholder="Institute Email here..."
                         {...field}
                       />
                     </FormControl>
@@ -166,9 +248,16 @@ const InstituteFormModal = ({
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input
-                        placeholder="Class Education Board ID here..."
+                      {/* <Input
+                        placeholder="Institute Education Board ID here..."
                         {...field}
+                      /> */}
+
+                      <Select
+                        placeholder="Institute Education Board ID here..."
+                        options={decoratedEducationList}
+                        defaultValue={decoratedEducationList.filter((item) => field.value === item.value)[0]}
+                        onChange={(selected) => field.onChange(selected?.value)}
                       />
                     </FormControl>
                     <FormMessage>{errors.educationBoardId?.message}</FormMessage>
@@ -176,37 +265,42 @@ const InstituteFormModal = ({
                 )}
               />
 
-              <FormField
-                control={control}
-                name="classes"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Input
-                        placeholder="Class Classes here..."
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage>{errors.classes?.message}</FormMessage>
-                  </FormItem>
-                )}
-              />
+              {eduBoardList && (
+                <FormField
+                  control={control}
+                  name="classes"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Select
+                          isMulti
+                          placeholder="Select Institute Classes..."
+                          options={decoratedClassList}
+                          defaultValue={decoratedClassList.filter((item) => field.value.includes(item.value))}
+                          onChange={(selected) => field.onChange(selected.map((item) => item.value))}
+                        />
+                      </FormControl>
+                      <FormMessage>{errors.classes?.message}</FormMessage>
+                    </FormItem>
+                  )}
+                />
+              )}
 
-              <FormField
+              {/* <FormField
                 control={control}
                 name="userId"
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
                       <Input
-                        placeholder="Class User ID here..."
+                        placeholder="Institute User ID here..."
                         {...field}
                       />
                     </FormControl>
                     <FormMessage>{errors.userId?.message}</FormMessage>
                   </FormItem>
                 )}
-              />
+              /> */}
 
               <div className="flex justify-center">
                 <Button

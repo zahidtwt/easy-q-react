@@ -1,47 +1,39 @@
 import { useState } from "react";
 import BoardCard from "./BoardCard";
 import SelectItemsForBoardCard from "./SelectItemsForBoardCard";
-type boardListType = {
-  id: string;
-  name: string;
-};
+import { useGetEducationBoardList } from "@/hooks/useEducationBoard";
+
 const MyBoards = () => {
   const title = "Education Board";
-  // const addNewMadrasa = () => {};
-  const boardList: boardListType[] = [
-    {
-      id: "srg987sf",
-      name: "board Name",
-    },
-    {
-      id: "srg9saef87sf",
-      name: "board Name",
-    },
-    {
-      id: "srg98wfgt7sf",
-      name: "board Name",
-    },
-  ];
   const [open, setOpen] = useState(false);
   const modalToggoler = () => {
     setOpen(true);
   };
 
+  const {
+    // isLoading,
+    data: eduBoardList,
+    // error: edBoardList,
+    // refetch: getAgainBoardList,
+  } = useGetEducationBoardList({});
+
   return (
     <>
-      <BoardCard
-        name={"Board"}
-        title={title}
-        addNewFunc={modalToggoler}
-        list={boardList}
-      />
+      {eduBoardList && (
+        <BoardCard
+          name={"Board"}
+          title={title}
+          addNewFunc={modalToggoler}
+          list={eduBoardList}
+        />
+      )}
 
-      {open && (
+      {open && eduBoardList && (
         <SelectItemsForBoardCard
           title={"Education Boards"}
           open={open}
           setOpen={setOpen}
-          itemList={boardList}
+          itemList={eduBoardList}
         />
       )}
     </>

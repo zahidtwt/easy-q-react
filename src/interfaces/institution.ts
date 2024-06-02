@@ -4,9 +4,11 @@ export interface IInstitution {
   address: string;
   phoneNumber: string;
   email: string;
-  educationBoardId: string[];
+  // educationBoardId: string[];
+  educationBoardId: string;
   classes: string[];
   userId: string;
+  imageURL: string;
   createdAt: string;
   updatedAt: string;
 }
