@@ -1,36 +1,22 @@
-import { useState } from "react";
-import BoardCard from "./BoardCard";
-import SelectItemsForBoardCard from "./SelectItemsForBoardCard";
-type classListType = {
-  id: string;
-  name: string;
-};
+// import { useState } from "react";
+// import BoardCard from "./BoardCard";
+// import SelectItemsForBoardCard from "./SelectItemsForBoardCard";
+// type classListType = {
+//   id: string;
+//   name: string;
+// };
 
 const MyClasses = () => {
-  const title = "Classes";
-  const classList: classListType[] = [
-    {
-      id: "srg987sf",
-      name: "Classes One",
-    },
-    {
-      id: "srg9saef87sf",
-      name: "Classes Two",
-    },
-    {
-      id: "srg98wfgt7sf",
-      name: "Classes Three",
-    },
-  ];
+  // const title = "Classes";
 
-  const [open, setOpen] = useState(false);
-  const modalToggoler = () => {
-    setOpen(true);
-  };
+  // const [open, setOpen] = useState(false);
+  // const modalToggoler = () => {
+  //   setOpen(true);
+  // };
 
   return (
     <>
-      <BoardCard
+      {/* <BoardCard
         name={"Class"}
         title={title}
         addNewFunc={modalToggoler}
@@ -44,7 +30,9 @@ const MyClasses = () => {
           setOpen={setOpen}
           itemList={classList}
         />
-      )}
+      )} */}
+
+      <p>nothing</p>
     </>
   );
 };
