@@ -115,7 +115,7 @@ const AddBoardModal = ({
                     field={field}
                     imageFile={imageFile}
                     fileUploading={fileUploading}
-                    initialValues={initialValues}
+                    initialImageUrl={initialValues?.imageURL}
                   />
                 )}
               />
