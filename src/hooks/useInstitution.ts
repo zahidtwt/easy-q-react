@@ -5,6 +5,7 @@ import { ICreateInstitutionPayload, IEditInstitutionPayload, IInstitution } from
 import axiosInstance from "@/utils/axios";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Cookies from "js-cookie";
+import { toast } from "sonner";
 
 const fetchInstitutionList = async () => {
   return (
@@ -70,6 +71,8 @@ export const useCreateInstitution = ({ dataDecorator }: { dataDecorator?: (data:
         queryKey: ["institutionList"],
       });
 
+      toast.success("Institution created successfully");
+
       if (dataDecorator) {
         return dataDecorator(data);
       }
@@ -87,6 +90,8 @@ export const useUpdateInstitution = ({ dataDecorator }: { dataDecorator?: (data:
       queryClient.invalidateQueries({
         queryKey: ["institutionList"],
       });
+
+      toast.success("Institution details update successfully");
 
       if (dataDecorator) {
         return dataDecorator(data);

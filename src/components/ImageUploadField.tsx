@@ -6,13 +6,13 @@ const ImageUploadField = ({
   field,
   imageFile,
   fileUploading,
-  initialValues,
+  initialImageUrl,
 }: {
   handleImageUpload: (event: React.ChangeEvent<HTMLInputElement>) => Promise<string>;
   field: { onChange: (value: string) => void };
   imageFile: File | null;
   fileUploading: boolean;
-  initialValues: { imageURL: string } | undefined;
+  initialImageUrl: string | undefined;
 }) => {
   return (
     <div className="w-full flex justify-center">
@@ -50,10 +50,10 @@ const ImageUploadField = ({
               </div>
             </span>
           </div>
-        ) : initialValues?.imageURL ? (
+        ) : initialImageUrl ? (
           <div className="group relative flex flex-col justify-center items-center gap-2 bg-gray-100 p-2 rounded-md cursor-pointer h-[100px] w-[100px] text-center overflow-hidden">
             <img
-              src={initialValues?.imageURL}
+              src={initialImageUrl}
               alt="Board Image"
               className="h-[100px] w-[100px] object-cover rounded-md"
             />

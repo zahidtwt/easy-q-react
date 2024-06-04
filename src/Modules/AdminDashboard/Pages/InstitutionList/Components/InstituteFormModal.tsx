@@ -14,6 +14,7 @@ import { useFileUpload } from "@/hooks/useFileUpload";
 import Select from "react-select";
 import { useGetEducationBoardList } from "@/hooks/useEducationBoard";
 import { useGetClassList } from "@/hooks/useClass";
+import getUserDataFromLocalStorage from "@/utils/getUserDataFromLocalStorage";
 // import { EducationBoard } from "@/interfaces/education-board";
 
 const InstitutionBoardFormSchema = zod.object({
@@ -38,9 +39,9 @@ const InstitutionBoardFormSchema = zod.object({
   classes: zod.array(zod.string()).min(1, {
     message: "classes must be at least 1 characters.",
   }),
-  userId: zod.string().min(2, {
-    message: "userId must be at least 2 characters.",
-  }),
+  // userId: zod.string().min(2, {
+  //   message: "userId must be at least 2 characters.",
+  // }),
   imageURL: zod.string(),
 });
 
@@ -67,7 +68,7 @@ const InstituteFormModal = ({
       email: "",
       educationBoardId: "",
       classes: [],
-      userId: "",
+      // userId: "",
       imageURL: "",
     },
   });
@@ -78,16 +79,22 @@ const InstituteFormModal = ({
     formState: { errors, isSubmitting, isDirty },
   } = formMethods;
 
+  // console.log(errors, "errors");
+
   const dataDecorator = (data: unknown) => {
     setOpen(false);
     return data;
   };
 
   const submitForm: SubmitHandler<InstitutionBoardFormFields> = async (data) => {
+    // console.log(initialValues, "createInstitution", data);
     if (initialValues) {
-      updateInstitution({ ...data, id: initialValues.id });
+      updateInstitution({ ...data, id: initialValues.id, userId: initialValues.userId });
     } else {
-      createInstitution(data);
+      const userData = getUserDataFromLocalStorage();
+      if (userData === null) return;
+
+      createInstitution({ ...data, userId: userData.id });
     }
   };
 
@@ -119,6 +126,7 @@ const InstituteFormModal = ({
     // error: edBoardList,
     // refetch: getAgainBoardList,
   } = useGetEducationBoardList({});
+
   const { data: classList } = useGetClassList({});
 
   const { mutate: createInstitution } = useCreateInstitution({ dataDecorator });
@@ -156,7 +164,7 @@ const InstituteFormModal = ({
       <DialogContent>
         <DialogHeader>
           <DialogTitle>
-            <h5 className="text-center">Create New Institution</h5>
+            <h5 className="text-center">Institution Details</h5>
           </DialogTitle>
         </DialogHeader>
         <DialogDescription className="">
@@ -173,7 +181,7 @@ const InstituteFormModal = ({
                     field={field}
                     imageFile={imageFile}
                     fileUploading={fileUploading}
-                    initialValues={initialValues}
+                    initialImageUrl={initialValues?.imageURL}
                   />
                 )}
               />
@@ -242,30 +250,27 @@ const InstituteFormModal = ({
                 )}
               />
 
-              <FormField
-                control={control}
-                name="educationBoardId"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      {/* <Input
-                        placeholder="Institute Education Board ID here..."
-                        {...field}
-                      /> */}
-
-                      <Select
-                        placeholder="Institute Education Board ID here..."
-                        options={decoratedEducationList}
-                        defaultValue={decoratedEducationList.filter((item) => field.value === item.value)[0]}
-                        onChange={(selected) => field.onChange(selected?.value)}
-                      />
-                    </FormControl>
-                    <FormMessage>{errors.educationBoardId?.message}</FormMessage>
-                  </FormItem>
-                )}
-              />
-
               {eduBoardList && (
+                <FormField
+                  control={control}
+                  name="educationBoardId"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Select
+                          placeholder="Institute Education Board ID here..."
+                          options={decoratedEducationList}
+                          defaultValue={decoratedEducationList.filter((item) => field.value === item.value)[0]}
+                          onChange={(selected) => field.onChange(selected?.value)}
+                        />
+                      </FormControl>
+                      <FormMessage>{errors.educationBoardId?.message}</FormMessage>
+                    </FormItem>
+                  )}
+                />
+              )}
+
+              {classList && (
                 <FormField
                   control={control}
                   name="classes"
@@ -285,22 +290,6 @@ const InstituteFormModal = ({
                   )}
                 />
               )}
-
-              {/* <FormField
-                control={control}
-                name="userId"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Input
-                        placeholder="Institute User ID here..."
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage>{errors.userId?.message}</FormMessage>
-                  </FormItem>
-                )}
-              /> */}
 
               <div className="flex justify-center">
                 <Button

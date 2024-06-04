@@ -1,4 +1,5 @@
 import Clip from "@/components/Clip";
+import { IClass } from "@/interfaces/class";
 import { EducationBoard } from "@/interfaces/education-board";
 import { Plus } from "lucide-react";
 
@@ -18,7 +19,7 @@ const BoardCard = ({
   list,
   borderColor = "border-red-400",
   bgColor = "bg-red-400",
-}: BoardCard<EducationBoard>) => {
+}: BoardCard<EducationBoard | IClass>) => {
   return (
     <div className="w-full">
       <div className="w-full flex justify-between items-center mb-2">
@@ -32,7 +33,7 @@ const BoardCard = ({
       </div>
       <div className="w-full border-2 border-spacing-1 border-gray-50 rounded-md min-h-10">
         <div className="flex flex-wrap gap-3 p-2">
-          {list.map((item: EducationBoard) => (
+          {list.map((item: EducationBoard | IClass) => (
             <Clip
               key={item.id}
               name={item.name}

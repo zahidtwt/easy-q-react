@@ -17,7 +17,7 @@ const InstitutionList = () => {
       <Card x-chunk="dashboard-06-chunk-0">
         <div className="flex justify-between items-center">
           <CardHeader>
-            <CardTitle>Class List</CardTitle>
+            <CardTitle>Institution List</CardTitle>
           </CardHeader>
 
           <div className="ml-auto flex items-center gap-2 p-3">
@@ -26,7 +26,7 @@ const InstitutionList = () => {
               size="sm"
               className="h-8 gap-1">
               <PlusCircle className="h-3.5 w-3.5" />
-              <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">Add Class</span>
+              <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">Add Institution</span>
             </Button>
           </div>
         </div>
