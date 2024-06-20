@@ -42,7 +42,7 @@ const SelectItemsForBoardCard = ({
   const [cardList, setCardList] = useState(itemList);
 
   const removeItem = (removeItem: EducationBoard | IClass) => {
-    setCardList((prev) => prev.filter((item) => item.id !== removeItem.id));
+    setCardList((prev) => prev.filter((item) => item._id !== removeItem._id));
   };
 
   useEffect(() => {
@@ -64,7 +64,7 @@ const SelectItemsForBoardCard = ({
             {cardList.length > 0 &&
               cardList.map((item) => (
                 <ItemDetail
-                  key={item.id}
+                  key={item._id}
                   name={item.name}
                   onClickFunc={() => {
                     removeItem(item);

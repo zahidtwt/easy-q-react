@@ -35,7 +35,7 @@ const BoardCard = ({
         <div className="flex flex-wrap gap-3 p-2">
           {list.map((item: EducationBoard | IClass) => (
             <Clip
-              key={item.id}
+              key={item._id}
               name={item.name}
               borderColor={borderColor}
               bgColor={bgColor}
