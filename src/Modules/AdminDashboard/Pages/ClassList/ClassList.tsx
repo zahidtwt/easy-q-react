@@ -48,7 +48,7 @@ const ClassList = () => {
             )}
             {classList?.map((classItem: IClass) => (
               <ClassCard
-                key={classItem.id}
+                key={classItem._id}
                 classItem={classItem}
               />
             ))}

@@ -5,8 +5,8 @@ import ClassSkeleton from "../ClassList/Components/ClassSkeleton";
 import InstituteCard from "./Components/InstituteCard";
 import InstituteFormModal from "./Components/InstituteFormModal";
 import { useState } from "react";
-import useGetInstitution from "@/pages/dashboard/home/hooks/useGetInstitution";
 import { IInstitution } from "@/interfaces/institution";
+import useGetInstitution from "@/Modules/dashboard/home/hooks/useGetInstitution";
 
 const InstitutionList = () => {
   const [open, setOpen] = useState(false);
@@ -47,7 +47,7 @@ const InstitutionList = () => {
             )}
             {institutionList?.map((institutionItem: IInstitution) => (
               <InstituteCard
-                key={institutionItem.id}
+                key={institutionItem._id}
                 institutionItem={institutionItem}
               />
             ))}

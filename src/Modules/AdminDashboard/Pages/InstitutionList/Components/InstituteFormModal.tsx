@@ -33,11 +33,11 @@ const InstitutionBoardFormSchema = zod.object({
   // educationBoardId: zod.array(zod.string()).min(1, {
   //   message: "educationBoardId must be at least 1 characters.",
   // }),
-  educationBoardId: zod.string().min(1, {
-    message: "educationBoardId must be at least 1 characters.",
+  educationBoardIds: zod.array(zod.string()).min(1, {
+    message: "Minimum One education Board need to select.",
   }),
   classes: zod.array(zod.string()).min(1, {
-    message: "classes must be at least 1 characters.",
+    message: "Minimum One Class need to select.",
   }),
   // userId: zod.string().min(2, {
   //   message: "userId must be at least 2 characters.",
@@ -66,7 +66,7 @@ const InstituteFormModal = ({
       address: "",
       phoneNumber: "",
       email: "",
-      educationBoardId: "",
+      educationBoardIds: [],
       classes: [],
       // userId: "",
       imageURL: "",
@@ -89,12 +89,12 @@ const InstituteFormModal = ({
   const submitForm: SubmitHandler<InstitutionBoardFormFields> = async (data) => {
     // console.log(initialValues, "createInstitution", data);
     if (initialValues) {
-      updateInstitution({ ...data, id: initialValues.id, userId: initialValues.userId });
+      updateInstitution({ ...data, _id: initialValues._id, userId: initialValues.userId });
     } else {
       const userData = getUserDataFromLocalStorage();
       if (userData === null) return;
 
-      createInstitution({ ...data, userId: userData.id });
+      createInstitution({ ...data, userId: userData._id });
     }
   };
 
@@ -121,11 +121,13 @@ const InstituteFormModal = ({
   };
 
   const {
-    // isLoading,
+    isLoading: isLoadingEducationBoardList,
     data: eduBoardList,
     // error: edBoardList,
     // refetch: getAgainBoardList,
   } = useGetEducationBoardList({});
+
+  // console.log(eduBoardList);
 
   const { data: classList } = useGetClassList({});
 
@@ -138,7 +140,7 @@ const InstituteFormModal = ({
       if (eduBoardList === undefined) return [];
 
       return eduBoardList.map((item) => ({
-        value: item.id,
+        value: item._id,
         label: item.name,
       }));
     };
@@ -150,7 +152,7 @@ const InstituteFormModal = ({
       if (classList === undefined) return [];
 
       return classList.map((item) => ({
-        value: item.id,
+        value: item._id,
         label: item.name,
       }));
     };
@@ -250,21 +252,24 @@ const InstituteFormModal = ({
                 )}
               />
 
-              {eduBoardList && (
+              {eduBoardList && !isLoadingEducationBoardList && (
                 <FormField
                   control={control}
-                  name="educationBoardId"
+                  name="educationBoardIds"
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
                         <Select
+                          isMulti
                           placeholder="Institute Education Board ID here..."
                           options={decoratedEducationList}
-                          defaultValue={decoratedEducationList.filter((item) => field.value === item.value)[0]}
-                          onChange={(selected) => field.onChange(selected?.value)}
+                          // defaultValue={decoratedEducationList.filter((item) => field.value === item.value)[0]}
+                          // onChange={(selected) => field.onChange(selected?.value)}
+                          defaultValue={decoratedEducationList.filter((item) => field.value.includes(item.value))}
+                          onChange={(selected) => field.onChange(selected.map((item) => item.value))}
                         />
                       </FormControl>
-                      <FormMessage>{errors.educationBoardId?.message}</FormMessage>
+                      <FormMessage>{errors.educationBoardIds?.message}</FormMessage>
                     </FormItem>
                   )}
                 />

@@ -6,17 +6,17 @@ import InstitutionList from "@/Modules/AdminDashboard/Pages/InstitutionList/Inst
 import QuestionsList from "@/Modules/AdminDashboard/Pages/QuestionsList/QuestionsList";
 import UserList from "@/Modules/AdminDashboard/Pages/UserList/UserList";
 import NotFoundPage from "@/components/not-found";
-import AuthLayout from "@/pages/auth/layout";
-import LoginPage from "@/pages/auth/login";
-import SignUpPage from "@/pages/auth/sign-up";
-import Download from "@/pages/dashboard/download";
-import EducationBoard from "@/pages/dashboard/educationBoard/EducationBoard";
-import Home from "@/pages/dashboard/home";
-import DashboardLayout from "@/pages/dashboard/layout";
-import CreateMadrasa from "@/pages/dashboard/madrasa/CreateMadrasa";
-import MadrasaDetail from "@/pages/dashboard/madrasa/MadrasaDetail";
-import Profile from "@/pages/dashboard/profile";
-import Questions from "@/pages/dashboard/questions";
+import AuthLayout from "@/Modules/Auth/layout";
+import LoginPage from "@/Modules/Auth/login";
+import SignUpPage from "@/Modules/Auth/sign-up";
+import Download from "@/Modules/dashboard/download";
+import EducationBoard from "@/Modules/dashboard/educationBoard/EducationBoard";
+import Home from "@/Modules/dashboard/home";
+import DashboardLayout from "@/Modules/dashboard/layout";
+import CreateMadrasa from "@/Modules/dashboard/madrasa/CreateMadrasa";
+import MadrasaDetail from "@/Modules/dashboard/madrasa/MadrasaDetail";
+import Profile from "@/Modules/dashboard/profile";
+import Questions from "@/Modules/dashboard/questions";
 import { Navigate, Route, Routes, createBrowserRouter } from "react-router-dom";
 
 export const routes = createBrowserRouter([

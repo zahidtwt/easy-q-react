@@ -1,8 +1,5 @@
 import { PlusCircle } from "lucide-react";
-// import TotalCountCardList from "../../Components/TotalCountCardList/TotalCountCardList";
-// import CustomTable from "../../Components/CustomTable/CustomTable";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-// import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useGetEducationBoardList } from "../../../../hooks/useEducationBoard";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -33,32 +30,8 @@ const BoardList = () => {
 
   const [open, setOpen] = useState(false);
 
-  //   {
-  //     title: "Total Education Board",
-  //     count: "64",
-  //     icon: <UserCircle />,
-  //   },
-  //   {
-  //     title: "Total Institution",
-  //     count: "452",
-  //     icon: <UserCircle />,
-  //   },
-  //   {
-  //     title: "Total Classes",
-  //     count: "12",
-  //     icon: <UserCircle />,
-  //   },
-  //   {
-  //     title: "Total Question Set",
-  //     count: "400+",
-  //     icon: <UserCircle />,
-  //   },
-  // ];
   return (
     <div className="container mt-8">
-      {/* <TotalCountCardList totalCountData={totalCountData} />
-      <CustomTable /> */}
-
       <Card x-chunk="dashboard-06-chunk-0">
         <div className="flex justify-between items-center">
           <CardHeader>
@@ -92,7 +65,7 @@ const BoardList = () => {
             )}
             {eduBoardList?.map((board: EducationBoard) => (
               <BoardCard
-                key={board.id}
+                key={board._id}
                 board={board}
               />
             ))}

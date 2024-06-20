@@ -7,14 +7,15 @@ import { toast } from "sonner";
 import { EducationBoard, ICreateEducationBoardPayload, IEditEducationBoardPayload } from "@/interfaces/education-board";
 
 const fetchBoardList = async () => {
-  return (
-    await axiosInstance.get(endpoints.dashboard.educationBoard, {
-      headers: {
-        ...axiosInstance.defaults.headers.common, // Merge existing common headers
-        Authorization: `Bearer ${Cookies.get("token")}`, // Add authorization header
-      },
-    })
-  ).data;
+  const res = await axiosInstance.get(endpoints.dashboard.educationBoard, {
+    headers: {
+      ...axiosInstance.defaults.headers.common, // Merge existing common headers
+      Authorization: `Bearer ${Cookies.get("token")}`, // Add authorization header
+    },
+  });
+
+  // console.log("from hook", res);
+  return res.data;
 };
 
 const createNewBoard = async (payload: ICreateEducationBoardPayload) => {
@@ -27,8 +28,8 @@ const createNewBoard = async (payload: ICreateEducationBoardPayload) => {
   return res.data;
 };
 
-const updateBoard = async ({ id, ...restPayload }: IEditEducationBoardPayload) => {
-  const res = await axiosInstance.put(`${endpoints.dashboard.educationBoard}update/${id}`, restPayload, {
+const updateBoard = async ({ _id, ...restPayload }: IEditEducationBoardPayload) => {
+  const res = await axiosInstance.put(`${endpoints.dashboard.educationBoard}update/${_id}`, restPayload, {
     headers: {
       ...axiosInstance.defaults.headers.common, // Merge existing common headers
       Authorization: `Bearer ${Cookies.get("token")}`, // Add authorization header

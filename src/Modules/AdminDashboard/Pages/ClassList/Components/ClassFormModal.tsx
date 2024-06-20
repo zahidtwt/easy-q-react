@@ -51,7 +51,7 @@ const ClassFormModal = ({
 
   const submitForm: SubmitHandler<EduBoardFormFields> = async (data) => {
     if (initialValues) {
-      updateClass({ ...data, id: initialValues.id });
+      updateClass({ ...data, _id: initialValues._id });
     } else {
       createClass(data);
     }

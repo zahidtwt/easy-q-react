@@ -1,11 +1,11 @@
 export interface IInstitution {
-  id: string;
+  _id: string;
   name: string;
   address: string;
   phoneNumber: string;
   email: string;
-  // educationBoardId: string[];
-  educationBoardId: string;
+  educationBoardIds: string[];
+  // educationBoardId: string;
   classes: string[];
   userId: string;
   imageURL: string;
@@ -13,5 +13,5 @@ export interface IInstitution {
   updatedAt: string;
 }
 
-export interface ICreateInstitutionPayload extends Omit<IInstitution, "id" | "createdAt" | "updatedAt"> {}
+export interface ICreateInstitutionPayload extends Omit<IInstitution, "_id" | "createdAt" | "updatedAt"> {}
 export interface IEditInstitutionPayload extends Omit<IInstitution, "createdAt" | "updatedAt"> {}

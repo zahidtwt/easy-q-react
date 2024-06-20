@@ -56,8 +56,6 @@ const AddBoardModal = ({
     return data;
   };
 
-  const { mutateAsync: fileUploadFunc, isError, isPending: fileUploading } = useFileUpload({});
-
   const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     try {
       const file = event.target.files![0];
@@ -80,16 +78,18 @@ const AddBoardModal = ({
     }
   };
 
-  const { mutate: createBoard } = useCreateEducationBoard({ dataDecorator });
-  const { mutate: updateBoard } = useUpdateEducationBoard({ dataDecorator });
-
   const submitForm: SubmitHandler<EduBoardFormFields> = async (data) => {
+    // console.log(data);
     if (initialValues) {
-      updateBoard({ ...data, id: initialValues.id });
+      updateBoard({ ...data, _id: initialValues._id });
     } else {
       createBoard(data);
     }
   };
+
+  const { mutateAsync: fileUploadFunc, isError, isPending: fileUploading } = useFileUpload({});
+  const { mutate: createBoard } = useCreateEducationBoard({ dataDecorator });
+  const { mutate: updateBoard } = useUpdateEducationBoard({ dataDecorator });
 
   return (
     <Dialog

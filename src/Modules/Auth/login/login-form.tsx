@@ -13,7 +13,8 @@ import useLogin from "../hooks/useLogin";
 const LoginForm = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { path } = location.state || { path: "/home" };
+  // const { path } = location.state || { path: "/home" };
+  const { path } = location.state || { path: "/dashboard/boardList" };
 
   const getPublicDataFromJwtToken = (token: string) => {
     try {
@@ -39,7 +40,7 @@ const LoginForm = () => {
     resolver: zodResolver(LoginFormSchema),
     mode: "all",
     defaultValues: {
-      mobileNumber: "",
+      phone: "",
       password: "",
     },
   });
@@ -61,7 +62,7 @@ const LoginForm = () => {
         className="space-y-4 sm:space-y-6 p-1 w-[300px] sm:w-[350px] lg:w-[450px]">
         <FormField
           control={control}
-          name="mobileNumber"
+          name="phone"
           render={({ field }) => (
             <FormItem>
               <FormControl>
@@ -70,7 +71,7 @@ const LoginForm = () => {
                   {...field}
                 />
               </FormControl>
-              <FormMessage>{errors.mobileNumber?.message}</FormMessage>
+              <FormMessage>{errors.phone?.message}</FormMessage>
             </FormItem>
           )}
         />

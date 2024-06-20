@@ -39,8 +39,8 @@ const createNewInstitution = async (payload: ICreateInstitutionPayload) => {
   return res.data;
 };
 
-const updateInstitution = async ({ id, ...restPayload }: IEditInstitutionPayload) => {
-  const res = await axiosInstance.put(`${endpoints.dashboard.institution}update/${id}`, restPayload, {
+const updateInstitution = async ({ _id, ...restPayload }: IEditInstitutionPayload) => {
+  const res = await axiosInstance.put(`${endpoints.dashboard.institution}update/${_id}`, restPayload, {
     headers: {
       ...axiosInstance.defaults.headers.common, // Merge existing common headers
       Authorization: `Bearer ${Cookies.get("token")}`, // Add authorization header

@@ -26,7 +26,7 @@ const SignUpForm = () => {
     defaultValues: {
       firstName: "",
       lastName: "",
-      mobileNumber: "",
+      phone: "",
       password: "",
       // confirmPassword: "",
     },
@@ -80,7 +80,7 @@ const SignUpForm = () => {
         />
         <FormField
           control={control}
-          name="mobileNumber"
+          name="phone"
           render={({ field }) => (
             <FormItem>
               <FormControl>
@@ -89,7 +89,7 @@ const SignUpForm = () => {
                   {...field}
                 />
               </FormControl>
-              <FormMessage>{errors.mobileNumber?.message}</FormMessage>
+              <FormMessage>{errors.phone?.message}</FormMessage>
             </FormItem>
           )}
         />

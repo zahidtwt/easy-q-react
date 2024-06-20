@@ -3,22 +3,15 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Edit } from "lucide-react";
-import { useNavigate } from "react-router-dom";
-import Cookies from "js-cookie";
+import useLogout from "@/Modules/Auth/hooks/useLogout";
 
 const Profile = () => {
-  const navigate = useNavigate();
-
-  const handleLogout = () => {
-    Cookies.remove("token");
-    localStorage.removeItem("userData");
-    navigate("/auth/login", { replace: true });
-  };
+  const { logout } = useLogout();
 
   return (
     <div className=" py-2 text-center space-y-8 overflow-x-scroll">
       <Button
-        onClick={handleLogout}
+        onClick={() => logout()}
         type="submit"
         className="mt-4 cursor-pointer bg-red-700/50">
         Logout

@@ -27,6 +27,7 @@ export const useFileUpload = ({ dataDecorator }: { dataDecorator?: (data: unknow
       return data;
     },
     onError: (error) => {
+      // console.log(error);
       const errorMessage = errorHandler(error);
       toast.error(errorMessage);
       return error;

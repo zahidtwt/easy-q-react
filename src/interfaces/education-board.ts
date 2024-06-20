@@ -1,5 +1,5 @@
 export interface EducationBoard {
-  id: string;
+  _id: string;
   name: string;
   address: string;
   imageURL: string;
@@ -7,5 +7,5 @@ export interface EducationBoard {
   updatedAt: string;
 }
 
-export interface ICreateEducationBoardPayload extends Omit<EducationBoard, "id" | "createdAt" | "updatedAt"> {}
+export interface ICreateEducationBoardPayload extends Omit<EducationBoard, "_id" | "createdAt" | "updatedAt"> {}
 export interface IEditEducationBoardPayload extends Omit<EducationBoard, "createdAt" | "updatedAt"> {}

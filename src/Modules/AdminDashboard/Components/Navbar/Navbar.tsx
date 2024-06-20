@@ -1,4 +1,6 @@
 // import { DownloadIcon, FilesIcon, HomeIcon, UserCircle } from "lucide-react";
+import useLogout from "@/Modules/Auth/hooks/useLogout";
+import { Button } from "@/components/ui/button";
 import { NavLink } from "react-router-dom";
 
 // const iconSize = 30;
@@ -31,9 +33,10 @@ const navbarMenus = [
 ] as const;
 
 const Navbar = () => {
+  const { logout } = useLogout();
   return (
     <nav
-      className="w-full h-14 bg-gray-200 dark:bg-gray-700"
+      className="w-full h-14 bg-gray-200 dark:bg-gray-700 flex justify-between items-center"
       style={{ boxShadow: "inset 0 0 10px rgba(0,0,0,0.1)" }}>
       <ul className="grid h-full max-w-2xl grid-cols-6 font-medium">
         {navbarMenus.map((menu) => (
@@ -49,6 +52,15 @@ const Navbar = () => {
           </NavLink>
         ))}
       </ul>
+
+      {/* <button className="">logout</button> */}
+
+      <Button
+        onClick={() => logout()}
+        variant="outline"
+        className="mr-4 cursor-pointer bg-red-700 hover:bg-red-500 text-white hover:text-white hover:shadow-lg">
+        Logout
+      </Button>
     </nav>
   );
 };

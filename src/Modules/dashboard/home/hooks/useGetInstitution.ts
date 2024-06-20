@@ -10,7 +10,8 @@ type InstituteType = {
   address: string;
   phoneNumber: string;
   email: string;
-  educationBoardId: string;
+  // educationBoardId: string;
+  educationBoardIds: string[];
   classes: string[];
   userId: string;
 };

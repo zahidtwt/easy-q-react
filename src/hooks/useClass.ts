@@ -37,8 +37,8 @@ const createNewClass = async (payload: ICreateClassPayload) => {
   return res.data;
 };
 
-const updateClass = async ({ id, ...restPayload }: IEditClassPayload) => {
-  const res = await axiosInstance.put(`${endpoints.dashboard.class}update/${id}`, restPayload, {
+const updateClass = async ({ _id, ...restPayload }: IEditClassPayload) => {
+  const res = await axiosInstance.put(`${endpoints.dashboard.class}update/${_id}`, restPayload, {
     headers: {
       ...axiosInstance.defaults.headers.common, // Merge existing common headers
       Authorization: `Bearer ${Cookies.get("token")}`, // Add authorization header
