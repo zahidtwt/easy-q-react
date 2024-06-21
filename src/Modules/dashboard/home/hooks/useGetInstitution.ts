@@ -1,4 +1,5 @@
 import { endpoints } from "@/configs/config";
+import { IQueryPayload } from "@/interfaces/commonTypes";
 import axiosInstance from "@/utils/axios";
 import { errorHandler } from "@/utils/errorHandler";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -16,9 +17,9 @@ type InstituteType = {
   userId: string;
 };
 
-const apiCallingFunc = async () => {
+const apiCallingFunc = async (payload: IQueryPayload) => {
   return (
-    await axiosInstance.get(endpoints.dashboard.getAllInstitute, {
+    await axiosInstance.post(`${endpoints.dashboard.getAllInstitute}all`, payload, {
       headers: {
         ...axiosInstance.defaults.headers.common, // Merge existing common headers
         Authorization: `Bearer ${Cookies.get("token")}`, // Add authorization header
@@ -53,7 +54,12 @@ const createInstitute = async (payload: InstituteType) => {
 const useGetInstitution = ({ dataDecorator }: { dataDecorator?: (data: unknown) => void }) => {
   return useQuery({
     queryKey: ["madrasaList"],
-    queryFn: () => apiCallingFunc(),
+    queryFn: () =>
+      apiCallingFunc({
+        query: {},
+        sortField: "name",
+        sortOrder: 1,
+      }),
     // enabled: !!Id,
     staleTime: 10000,
     select: (data) => {

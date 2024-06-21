@@ -18,6 +18,7 @@ import MadrasaDetail from "@/Modules/dashboard/madrasa/MadrasaDetail";
 import Profile from "@/Modules/dashboard/profile";
 import Questions from "@/Modules/dashboard/questions";
 import { Navigate, Route, Routes, createBrowserRouter } from "react-router-dom";
+import ClassDetail from "@/Modules/AdminDashboard/Pages/ClassDetail/ClassDetail";
 
 export const routes = createBrowserRouter([
   {
@@ -134,6 +135,10 @@ export const routes = createBrowserRouter([
             path: "classes",
             element: <ClassList />,
             index: true,
+          },
+          {
+            path: "class-details/:id",
+            element: <ClassDetail />,
           },
           {
             path: "institutes",

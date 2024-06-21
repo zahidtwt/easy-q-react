@@ -16,6 +16,17 @@ const fetchClassList = async () => {
   ).data;
 };
 
+const fetchClassDetails = async (id?: string) => {
+  return (
+    await axiosInstance.get(`${endpoints.dashboard.class}${id}`, {
+      headers: {
+        ...axiosInstance.defaults.headers.common, // Merge existing common headers
+        Authorization: `Bearer ${Cookies.get("token")}`, // Add authorization header
+      },
+    })
+  ).data;
+};
+
 export const fetchClassDetail = async ({ id }: { id: string }) => {
   return (
     await axiosInstance.get(`${endpoints.dashboard.class}${id}`, {
@@ -54,6 +65,26 @@ export const useGetClassList = ({ dataDecorator }: { dataDecorator?: (data: unkn
     select: (data) => {
       if (dataDecorator) {
         return dataDecorator(data) as IClass[];
+      }
+      return data;
+    },
+  });
+};
+
+export const useGetClassDetail = ({
+  dataDecorator,
+  id,
+}: {
+  dataDecorator?: (data: unknown) => unknown;
+  id?: string;
+}) => {
+  return useQuery<IClass, Error>({
+    queryKey: ["class-detail", id],
+    queryFn: () => fetchClassDetails(id),
+    enabled: !!id,
+    select: (data) => {
+      if (dataDecorator) {
+        return dataDecorator(data) as IClass;
       }
       return data;
     },

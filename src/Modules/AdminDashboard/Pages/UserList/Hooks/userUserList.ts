@@ -9,7 +9,7 @@ export type userQueryPayload = {
   query: {
     [key: string]: string;
   };
-  sortField: keyof IUser;
+  sortField: string;
   sortOrder?: number;
 };
 

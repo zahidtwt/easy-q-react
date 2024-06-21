@@ -11,5 +11,6 @@ export const endpoints = {
     institution: "api/institution/",
     users: "api/auth/",
     questions: "api/questions/",
+    subject: "api/subject/",
   },
 };

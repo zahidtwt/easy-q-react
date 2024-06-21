@@ -2,12 +2,16 @@ import { IClass } from "@/interfaces/class";
 import { Pencil } from "lucide-react";
 import { useState } from "react";
 import ClassFormModal from "./ClassFormModal";
+import { useNavigate } from "react-router-dom";
 
 const ClassCard = ({ classItem }: { classItem: IClass }) => {
   const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
   return (
     <>
-      <div className="relative w-full rounded-md shadow-md hover:shadow-lg min-h-10 flex flex-col items-center justify-center bg-white p-4 border border-gray-200 transition-all duration-300">
+      <div
+        onClick={() => navigate(`/dashboard/class-details/${classItem._id}`)}
+        className="relative w-full rounded-md shadow-md hover:shadow-lg min-h-10 flex flex-col items-center justify-center bg-white p-4 border border-gray-200 transition-all duration-300">
         <div>
           <button
             onClick={() => setOpen(true)}

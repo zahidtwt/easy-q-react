@@ -39,6 +39,7 @@ const BoardCard = ({
               name={item.name}
               borderColor={borderColor}
               bgColor={bgColor}
+              func={() => {}}
             />
           ))}
         </div>
