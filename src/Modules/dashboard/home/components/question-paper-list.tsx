@@ -27,7 +27,7 @@ const QuestionPaperList = ({ questionPapers }: { questionPapers: IQuestionPaper[
         renderItem={(questionPaper: IQuestionPaper) => (
           <QuestionPaperCard
             questionPaper={questionPaper}
-            key={questionPaper.id}
+            key={questionPaper._id}
           />
         )}
       />
