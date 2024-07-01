@@ -10,7 +10,7 @@ import AuthLayout from "@/Modules/Auth/layout";
 import LoginPage from "@/Modules/Auth/login";
 import SignUpPage from "@/Modules/Auth/sign-up";
 import Download from "@/Modules/dashboard/download";
-import EducationBoard from "@/Modules/dashboard/educationBoard/EducationBoard";
+// import EducationBoard from "@/Modules/dashboard/educationBoard/EducationBoard";
 import Home from "@/Modules/dashboard/home";
 import DashboardLayout from "@/Modules/dashboard/layout";
 import CreateMadrasa from "@/Modules/dashboard/madrasa/CreateMadrasa";
@@ -104,10 +104,10 @@ export const routes = createBrowserRouter([
             path: "download",
             element: <Download />,
           },
-          {
-            path: "education-board",
-            element: <EducationBoard />,
-          },
+          // {
+          //   path: "education-board",
+          //   element: <EducationBoard />,
+          // },
         ],
       },
       {

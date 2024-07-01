@@ -54,8 +54,6 @@ const MyClasses = () => {
           itemList={(classList && classList) || []}
         />
       )}
-
-      <p>nothing</p>
     </>
   );
 };

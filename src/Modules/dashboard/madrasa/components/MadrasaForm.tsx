@@ -108,7 +108,8 @@ const MadrasaForm = ({
                   <Input
                     placeholder="abcd..@.mail.com"
                     {...field}
-                    disabled={!editable}
+                    // disabled={!editable}
+                    readOnly={!editable}
                   />
                 </FormControl>
                 {/* <FormDescription>This is your public display name.</FormDescription> */}
@@ -127,7 +128,8 @@ const MadrasaForm = ({
                   <Input
                     placeholder="01......"
                     {...field}
-                    disabled={!editable}
+                    // disabled={!editable}
+                    readOnly={!editable}
                   />
                 </FormControl>
                 <FormMessage>{form?.formState?.errors.email?.message}</FormMessage>

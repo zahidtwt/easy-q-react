@@ -2,9 +2,11 @@ import { useState } from "react";
 import Madrasas from "./components/madrasas";
 import QuestionPapers from "./components/question-papers";
 import { useNavigate } from "react-router-dom";
+import InstituteFormModal from "@/Modules/AdminDashboard/Pages/InstitutionList/Components/InstituteFormModal";
 
 const Home = () => {
   const [activeTab, setActiveTab] = useState(1);
+  const [open, setOpen] = useState(false);
   const navigate = useNavigate();
 
   return (
@@ -32,7 +34,8 @@ const Home = () => {
         className="self-center rounded-full absolute bottom-3 right-2 bg-slate-950 px-3 py-2 text-white"
         onClick={() => {
           {
-            activeTab === 1 ? navigate("/add-madrasa") : navigate("/");
+            // activeTab === 1 ? navigate("/add-madrasa") : navigate("/");
+            activeTab === 1 ? setOpen(true) : navigate("/");
           }
         }}>
         {activeTab === 1 ? "Add Madrasa" : "Add New Question"}
@@ -43,6 +46,11 @@ const Home = () => {
         {activeTab === 1 && <Madrasas />}
         {activeTab === 2 && <QuestionPapers />}
       </div>
+
+      <InstituteFormModal
+        open={open}
+        setOpen={setOpen}
+      />
     </div>
   );
 };

@@ -275,7 +275,7 @@ const InstituteFormModal = ({
                 />
               )}
 
-              {classList && (
+              {classList && decoratedClassList && (
                 <FormField
                   control={control}
                   name="classes"

@@ -1,37 +1,42 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useParams } from "react-router-dom";
-import useGetMadrasaDetail from "./hooks/useGetMadrasaDetail";
-import MyBoards from "./components/MyBoards";
-import MyClasses from "./components/MyClasses";
 import { Button } from "@/components/ui/button";
-import React, { useState } from "react";
+import { useMemo, useState } from "react";
+import InstituteFormModal from "@/Modules/AdminDashboard/Pages/InstitutionList/Components/InstituteFormModal";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import MadrasaForm from "./components/MadrasaForm";
-import { HardDriveUpload } from "lucide-react";
+import { useGetInstitutionDetail } from "@/hooks/useInstitution";
+import { useGetEducationBoardList } from "@/hooks/useEducationBoard";
+import { useGetClassList } from "@/hooks/useClass";
+import Clip from "@/components/Clip";
+import { IClass } from "@/interfaces/class";
+import { EducationBoard } from "@/interfaces/education-board";
 
 const MadrasaDetail = () => {
   const { id } = useParams();
-  const { isLoading, refetch: reFetchMadrasaDetail } = useGetMadrasaDetail({ Id: id });
-  const [editable, setEditable] = useState(false);
-  const [uploadedFile, setUploadedFile] = useState<File>();
 
-  const defaultValues = {
-    email: "email@gmail.com",
-    mobile: "01772536411",
-    madrasaName: "Jamia Islamia Rowjatul Ulum Madrasa",
-    madrasaAddress: "Hat Govindpur, Faridpur",
-  };
+  const { isLoading, data: madrasaDetail } = useGetInstitutionDetail({ id: id });
+  const { data: eduBoardList } = useGetEducationBoardList({});
+  const { data: classList } = useGetClassList({});
 
-  const uploadImage = (event: React.ChangeEvent<HTMLInputElement>) => {
-    // console.log("object", event.target.files![0]);
-    const file = event.target.files![0];
-    setUploadedFile(file);
-    reFetchMadrasaDetail();
-  };
+  const [open, setOpen] = useState(false);
 
-  const updateMadrasaDetail = () => {
-    setEditable(false);
-    reFetchMadrasaDetail();
-  };
+  const decoratedEducationList = useMemo(() => {
+    const educationListDecorator = (): EducationBoard[] | [] => {
+      if (eduBoardList === undefined) return [];
+
+      return eduBoardList.filter((item) => madrasaDetail?.educationBoardIds.includes(item._id));
+    };
+    return educationListDecorator();
+  }, [eduBoardList, madrasaDetail]);
+
+  const decoratedClassList = useMemo(() => {
+    const educationListDecorator = (): IClass[] | [] => {
+      if (classList === undefined) return [];
+
+      return classList.filter((item) => madrasaDetail?.classes.includes(item._id));
+    };
+    return educationListDecorator();
+  }, [classList, madrasaDetail]);
 
   if (isLoading) {
     return <p> loading ...</p>;
@@ -40,73 +45,89 @@ const MadrasaDetail = () => {
   return (
     <div className="p-3 relative">
       <div className="absolute top-0 right-0">
-        {!editable && (
-          <Button
-            variant="ghost"
-            className="text-red-500"
-            onClick={() => setEditable(true)}>
-            Edit
-          </Button>
-        )}
+        <Button
+          variant="ghost"
+          className="text-red-500"
+          onClick={() => setOpen(true)}>
+          {/* onClick={() => setEditable(true)}> */}
+          Edit
+        </Button>
       </div>
 
       <div className="grid grid-cols-12 gap-2 items-center mb-5">
         <div className="col-span-12 grid justify-center">
           <div className="h-24 w-24 rounded-sm overflow-hidden imageArea relative">
             <Avatar className="h-24 w-24 rounded-sm">
-              {uploadedFile ? (
-                <AvatarImage src="https://github.com/shadcn.png" />
-              ) : (
-                <AvatarImage src="https://github.com/shadcn.png" />
-              )}
+              <AvatarImage src={madrasaDetail?.imageURL} />
               <AvatarFallback>{"Ja".toUpperCase()}</AvatarFallback>
             </Avatar>
-            <input
-              className="hidden"
-              type="file"
-              id="madrasaImage"
-              accept="image/png, image/jpeg"
-              onChange={uploadImage}
-            />
-            <label
-              className="bg-black/30 absolute top-0 bottom-0 left-0 right-0 z-10 overflow-hidden"
-              htmlFor="madrasaImage">
-              <div className="h-[100%] w-[100%] flex flex-col items-center justify-center rounded-sm border-2 border-white">
-                <HardDriveUpload
-                  size={40}
-                  color="white"
-                />
-                <small className="text-center uppercase text-white mt-4">Update Profile</small>
-              </div>
-            </label>
           </div>
         </div>
 
-        {!editable && (
-          <div className="col-span-12 grid ">
-            <h3 className="text-center font-semibold text-xl mb-1">Jamia Islamia Rowjatul Ulum Madrasa</h3>
-            <small className="text-center text-gray-500">Hat Govindpur, Faridpur</small>
-          </div>
-        )}
+        <div className="col-span-12 grid ">
+          <h3 className="text-center font-semibold text-xl mb-1">{madrasaDetail.name}</h3>
+          <small className="text-center text-gray-500">{madrasaDetail.address}</small>
+        </div>
       </div>
 
       <div className="grid gap-5">
         <div className="col-span-12">
           <MadrasaForm
-            defaultValues={defaultValues}
-            editable={editable}
-            updateMadrasaDetail={updateMadrasaDetail}
+            defaultValues={{
+              email: madrasaDetail?.email,
+              madrasaName: madrasaDetail?.name,
+              madrasaAddress: madrasaDetail?.address,
+              mobile: madrasaDetail?.phoneNumber,
+            }}
+            editable={false}
+            updateMadrasaDetail={() => {}}
           />
         </div>
 
         <div className="col-span-12">
-          <MyBoards />
+          <div className="w-full">
+            <div className="w-full flex justify-between items-center mb-2">
+              <p className="font-medium text-xl">{"Board"}</p>
+            </div>
+            <div className="w-full border-2 border-spacing-1 border-gray-50 rounded-md min-h-10">
+              <div className="flex flex-wrap gap-3 p-2">
+                {decoratedEducationList &&
+                  decoratedEducationList.map((item) => (
+                    <Clip
+                      key={item._id}
+                      name={item.name}
+                    />
+                  ))}
+              </div>
+            </div>
+          </div>
         </div>
 
         <div className="col-span-12">
-          <MyClasses />
+          <div className="w-full">
+            <div className="w-full flex justify-between items-center mb-2">
+              <p className="font-medium text-xl">{"Board"}</p>
+            </div>
+            <div className="w-full border-2 border-spacing-1 border-gray-50 rounded-md min-h-10">
+              <div className="flex flex-wrap gap-3 p-2">
+                {decoratedClassList &&
+                  decoratedClassList.map((item) => (
+                    <Clip
+                      key={item._id}
+                      name={item.name}
+                    />
+                  ))}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
+
+      <InstituteFormModal
+        open={open}
+        setOpen={setOpen}
+        initialValues={madrasaDetail}
+      />
     </div>
   );
 };

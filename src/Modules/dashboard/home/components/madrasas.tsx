@@ -1,11 +1,11 @@
 // import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import MadrasaList from "./madrasa-list";
-import useGetInstitution from "../hooks/useGetInstitution";
 import { errorHandler } from "@/utils/errorHandler";
+import { useGetInstitutionList } from "@/hooks/useInstitution";
 
 const Madrasas = () => {
-  const { isLoading: loading, isSuccess, data: madrasas, isError, error } = useGetInstitution({});
+  const { isLoading: loading, isSuccess, data: madrasas, isError, error } = useGetInstitutionList({});
 
   if (loading) return <>Loading...</>;
   if (isError) return <>{errorHandler(error)}!</>;

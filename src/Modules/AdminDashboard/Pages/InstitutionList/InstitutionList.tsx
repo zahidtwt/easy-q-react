@@ -6,11 +6,11 @@ import InstituteCard from "./Components/InstituteCard";
 import InstituteFormModal from "./Components/InstituteFormModal";
 import { useState } from "react";
 import { IInstitution } from "@/interfaces/institution";
-import useGetInstitution from "@/Modules/dashboard/home/hooks/useGetInstitution";
+import { useGetInstitutionList } from "@/hooks/useInstitution";
 
 const InstitutionList = () => {
   const [open, setOpen] = useState(false);
-  const { isLoading, data: institutionList } = useGetInstitution({});
+  const { isLoading, data: institutionList } = useGetInstitutionList({});
 
   return (
     <div className="container mt-8">

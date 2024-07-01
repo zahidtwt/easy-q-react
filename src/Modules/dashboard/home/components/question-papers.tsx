@@ -1,7 +1,7 @@
 import { Card } from "@/components/ui/card";
 import QuestionPaperList from "./question-paper-list";
-import useGetQuestionPaper from "../hooks/useGetQuestionPaper";
 import { errorHandler } from "@/utils/errorHandler";
+import useGetQuestionPaper from "@/hooks/useGetQuestionPaper";
 
 const QuestionPapers = () => {
   const { isLoading: loading, isSuccess, data: questionPapers, isError, error } = useGetQuestionPaper({});

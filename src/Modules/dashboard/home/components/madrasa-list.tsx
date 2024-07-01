@@ -1,18 +1,17 @@
-import imagePlaceholder from "@/assets/image-dummy.svg";
 import RenderListItems from "@/components/render-list-items";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { CardContent } from "@/components/ui/card";
-import { IMadrasa } from "@/interfaces/madrasa";
+import { IInstitution } from "@/interfaces/institution";
 import { useNavigate } from "react-router-dom";
 
-const MadrasaCard = ({ madrasa }: { madrasa: IMadrasa }) => {
+const MadrasaCard = ({ madrasa }: { madrasa: IInstitution }) => {
   const navigate = useNavigate();
   return (
     <CardContent
-      onClick={() => navigate(`/madrasa/${madrasa.id}`)}
+      onClick={() => navigate(`/madrasa/${madrasa._id}`)}
       className="flex items-center p-2 shadow-sm shadow-slate-300 rounded-md bg-white cursor-pointer">
       <Avatar className="size-16 border border-slate-500">
-        <AvatarImage src={imagePlaceholder} />
+        <AvatarImage src={madrasa?.imageURL} />
         <AvatarFallback>CN</AvatarFallback>
       </Avatar>
 
@@ -24,14 +23,14 @@ const MadrasaCard = ({ madrasa }: { madrasa: IMadrasa }) => {
   );
 };
 
-const MadrasaList = ({ madrasas }: { madrasas: IMadrasa[] }) => {
+const MadrasaList = ({ madrasas }: { madrasas: IInstitution[] }) => {
   return (
     <RenderListItems
       items={madrasas}
-      renderItem={(madrasa: IMadrasa) => (
+      renderItem={(madrasa: IInstitution) => (
         <MadrasaCard
           madrasa={madrasa}
-          key={madrasa.id}
+          key={madrasa._id}
         />
       )}
       className="space-y-6"
