@@ -68,13 +68,13 @@ export const useGetSubjectList = ({
   dataDecorator,
   filterData,
 }: {
-  dataDecorator?: (data: unknown) => unknown;
+  dataDecorator?: (data: ISubject[]) => ISubject[];
   filterData: userQueryPayload;
 }) => {
   return useQuery<ISubject[], Error>({
-    queryKey: ["subjectList"],
+    queryKey: ["subjectList", filterData.query.class],
     queryFn: () => getSUbjectList(filterData),
-    //     enabled: !!id,
+    enabled: !!filterData.query.class,
     select: (data) => {
       if (dataDecorator) {
         return dataDecorator(data) as ISubject[];

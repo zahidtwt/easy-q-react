@@ -27,17 +27,6 @@ const fetchClassDetails = async (id?: string) => {
   ).data;
 };
 
-export const fetchClassDetail = async ({ id }: { id: string }) => {
-  return (
-    await axiosInstance.get(`${endpoints.dashboard.class}${id}`, {
-      headers: {
-        ...axiosInstance.defaults.headers.common, // Merge existing common headers
-        Authorization: `Bearer ${Cookies.get("token")}`, // Add authorization header
-      },
-    })
-  ).data;
-};
-
 const createNewClass = async (payload: ICreateClassPayload) => {
   const res = await axiosInstance.post(`${endpoints.dashboard.class}create`, payload, {
     headers: {

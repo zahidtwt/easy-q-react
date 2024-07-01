@@ -1,7 +1,7 @@
 import RenderListItems from "@/components/render-list-items";
 import { CardContent } from "@/components/ui/card";
 import { boardNameMapping, classNameMapping, subjectNameMapping } from "@/interfaces/dummy-name-mappings";
-import { IQuestionPaper } from "@/interfaces/questions";
+import { IQuestionPaper } from "@/interfaces/question.interface";
 
 const QuestionPaperCard = ({ questionPaper }: { questionPaper: IQuestionPaper }) => {
   const boardName = boardNameMapping[questionPaper.Education_Board_id] || "Unknown Board";

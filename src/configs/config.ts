@@ -10,7 +10,7 @@ export const endpoints = {
     storage: "api/storage/",
     institution: "api/institution/",
     users: "api/auth/",
-    questions: "api/questions/",
+    questions: "api/question/",
     subject: "api/subject/",
   },
 };
