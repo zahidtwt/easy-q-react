@@ -59,10 +59,12 @@ const SubjectDetailFormModal = ({
     handleSubmit,
     control,
     formState: { errors, isSubmitting, isDirty },
+    reset,
   } = formMethods;
 
   const dataDecorator = (data: unknown) => {
     setOpen(false);
+    reset();
     return data;
   };
 
@@ -97,11 +99,14 @@ const SubjectDetailFormModal = ({
   return (
     <Dialog
       open={open}
-      onOpenChange={setOpen}>
+      onOpenChange={() => {
+        setOpen(false);
+        reset();
+      }}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>
-            <h5 className="text-center">Create New Class</h5>
+            <h5 className="text-center">Subject Details</h5>
           </DialogTitle>
         </DialogHeader>
         <DialogDescription className="">
@@ -116,7 +121,7 @@ const SubjectDetailFormModal = ({
                   <FormItem>
                     <FormControl>
                       <Input
-                        placeholder="Class Name here..."
+                        placeholder="Subject Name here..."
                         {...field}
                       />
                     </FormControl>
@@ -132,7 +137,7 @@ const SubjectDetailFormModal = ({
                   <FormItem>
                     <FormControl>
                       <Input
-                        placeholder="Class Code here..."
+                        placeholder="Subject Code here..."
                         {...field}
                       />
                     </FormControl>

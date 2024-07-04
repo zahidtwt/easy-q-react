@@ -58,7 +58,7 @@ const QuestionFormModal = ({
       question: "",
       answer: "",
       questionCategory: "",
-      classId: classList[0]._id,
+      classId: classList[0]?._id,
       subjectId: "",
       //  bookId: "",
       //  bookVersion: "",
