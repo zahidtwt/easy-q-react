@@ -35,7 +35,7 @@ const Home = () => {
         onClick={() => {
           {
             // activeTab === 1 ? navigate("/add-madrasa") : navigate("/");
-            activeTab === 1 ? setOpen(true) : navigate("/");
+            activeTab === 1 ? setOpen(true) : navigate("/add-questions");
           }
         }}>
         {activeTab === 1 ? "Add Madrasa" : "Add New Question"}

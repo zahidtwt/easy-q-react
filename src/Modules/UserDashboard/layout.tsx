@@ -2,7 +2,7 @@ import NavBar from "@/components/nav-bar";
 import { useAuth } from "@/hooks/useAuth";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 
-const DashboardLayout = () => {
+const UserDashboardLayout = () => {
   const { isAuthenticated } = useAuth();
   const { pathname } = useLocation();
 
@@ -29,4 +29,4 @@ const DashboardLayout = () => {
   );
 };
 
-export default DashboardLayout;
+export default UserDashboardLayout;

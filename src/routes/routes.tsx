@@ -9,16 +9,17 @@ import NotFoundPage from "@/components/not-found";
 import AuthLayout from "@/Modules/Auth/layout";
 import LoginPage from "@/Modules/Auth/login";
 import SignUpPage from "@/Modules/Auth/sign-up";
-import Download from "@/Modules/dashboard/download";
+import Download from "@/Modules/UserDashboard/download";
 // import EducationBoard from "@/Modules/dashboard/educationBoard/EducationBoard";
-import Home from "@/Modules/dashboard/home";
-import DashboardLayout from "@/Modules/dashboard/layout";
-import CreateMadrasa from "@/Modules/dashboard/madrasa/CreateMadrasa";
-import MadrasaDetail from "@/Modules/dashboard/madrasa/MadrasaDetail";
-import Profile from "@/Modules/dashboard/profile";
-import Questions from "@/Modules/dashboard/questions";
+import Home from "@/Modules/UserDashboard/home";
+import UserDashboardLayout from "@/Modules/UserDashboard/layout";
+import CreateMadrasa from "@/Modules/UserDashboard/madrasa/CreateMadrasa";
+import MadrasaDetail from "@/Modules/UserDashboard/madrasa/MadrasaDetail";
+import Profile from "@/Modules/UserDashboard/profile";
+import Questions from "@/Modules/UserDashboard/questions";
 import { Navigate, Route, Routes, createBrowserRouter } from "react-router-dom";
 import ClassDetail from "@/Modules/AdminDashboard/Pages/ClassDetail/ClassDetail";
+import AddQuestion from "@/Modules/UserDashboard/AddQuestion/AddQuestion";
 
 export const routes = createBrowserRouter([
   {
@@ -63,7 +64,7 @@ export const routes = createBrowserRouter([
         ],
       },
       {
-        element: <DashboardLayout />,
+        element: <UserDashboardLayout />,
 
         children: [
           {
@@ -99,6 +100,10 @@ export const routes = createBrowserRouter([
           {
             path: "questions",
             element: <Questions />,
+          },
+          {
+            path: "add-questions",
+            element: <AddQuestion />,
           },
           {
             path: "download",
