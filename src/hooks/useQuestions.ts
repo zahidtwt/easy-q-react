@@ -1,4 +1,4 @@
-import { userQueryPayload } from "@/Modules/AdminDashboard/Pages/UserList/Hooks/userUserList";
+import { userQueryPayload } from "@/hooks/userUserList";
 import { endpoints } from "@/configs/config";
 import { IEditQuestionPayload, IQuestion, IQuestionPayload } from "@/interfaces/question.interface";
 import axiosInstance from "@/utils/axios";

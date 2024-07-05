@@ -12,5 +12,6 @@ export const endpoints = {
     users: "api/auth/",
     questions: "api/question/",
     subject: "api/subject/",
+    userRole: "api/user-roles/",
   },
 };

@@ -20,8 +20,9 @@ import {
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Tabs, TabsContent } from "@/components/ui/tabs";
 import { IUser } from "../../Pages/UserList/User.Interface";
-import { useUpdateUserStatus } from "../../Pages/UserList/Hooks/userUserList";
+import { useUpdateUserRole, useUpdateUserStatus } from "../../../../hooks/userUserList";
 import TableSkeleton from "./TableSkeleton";
+import { useGetUserRoles } from "@/hooks/useUserRole";
 // import {
 //   Pagination,
 //   PaginationContent,
@@ -41,7 +42,10 @@ const CustomTable = ({
   getUserLoading: boolean;
   // setUserFilter: (filter: userQueryPayload) => void;
 }) => {
+  const { data: userRoleList, isLoading: userRoleLoading } = useGetUserRoles({});
   const { mutate: updateAccountStatus } = useUpdateUserStatus({});
+  const { mutate: updateAccountRole } = useUpdateUserRole({});
+
   return (
     <div className="flex min-h-screen w-full flex-col bg-muted/40">
       <div className="flex flex-col sm:gap-4 sm:py-4">
@@ -117,7 +121,7 @@ const CustomTable = ({
                       </TableRow>
                     </TableHeader>
 
-                    {!getUserLoading && (
+                    {!getUserLoading && !userRoleLoading && (
                       <TableBody>
                         {userList &&
                           userList.map((user) => (
@@ -142,8 +146,41 @@ const CustomTable = ({
                                 <Badge variant="outline">{user?.accountStatus}</Badge>
                               </TableCell>
                               <TableCell className="hidden md:table-cell">{user?.phone}</TableCell>
-                              <TableCell className="hidden md:table-cell">{user?.role?.title}</TableCell>
-                              <TableCell className="hidden md:table-cell">2023-07-12 10:42 AM</TableCell>
+                              <TableCell className="hidden md:table-cell">
+                                <DropdownMenu>
+                                  <DropdownMenuTrigger asChild>
+                                    <Button
+                                      aria-haspopup="true"
+                                      size="icon"
+                                      variant="ghost">
+                                      {/* <span className="">
+                                        <MoreHorizontal className="h-4 w-4" />
+                                      </span> */}
+
+                                      <Badge variant="outline"> {user?.role?.title}</Badge>
+                                    </Button>
+                                  </DropdownMenuTrigger>
+                                  <DropdownMenuContent align="end">
+                                    <DropdownMenuLabel>Actions</DropdownMenuLabel>
+
+                                    {userRoleList?.map((role) => (
+                                      <DropdownMenuItem
+                                        key={role._id}
+                                        onClick={() =>
+                                          updateAccountRole({
+                                            id: user._id,
+                                            role: role._id,
+                                          })
+                                        }>
+                                        {role.title}
+                                      </DropdownMenuItem>
+                                    ))}
+                                  </DropdownMenuContent>
+                                </DropdownMenu>
+                              </TableCell>
+                              <TableCell className="hidden md:table-cell">
+                                {new Date(user?.createdAt).toLocaleString()}
+                              </TableCell>
                               <TableCell>
                                 <DropdownMenu>
                                   <DropdownMenuTrigger asChild>

@@ -15,4 +15,6 @@ export interface IUser {
   password: string;
   accountStatus: "active" | "inactive" | "deleted";
   imageURL?: string;
+  createdAt: string;
+  updatedAt: string;
 }

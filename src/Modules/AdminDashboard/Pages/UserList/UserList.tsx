@@ -1,6 +1,6 @@
 import { useState } from "react";
 import CustomTable from "../../Components/CustomTable/CustomTable";
-import { useGetUserList, userQueryPayload } from "./Hooks/userUserList";
+import { useGetUserList, userQueryPayload } from "../../../../hooks/userUserList";
 // import TotalCountCardList from "../../Components/TotalCountCardList/TotalCountCardList";
 
 const UserList = () => {

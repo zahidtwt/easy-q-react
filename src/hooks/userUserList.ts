@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { IUser } from "../User.Interface";
+import { IUser } from "../Modules/AdminDashboard/Pages/UserList/User.Interface";
 import axiosInstance from "@/utils/axios";
 import { endpoints } from "@/configs/config";
 import Cookies from "js-cookie";
@@ -14,6 +14,7 @@ export type userQueryPayload = {
 };
 
 type updateAccountStatusPayload = { id: string; accountStatus: string };
+type updateAccountRolePayload = { id: string; role: string };
 
 const fetchUserList = async ({ query, sortField, sortOrder = 1 }: userQueryPayload) => {
   return (
@@ -37,6 +38,17 @@ const fetchUserList = async ({ query, sortField, sortOrder = 1 }: userQueryPaylo
 const updateAccountStatus = async (payload: updateAccountStatusPayload) => {
   return (
     await axiosInstance.patch(`${endpoints.dashboard.users}change-account-status`, payload, {
+      headers: {
+        ...axiosInstance.defaults.headers.common, // Merge existing common headers
+        Authorization: `Bearer ${Cookies.get("token")}`, // Add authorization header
+      },
+    })
+  ).data;
+};
+
+const updateAccountRole = async (payload: updateAccountRolePayload) => {
+  return (
+    await axiosInstance.patch(`${endpoints.dashboard.users}update-user-role`, payload, {
       headers: {
         ...axiosInstance.defaults.headers.common, // Merge existing common headers
         Authorization: `Bearer ${Cookies.get("token")}`, // Add authorization header
@@ -79,6 +91,28 @@ export const useUpdateUserStatus = ({ dataDecorator }: { dataDecorator?: (data: 
       }
 
       return data;
+    },
+  });
+};
+
+export const useUpdateUserRole = ({ dataDecorator }: { dataDecorator?: (data: unknown) => void }) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (payload: updateAccountRolePayload) => updateAccountRole(payload),
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({
+        queryKey: ["userList"],
+      });
+      toast.success("User Role change successfully");
+
+      if (dataDecorator) {
+        return dataDecorator(data);
+      }
+
+      return data;
+    },
+    onError: (error) => {
+      toast.error(error.message);
     },
   });
 };
