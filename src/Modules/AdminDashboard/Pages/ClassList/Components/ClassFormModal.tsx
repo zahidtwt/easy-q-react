@@ -64,7 +64,7 @@ const ClassFormModal = ({
       <DialogContent>
         <DialogHeader>
           <DialogTitle>
-            <h5 className="text-center">Create New Class</h5>
+            <h5 className="text-center">Class Details</h5>
           </DialogTitle>
         </DialogHeader>
         <DialogDescription className="">

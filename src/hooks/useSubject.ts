@@ -119,8 +119,8 @@ export const useAddSubject = ({ dataDecorator }: { dataDecorator?: (data: unknow
 
       return data;
     },
-    onError: (error: string) => {
-      toast.error(error);
+    onError: (error) => {
+      toast.error(error.message);
     },
   });
 };

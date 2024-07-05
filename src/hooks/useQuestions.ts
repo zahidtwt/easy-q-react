@@ -86,8 +86,8 @@ export const useAddQuestion = ({ dataDecorator }: { dataDecorator?: (data: unkno
 
       return data;
     },
-    onError: (error: string) => {
-      toast.error(error);
+    onError: (error) => {
+      toast.error(error.message);
     },
   });
 };

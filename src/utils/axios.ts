@@ -18,7 +18,7 @@ axiosInstance.interceptors.response.use(
     // console.log(res);
     if (!res.data.isSuccess) {
       // console.log(res.data.error);
-      throw res.data.error;
+      throw new Error(res.data.error);
     }
     return res.data;
   }

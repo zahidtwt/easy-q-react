@@ -1,10 +1,10 @@
-import { AxiosError } from "axios";
+// import { AxiosError } from "axios";
 import { endpoints } from "@/configs/config";
 import axiosInstance from "@/utils/axios";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { LoginFormFields } from "../login/validation";
-import { errorHandler } from "@/utils/errorHandler";
+// import { errorHandler } from "@/utils/errorHandler";
 
 const useLogin = ({ onSuccessLogin }: { onSuccessLogin: (token: string) => void }) => {
   return useMutation({
@@ -22,10 +22,14 @@ const useLogin = ({ onSuccessLogin }: { onSuccessLogin: (token: string) => void 
 
     // error --> error message, variables --> payload, context
     // onError(error, variables, context)
-    onError(error: AxiosError | unknown) {
-      const errorMessage = errorHandler(error);
-      toast.error(errorMessage);
-      throw new Error(errorMessage);
+    // onError(error: AxiosError | unknown) {
+    //   const errorMessage = errorHandler(error);
+    //   toast.error(errorMessage);
+    //   throw new Error(errorMessage);
+    // },
+
+    onError(error) {
+      toast.error(error.message);
     },
   });
 };

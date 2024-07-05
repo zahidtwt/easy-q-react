@@ -96,6 +96,10 @@ export const useCreateClass = ({ dataDecorator }: { dataDecorator?: (data: unkno
 
       return data;
     },
+    onError: (error) => {
+      toast.error(error.message);
+      throw new Error(error.message);
+    },
   });
 };
 
@@ -114,6 +118,10 @@ export const useUpdateClass = ({ dataDecorator }: { dataDecorator?: (data: unkno
       }
 
       return data;
+    },
+    onError: (error) => {
+      toast.error(error.message);
+      throw new Error(error.message);
     },
   });
 };

@@ -98,7 +98,7 @@ const AddBoardModal = ({
       <DialogContent>
         <DialogHeader>
           <DialogTitle>
-            <h5 className="text-center">Create New Board</h5>
+            <h5 className="text-center">Board Details</h5>
           </DialogTitle>
         </DialogHeader>
         <DialogDescription className="">
