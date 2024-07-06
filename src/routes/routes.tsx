@@ -1,19 +1,25 @@
 import App from "@/App";
 import AdminDashboardLayout from "@/Modules/AdminDashboard/Layout/AdminDashboardLayout";
 import BoardList from "@/Modules/AdminDashboard/Pages/BoardList/BoardList";
+import ClassList from "@/Modules/AdminDashboard/Pages/ClassList/ClassList";
+import InstitutionList from "@/Modules/AdminDashboard/Pages/InstitutionList/InstitutionList";
+import QuestionsList from "@/Modules/AdminDashboard/Pages/QuestionsList/QuestionsList";
+import UserList from "@/Modules/AdminDashboard/Pages/UserList/UserList";
 import NotFoundPage from "@/components/not-found";
-import AuthLayout from "@/pages/auth/layout";
-import LoginPage from "@/pages/auth/login";
-import SignUpPage from "@/pages/auth/sign-up";
-import Download from "@/pages/dashboard/download";
-import EducationBoard from "@/pages/dashboard/educationBoard/EducationBoard";
-import Home from "@/pages/dashboard/home";
-import DashboardLayout from "@/pages/dashboard/layout";
-import CreateMadrasa from "@/pages/dashboard/madrasa/CreateMadrasa";
-import MadrasaDetail from "@/pages/dashboard/madrasa/MadrasaDetail";
-import Profile from "@/pages/dashboard/profile";
-import Questions from "@/pages/dashboard/questions";
+import AuthLayout from "@/Modules/Auth/layout";
+import LoginPage from "@/Modules/Auth/login";
+import SignUpPage from "@/Modules/Auth/sign-up";
+import Download from "@/Modules/UserDashboard/download";
+// import EducationBoard from "@/Modules/dashboard/educationBoard/EducationBoard";
+import Home from "@/Modules/UserDashboard/home";
+import UserDashboardLayout from "@/Modules/UserDashboard/layout";
+import CreateMadrasa from "@/Modules/UserDashboard/madrasa/CreateMadrasa";
+import MadrasaDetail from "@/Modules/UserDashboard/madrasa/MadrasaDetail";
+import Profile from "@/Modules/UserDashboard/profile";
+import Questions from "@/Modules/UserDashboard/questions";
 import { Navigate, Route, Routes, createBrowserRouter } from "react-router-dom";
+import ClassDetail from "@/Modules/AdminDashboard/Pages/ClassDetail/ClassDetail";
+import AddQuestion from "@/Modules/UserDashboard/AddQuestion/AddQuestion";
 
 export const routes = createBrowserRouter([
   {
@@ -58,7 +64,7 @@ export const routes = createBrowserRouter([
         ],
       },
       {
-        element: <DashboardLayout />,
+        element: <UserDashboardLayout />,
 
         children: [
           {
@@ -96,13 +102,17 @@ export const routes = createBrowserRouter([
             element: <Questions />,
           },
           {
+            path: "add-questions",
+            element: <AddQuestion />,
+          },
+          {
             path: "download",
             element: <Download />,
           },
-          {
-            path: "education-board",
-            element: <EducationBoard />,
-          },
+          // {
+          //   path: "education-board",
+          //   element: <EducationBoard />,
+          // },
         ],
       },
       {
@@ -124,6 +134,30 @@ export const routes = createBrowserRouter([
           {
             path: "boardList",
             element: <BoardList />,
+            index: true,
+          },
+          {
+            path: "classes",
+            element: <ClassList />,
+            index: true,
+          },
+          {
+            path: "class-details/:id",
+            element: <ClassDetail />,
+          },
+          {
+            path: "institutes",
+            element: <InstitutionList />,
+            index: true,
+          },
+          {
+            path: "questions",
+            element: <QuestionsList />,
+            index: true,
+          },
+          {
+            path: "users",
+            element: <UserList />,
             index: true,
           },
         ],

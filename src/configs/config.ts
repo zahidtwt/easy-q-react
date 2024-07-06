@@ -6,5 +6,12 @@ export const endpoints = {
   dashboard: {
     getAllInstitute: "api/institution/",
     educationBoard: "api/education-board/",
+    class: "api/class/",
+    storage: "api/storage/",
+    institution: "api/institution/",
+    users: "api/auth/",
+    questions: "api/question/",
+    subject: "api/subject/",
+    userRole: "api/user-roles/",
   },
 };
