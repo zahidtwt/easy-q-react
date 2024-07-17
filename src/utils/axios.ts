@@ -13,13 +13,18 @@ const axiosInstance = axios.create({
 //   (error) => Promise.reject(error)
 // );
 
-// axiosInstance.interceptors.response.use(
-//   (res) => {
-//     return res;
-//   },
-//   (error) => {
-//     console.log("from axios instance", error);
-//     throw error;
-//   }
-// );
+axiosInstance.interceptors.response.use(
+  (res) => {
+    // console.log(res);
+    if (!res.data.isSuccess) {
+      // console.log(res.data.error);
+      throw new Error(res.data.error);
+    }
+    return res.data;
+  }
+  // (error) => {
+  //   // console.log("from axios instance", error);
+  //   throw error;
+  // }
+);
 export default axiosInstance;
