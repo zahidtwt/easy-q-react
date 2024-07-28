@@ -1,86 +1,21 @@
-import imagePlaceholder from "@/assets/image-dummy.svg";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Edit } from "lucide-react";
-import useLogout from "@/Modules/Auth/hooks/useLogout";
+import { useState } from "react";
+import ProfileCard from "./components/ProfileCard";
+import ProfileForm from "./components/ProfileForm";
 
 const Profile = () => {
-  const { logout } = useLogout();
+  const [isEditing, setIsEditing] = useState(false);
+
+  const handleEditClick = () => {
+    setIsEditing(true);
+  };
 
   return (
-    <div className=" py-2 text-center space-y-8 overflow-x-scroll">
-      <Button
-        onClick={() => logout()}
-        type="submit"
-        className="mt-4 cursor-pointer bg-red-700/50">
-        Logout
-      </Button>
-
-      <Card>
-        <CardContent className="flex flex-col justify-center items-center gap-2 shadow-lg rounded-md p-2 relative">
-          <Edit className="absolute top-1.5 right-1.5" />
-          <Avatar className="border border-slate-500 size-16">
-            <AvatarImage src={imagePlaceholder} />
-            <AvatarFallback>CN</AvatarFallback>
-          </Avatar>
-
-          <div>
-            <p>Jamia Islamia Rowjatul Ulum Madrasa</p>
-            <small>Hat Govindpur, Faridpur</small>
-          </div>
-
-          <CardFooter>
-            <div>
-              <p className="block">
-                Mobile: <span>016XXXXX541</span>
-              </p>
-              <p className="block">
-                Email: <span>zaberXXXXX@gmail.com</span>
-              </p>
-            </div>
-          </CardFooter>
-        </CardContent>
-      </Card>
-
-      <Card className="flex flex-col justify-center items-center gap-2 shadow-lg rounded-md">
-        <CardHeader>
-          <CardTitle className="border border-gray-400 rounded-md py-1 px-2 bg-slate-100 text-md font-medium">
-            Education board
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <p className="border border-gray-400 py-1 px-2 text-sm rounded-sm bg-slate-300">
-            Nurani Education Board, Chittagong
-          </p>
-          <p className="border border-gray-400 py-1 px-2 text-sm rounded-sm bg-slate-300">
-            Nurani Education Board, Rangpur
-          </p>
-        </CardContent>
-
-        <CardFooter>
-          <Button>Add new education board</Button>
-        </CardFooter>
-      </Card>
-
-      <Card className="flex flex-col justify-center items-center gap-2 shadow-lg rounded-md">
-        <CardHeader>
-          <CardTitle className="border border-gray-400 rounded-md py-1 px-2 bg-slate-100 text-md font-medium">
-            Class
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="grid grid-cols-2 gap-x-8 gap-y-4">
-          <p className="border border-gray-400 py-1 px-2 text-sm rounded-sm bg-slate-300">Class one</p>
-          <p className="border border-gray-400 py-1 px-2 text-sm rounded-sm bg-slate-300">Class two</p>
-          <p className="border border-gray-400 py-1 px-2 text-sm rounded-sm bg-slate-300">Class three</p>
-        </CardContent>
-
-        <CardFooter>
-          <Button>Add new class</Button>
-        </CardFooter>
-      </Card>
-
-      <Button className="mt-4">Save</Button>
+    <div className=" py-2 text-center space-y-8 mx-10">
+      <div
+        className="rounded-md border border-gray-300 mx-auto my-5 p-5 text-center "
+        style={{ boxShadow: "0 4px 8px rgba(0,0,0,0.1)" }}>
+        {isEditing ? <ProfileForm setIsEditing={setIsEditing} /> : <ProfileCard handleEditClick={handleEditClick} />}
+      </div>
     </div>
   );
 };

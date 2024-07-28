@@ -13,9 +13,21 @@ import useSignUp from "../hooks/useSignUp";
 const SignUpForm = () => {
   const navigate = useNavigate();
 
+  const getPublicDataFromJwtToken = (token: string) => {
+    try {
+      const parts = token.split(".");
+      const payload = JSON.parse(atob(parts[1]));
+      return JSON.stringify(payload);
+    } catch (error) {
+      console.error("Error decoding JWT token:", error);
+      return "";
+    }
+  };
+
   const onSuccessReg = (token: string) => {
     toast.success("Successfully registered user!");
     Cookies.set("token", token, { secure: true });
+    localStorage.setItem("userData", getPublicDataFromJwtToken(token));
     navigate("/home");
   };
 

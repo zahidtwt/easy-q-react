@@ -15,11 +15,11 @@ import Home from "@/Modules/UserDashboard/home";
 import UserDashboardLayout from "@/Modules/UserDashboard/layout";
 import CreateMadrasa from "@/Modules/UserDashboard/madrasa/CreateMadrasa";
 import MadrasaDetail from "@/Modules/UserDashboard/madrasa/MadrasaDetail";
-import Profile from "@/Modules/UserDashboard/profile";
 import Questions from "@/Modules/UserDashboard/questions";
 import { Navigate, Route, Routes, createBrowserRouter } from "react-router-dom";
 import ClassDetail from "@/Modules/AdminDashboard/Pages/ClassDetail/ClassDetail";
 import AddQuestion from "@/Modules/UserDashboard/AddQuestion/AddQuestion";
+import Profile from "@/Modules/UserDashboard/profile/profile";
 
 export const routes = createBrowserRouter([
   {

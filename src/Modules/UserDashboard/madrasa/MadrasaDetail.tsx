@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useMemo, useState } from "react";
 import InstituteFormModal from "@/Modules/AdminDashboard/Pages/InstitutionList/Components/InstituteFormModal";
@@ -10,9 +10,11 @@ import { useGetClassList } from "@/hooks/useClass";
 import Clip from "@/components/Clip";
 import { IClass } from "@/interfaces/class";
 import { EducationBoard } from "@/interfaces/education-board";
+import { ArrowLeft } from "lucide-react";
 
 const MadrasaDetail = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
 
   const { isLoading, data: madrasaDetail } = useGetInstitutionDetail({ id: id });
   const { data: eduBoardList } = useGetEducationBoardList({});
@@ -44,13 +46,21 @@ const MadrasaDetail = () => {
 
   return (
     <div className="p-3 relative">
-      <div className="absolute top-0 right-0">
+      <div className="absolute top-2 right-2">
+        <Button
+          variant="outline"
+          className="text-blue-500 font-semibold bg-transparent border-blue-500"
+          onClick={() => setOpen(true)}>
+          Edit
+        </Button>
+      </div>
+
+      <div className="absolute top-2 left-2">
         <Button
           variant="ghost"
-          className="text-red-500"
-          onClick={() => setOpen(true)}>
-          {/* onClick={() => setEditable(true)}> */}
-          Edit
+          className="text-blue-500 font-semibold bg-transparent"
+          onClick={() => navigate(-1)}>
+          <ArrowLeft size="24" />
         </Button>
       </div>
 
