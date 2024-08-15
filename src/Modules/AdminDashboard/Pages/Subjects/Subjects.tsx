@@ -1,7 +1,7 @@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { MessageSquarePlus, PlusCircle } from "lucide-react";
+import { PlusCircle } from "lucide-react";
 import { useState } from "react";
 export interface Artwork {
   artist: string;
@@ -31,17 +31,16 @@ const Subjects = () => {
     }[]
   >([]);
 
+  const [lessonList, setLessonList] = useState<string[]>([]);
+  const [lesson, setLesson] = useState<string>("");
+  const [openLessonForm, setOpenLessonForm] = useState(false);
+
   const [categories, setCategories] = useState({
     title: "",
     pattern: "",
   });
-  // const [categoryName, setCategoryName] = useState("");
-  // const [lessonName, setLessonName] = useState("");
-  // const [selectedCategory, setSelectedCategory] = useState(null);
   const [openCategoryForm, setOpenCategoryForm] = useState(false);
-
-  // const [showLesson, setShowLesson] = useState(false);
-  const [showLesson] = useState(false);
+  const [showLesson, setShowLesson] = useState(false);
 
   const addCategory = () => {
     if (categories.title.trim() && categories.pattern.trim()) {
@@ -49,10 +48,6 @@ const Subjects = () => {
       setCategories({ title: "", pattern: "" });
       setOpenCategoryForm(false);
     }
-    // if (categoryName.trim()) {
-    //   setCategories([...categories, { name: categoryName, lessons: [] }]);
-    //   setCategoryName("");
-    // }
   };
 
   const titleInputFunc = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -62,16 +57,6 @@ const Subjects = () => {
   const selectCategoryFunc = (id: string) => {
     setCategories({ ...categories, pattern: id });
   };
-
-  // const addLesson = () => {
-  //   if (selectedCategory !== null && lessonName.trim()) {
-  //     const updatedCategories = categories.map((category: any, index: any) =>
-  //       index === selectedCategory ? { ...category, lessons: [...category.lessons, lessonName] } : category
-  //     );
-  //     setCategories(updatedCategories);
-  //     setLessonName("");
-  //   }
-  // };
 
   const questionPattern = [
     {
@@ -222,11 +207,12 @@ const Subjects = () => {
       </Card>
 
       <div className="border-2 border-black rounded-md p-3">
-        <h1 className="text-center text-3xl">Bangla</h1>
+        <h1 className="text-center text-3xl border-b-black border-b-2 mb-6 pb-2">Bangla</h1>
 
-        <div className="grid grid-cols-9 gap-8">
-          <div className={`${showLesson ? "col-span-3" : "col-span-7"}`}>
+        <div className={`${showLesson ? "grid grid-cols-9 gap-8" : "grid grid-cols-9 gap-8"}`}>
+          <div className={`${showLesson ? "col-span-3" : "col-span-9"}`}>
             <div className={`${showLesson ? "grid grid-cols-1 gap-6" : "grid grid-cols-2 gap-6"}`}>
+              {/* Question Category  */}
               <div className="">
                 <div className="flex justify-between">
                   <h4 className="text-xl font-semibold mb-2">Question Category List: </h4>
@@ -304,14 +290,70 @@ const Subjects = () => {
                 </div>
               </div>
 
-              <div className="flex justify-between items-start">
-                <h4>Lesson List: </h4>
-                <button>
-                  <MessageSquarePlus
-                    color="#0bada2"
-                    strokeWidth={2.25}
-                  />
-                </button>
+              {/* Lesson List */}
+              <div>
+                <div className="flex justify-between items-start">
+                  <h4 className="text-xl font-semibold mb-2">Lesson List: </h4>
+                  <Button
+                    onClick={() => setOpenLessonForm(true)}
+                    size="sm"
+                    className="h-8 gap-1">
+                    <PlusCircle className="h-3.5 w-3.5" />
+                    <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">Add Lesson</span>
+                  </Button>
+                </div>
+
+                {openLessonForm && (
+                  <div className="flex flex-col gap-5 mt-5">
+                    <input
+                      type="text"
+                      className="border p-2 rounded mr-2"
+                      placeholder="Enter lesson name"
+                      value={lesson}
+                      onChange={(e) => setLesson(e.target.value)}
+                    />
+
+                    <div className="flex justify-around">
+                      <Button
+                        variant="secondary"
+                        onClick={() => {
+                          setLesson("");
+                          setOpenLessonForm(false);
+                        }}>
+                        Cancel
+                      </Button>
+                      <Button
+                        disabled={lesson.length <= 0}
+                        onClick={() => {
+                          setLessonList([...lessonList, lesson]);
+                          setOpenLessonForm(false);
+                        }}>
+                        Submit
+                      </Button>
+                    </div>
+                  </div>
+                )}
+
+                <div className="container mx-auto p-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <ul className="list-disc pl-5">
+                        {lessonList.map((lesson, index) => (
+                          <li
+                            key={index}
+                            // className={`cursor-pointer ${lesson === categories.title ? "font-bold" : ""}`}
+                            onClick={() => {
+                              // setCategories({ title: category.title, pattern: category.pattern });
+                              setShowLesson(true);
+                              setOpenLessonForm(false);
+                            }}>
+                            {lesson}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -323,11 +365,6 @@ const Subjects = () => {
               <AccordionItem value={"1"}>
                 <AccordionTrigger className="text-lg font-semibold uppercase border-b-2 border-black mb-4">
                   Lesson 1
-                  {/* <Badge
-                className="ml-auto font-normal text-xs"
-                variant="secondary">
-                Lesson one name
-              </Badge> */}
                 </AccordionTrigger>
                 <AccordionContent>
                   <div className="flex flex-col gap-10 ml-6">
