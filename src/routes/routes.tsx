@@ -20,6 +20,8 @@ import { Navigate, Route, Routes, createBrowserRouter } from "react-router-dom";
 import ClassDetail from "@/Modules/AdminDashboard/Pages/ClassDetail/ClassDetail";
 import AddQuestion from "@/Modules/UserDashboard/AddQuestion/AddQuestion";
 import Profile from "@/Modules/UserDashboard/profile/profile";
+import QuestionPatterns from "@/Modules/AdminDashboard/Pages/QuestionPatterns/QuestionPatterns";
+import Subjects from "@/Modules/AdminDashboard/Pages/Subjects/Subjects";
 
 export const routes = createBrowserRouter([
   {
@@ -137,8 +139,18 @@ export const routes = createBrowserRouter([
             index: true,
           },
           {
+            path: "question-patterns",
+            element: <QuestionPatterns />,
+            index: true,
+          },
+          {
             path: "classes",
             element: <ClassList />,
+            index: true,
+          },
+          {
+            path: "subjects",
+            element: <Subjects />,
             index: true,
           },
           {

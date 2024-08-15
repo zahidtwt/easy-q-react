@@ -30,6 +30,11 @@ const navbarMenus = [
     title: "Users",
     icon: null,
   },
+  {
+    path: "/dashboard/subjects",
+    title: "Subjects",
+    icon: null,
+  },
 ] as const;
 
 const Navbar = () => {
