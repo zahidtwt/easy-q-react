@@ -22,6 +22,7 @@ import AddQuestion from "@/Modules/UserDashboard/AddQuestion/AddQuestion";
 import Profile from "@/Modules/UserDashboard/profile/profile";
 import QuestionPatterns from "@/Modules/AdminDashboard/Pages/QuestionPatterns/QuestionPatterns";
 import Subjects from "@/Modules/AdminDashboard/Pages/Subjects/Subjects";
+import SubjectDetail from "@/Modules/AdminDashboard/Pages/Subjects/SubjectDetail";
 
 export const routes = createBrowserRouter([
   {
@@ -151,6 +152,11 @@ export const routes = createBrowserRouter([
           {
             path: "subjects",
             element: <Subjects />,
+            index: true,
+          },
+          {
+            path: "subjects-detail/:subjectId",
+            element: <SubjectDetail />,
             index: true,
           },
           {
