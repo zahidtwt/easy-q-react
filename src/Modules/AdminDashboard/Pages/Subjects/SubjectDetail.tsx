@@ -3,6 +3,8 @@ import { Button } from "@/components/ui/button";
 import { PlusCircle } from "lucide-react";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
+import AddQuestionCategoryModal from "./Components/AddQuestionCategoryModal";
+import AddLessonModal from "./Components/AddLessonModal";
 
 const SubjectDetail = () => {
   const { subjectId } = useParams();
@@ -24,106 +26,12 @@ const SubjectDetail = () => {
   const [openCategoryForm, setOpenCategoryForm] = useState(false);
   const [showLesson, setShowLesson] = useState(false);
 
-  const addCategory = () => {
-    if (categories.title.trim() && categories.pattern.trim()) {
-      setMyCategories([...myCategories, categories]);
-      setCategories({ title: "", pattern: "" });
-      setOpenCategoryForm(false);
-    }
+  const setMyCategoryFunc = (data: { title: string; pattern: string }) => {
+    setMyCategories([...myCategories, data]);
   };
-
-  const titleInputFunc = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCategories({ ...categories, title: e.target.value });
+  const setLessonListFunc = (data: string) => {
+    setLessonList([...lessonList, data]);
   };
-
-  const selectCategoryFunc = (id: string) => {
-    setCategories({ ...categories, pattern: id });
-  };
-
-  const questionPattern = [
-    {
-      id: "1",
-      name: "word_by_word",
-      title: "word by word",
-      patternDetector: ",",
-      element: <p>----, ----, ----</p>,
-      method: function name(params: string) {
-        return params.split(",");
-      },
-    },
-    {
-      id: "2",
-      name: "one_line_question",
-      title: "one line question",
-      patternDetector: "?|",
-      element: (
-        <div>
-          <p>----------?</p>
-          <p>----------|</p>
-        </div>
-      ),
-      method: function name(params: string) {
-        return params;
-      },
-    },
-    {
-      id: "3",
-      name: "question_with_options",
-      patternDetector: "?|,,,",
-      element: <p>----------? ----, ----, ----, ----</p>,
-      method: function name(params: string) {
-        return params;
-      },
-    },
-    {
-      id: "4",
-      name: "table_match",
-      patternDetector: "| ,",
-      element: (
-        <div>
-          <p>---- | ----</p>
-          <p>---- | ----</p>
-          <p>---- | ----</p>
-        </div>
-      ),
-      method: function name(params: string) {
-        return params;
-      },
-    },
-    {
-      id: "5",
-      name: "feel_in_the_blanks",
-      patternDetector: "|,",
-      element: (
-        <div>
-          <p>----___----,</p>
-          <p>----___----|</p>
-          <p>----___----?</p>
-        </div>
-      ),
-      method: function name(params: string) {
-        return params;
-      },
-    },
-    {
-      id: "6",
-      name: "question_with_story",
-      patternDetector: "||?",
-      element: (
-        <div className="text-start">
-          <p>-----------------</p>
-          <p>---------- ||</p>
-          <p>----?</p>
-          <p>----?</p>
-          <p>----?</p>
-          <p>----?</p>
-        </div>
-      ),
-      method: function name(params: string) {
-        return params;
-      },
-    },
-  ];
 
   return (
     <div className="container mt-8">
@@ -145,50 +53,6 @@ const SubjectDetail = () => {
                     <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">Add Category</span>
                   </Button>
                 </div>
-
-                {openCategoryForm && (
-                  <div className="flex flex-col gap-5 mt-5">
-                    <input
-                      type="text"
-                      className="border p-2 rounded mr-2"
-                      placeholder="Enter category name"
-                      value={categories.title}
-                      onChange={titleInputFunc}
-                    />
-
-                    <div className="w-full overflow-x-auto">
-                      <div className="flex gap-4 w-auto">
-                        {questionPattern.map((pattern) => (
-                          <div
-                            key={pattern.id}
-                            onClick={() => selectCategoryFunc(pattern.id)}
-                            className="p-3 border-2 rounded-md text-center backdrop-blur-sm bg-slate-600/10 min-w-[250px] w-[300px] cursor-pointer relative">
-                            {pattern.element}
-                            {pattern.id === categories.pattern && (
-                              <div className="absolute top-2 right-2 h-5 w-5 rounded-full bg-green-600"></div>
-                            )}
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div className="flex justify-around">
-                      <Button
-                        variant="secondary"
-                        onClick={() => {
-                          setCategories({ title: "", pattern: "" });
-                          setOpenCategoryForm(false);
-                        }}>
-                        Cancel
-                      </Button>
-                      <Button
-                        disabled={categories.title.length <= 0 || categories.pattern.length <= 0}
-                        onClick={addCategory}>
-                        Submit
-                      </Button>
-                    </div>
-                  </div>
-                )}
 
                 <div className="container mx-auto p-4">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -330,6 +194,22 @@ const SubjectDetail = () => {
           </div>
         </div>
       </div>
+
+      {
+        <AddQuestionCategoryModal
+          open={openCategoryForm}
+          setOpen={setOpenCategoryForm}
+          setMyCategoryFunc={setMyCategoryFunc}
+        />
+      }
+
+      {
+        <AddLessonModal
+          open={openLessonForm}
+          setOpen={setOpenLessonForm}
+          setLessonListFunc={setLessonListFunc}
+        />
+      }
     </div>
   );
 };
