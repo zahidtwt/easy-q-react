@@ -48,7 +48,7 @@ const SubjectDetailCard = ({ subject }: { subject: ISubject }) => {
 
       {open && (
         <SubjectDetailFormModal
-          classId={subject.class}
+          classId={""}
           initialValues={subject}
           open={open}
           setOpen={setOpen}

@@ -75,7 +75,8 @@ const QuestionFormModal = ({
     // watch
   } = formMethods;
 
-  const [selectedSubject, setSelectedSubject] = useState<ISubject>({} as ISubject);
+  // const [selectedSubject, setSelectedSubject] = useState<ISubject>({} as ISubject);
+  const [, setSelectedSubject] = useState<ISubject>({} as ISubject);
 
   const {
     data: subjectList,
@@ -217,14 +218,14 @@ const QuestionFormModal = ({
                           </FormControl>
 
                           <SelectContent>
-                            {selectedSubject?._id &&
+                            {/* {selectedSubject?._id &&
                               selectedSubject.questionCategory.map((item) => (
                                 <SelectItem
                                   key={item}
                                   value={item}>
                                   {item}
                                 </SelectItem>
-                              ))}
+                              ))} */}
                           </SelectContent>
                         </Select>
                         <FormMessage>{errors.questionCategory?.message}</FormMessage>

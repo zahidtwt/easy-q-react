@@ -6,7 +6,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import zod from "zod";
 import { Button } from "@/components/ui/button";
 import SpinningLoader from "@/components/loader";
-import { useAddSubject, useUpdateSubject } from "@/hooks/useSubject";
+import { useAddSubject } from "@/hooks/useSubject";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import Clip from "@/components/Clip";
 // import { IEditSubjectPayload } from "@/interfaces/subject.interface";
@@ -56,7 +56,7 @@ const SubjectForm = ({ initialValues }: { initialValues?: unknown }) => {
   };
 
   const { mutate: createSubject } = useAddSubject({ dataDecorator });
-  const { mutate: updateSubject } = useUpdateSubject({ dataDecorator });
+  // const { mutate: updateSubject } = useUpdateSubject({ dataDecorator });
 
   const [inputValue, setInputValue] = useState("");
 
@@ -78,7 +78,7 @@ const SubjectForm = ({ initialValues }: { initialValues?: unknown }) => {
 
   const submitForm: SubmitHandler<SubjectDetailFormFields> = async (data) => {
     if (initialValues) {
-      updateSubject({ ...data, _id: initialValues._id });
+      // updateSubject({ ...data, _id: initialValues._id });
     } else {
       createSubject({ ...data });
     }
