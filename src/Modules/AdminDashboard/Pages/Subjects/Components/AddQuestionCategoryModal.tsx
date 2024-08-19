@@ -26,7 +26,15 @@ const AddQuestionCategoryModal = ({
   initialValues,
 }: {
   open: boolean;
-  setOpen: Dispatch<SetStateAction<boolean>>;
+  setOpen: Dispatch<
+    SetStateAction<{
+      open: boolean;
+      initialValues: null | {
+        title: string;
+        pattern: string;
+      };
+    }>
+  >;
   setMyCategoryFunc: (param: { title: string; pattern: string }) => void;
   initialValues?: {
     title: string;
@@ -50,7 +58,10 @@ const AddQuestionCategoryModal = ({
   } = formMethods;
 
   const dataDecorator = (data: unknown) => {
-    setOpen(false);
+    setOpen({
+      open: false,
+      initialValues: null,
+    });
     reset();
     return data;
   };
@@ -150,7 +161,7 @@ const AddQuestionCategoryModal = ({
     <Dialog
       open={open}
       onOpenChange={() => {
-        setOpen(false);
+        dataDecorator(null);
       }}>
       <DialogContent>
         <DialogHeader>

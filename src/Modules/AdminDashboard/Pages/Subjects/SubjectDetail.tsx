@@ -6,25 +6,39 @@ import { useParams } from "react-router-dom";
 import AddQuestionCategoryModal from "./Components/AddQuestionCategoryModal";
 import AddLessonModal from "./Components/AddLessonModal";
 
+interface IQuestionCategory {
+  title: string;
+  pattern: string;
+}
+interface ILesson {
+  title: string;
+}
+
+interface IOpenLessonFormType {
+  open: boolean;
+  initialValues: null | ILesson;
+}
+
+interface IOpenCategoryFormType {
+  open: boolean;
+  initialValues: null | IQuestionCategory;
+}
+
 const SubjectDetail = () => {
   const { subjectId } = useParams();
-  const [myCategories, setMyCategories] = useState<
-    {
-      title: string;
-      pattern: string;
-    }[]
-  >([]);
+
+  const [openLessonForm, setOpenLessonForm] = useState<IOpenLessonFormType>({
+    open: false,
+    initialValues: null,
+  });
+  const [openCategoryForm, setOpenCategoryForm] = useState<IOpenCategoryFormType>({
+    open: false,
+    initialValues: null,
+  });
+  // const [openQuestionForm, setOpenQuestionForm] = useState(false);
 
   const [lessonList, setLessonList] = useState<string[]>([]);
-  const [lesson, setLesson] = useState<string>("");
-  const [openLessonForm, setOpenLessonForm] = useState(false);
-
-  const [categories, setCategories] = useState({
-    title: "",
-    pattern: "",
-  });
-  const [openCategoryForm, setOpenCategoryForm] = useState(false);
-  const [showLesson, setShowLesson] = useState(false);
+  const [myCategories, setMyCategories] = useState<IQuestionCategory[]>([]);
 
   const setMyCategoryFunc = (data: { title: string; pattern: string }) => {
     setMyCategories([...myCategories, data]);
@@ -38,7 +52,7 @@ const SubjectDetail = () => {
       <div className="border-2 border-gray-400 rounded-md p-3">
         <h1 className="text-center text-3xl border-b-gray-400 border-b-2 mb-6 pb-2">Bangla {subjectId}</h1>
 
-        <div className={`${showLesson ? "grid grid-cols-9 gap-8" : "grid grid-cols-9 gap-8"}`}>
+        <div className="grid grid-cols-9 gap-8">
           <div className="col-span-3">
             <div className="grid grid-cols-1 gap-6">
               {/* Question Category  */}
@@ -46,7 +60,12 @@ const SubjectDetail = () => {
                 <div className="flex justify-between">
                   <h4 className="text-xl font-semibold mb-2">Question Category List: </h4>
                   <Button
-                    onClick={() => setOpenCategoryForm(true)}
+                    onClick={() =>
+                      setOpenLessonForm({
+                        open: true,
+                        initialValues: null,
+                      })
+                    }
                     size="sm"
                     className="h-8 gap-1">
                     <PlusCircle className="h-3.5 w-3.5" />
@@ -61,11 +80,12 @@ const SubjectDetail = () => {
                         {myCategories.map((category, index) => (
                           <li
                             key={index}
-                            className={`cursor-pointer ${category.title === categories.title ? "font-bold" : ""}`}
-                            onClick={() => {
-                              setCategories({ title: category.title, pattern: category.pattern });
-                              setOpenCategoryForm(true);
-                            }}>
+                            onClick={() =>
+                              setOpenLessonForm({
+                                open: true,
+                                initialValues: category,
+                              })
+                            }>
                             {category.title}
                           </li>
                         ))}
@@ -80,45 +100,18 @@ const SubjectDetail = () => {
                 <div className="flex justify-between items-start">
                   <h4 className="text-xl font-semibold mb-2">Lesson List: </h4>
                   <Button
-                    onClick={() => setOpenLessonForm(true)}
+                    onClick={() =>
+                      setOpenLessonForm({
+                        open: true,
+                        initialValues: null,
+                      })
+                    }
                     size="sm"
                     className="h-8 gap-1">
                     <PlusCircle className="h-3.5 w-3.5" />
                     <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">Add Lesson</span>
                   </Button>
                 </div>
-
-                {openLessonForm && (
-                  <div className="flex flex-col gap-5 mt-5">
-                    <input
-                      type="text"
-                      className="border p-2 rounded mr-2"
-                      placeholder="Enter lesson name"
-                      value={lesson}
-                      onChange={(e) => setLesson(e.target.value)}
-                    />
-
-                    <div className="flex justify-around">
-                      <Button
-                        variant="secondary"
-                        onClick={() => {
-                          setLesson("");
-                          setOpenLessonForm(false);
-                        }}>
-                        Cancel
-                      </Button>
-                      <Button
-                        disabled={lesson.length <= 0}
-                        onClick={() => {
-                          setLessonList([...lessonList, lesson]);
-                          setOpenLessonForm(false);
-                        }}>
-                        Submit
-                      </Button>
-                    </div>
-                  </div>
-                )}
-
                 <div className="container mx-auto p-4">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
@@ -126,12 +119,12 @@ const SubjectDetail = () => {
                         {lessonList.map((lesson, index) => (
                           <li
                             key={index}
-                            // className={`cursor-pointer ${lesson === categories.title ? "font-bold" : ""}`}
-                            onClick={() => {
-                              // setCategories({ title: category.title, pattern: category.pattern });
-                              setShowLesson(true);
-                              setOpenLessonForm(false);
-                            }}>
+                            onClick={() =>
+                              setOpenLessonForm({
+                                open: true,
+                                initialValues: { title: lesson },
+                              })
+                            }>
                             {lesson}
                           </li>
                         ))}
@@ -195,21 +188,22 @@ const SubjectDetail = () => {
         </div>
       </div>
 
-      {
+      {openCategoryForm && (
         <AddQuestionCategoryModal
-          open={openCategoryForm}
+          open={openCategoryForm.open}
           setOpen={setOpenCategoryForm}
           setMyCategoryFunc={setMyCategoryFunc}
         />
-      }
+      )}
 
-      {
+      {openLessonForm.open && (
         <AddLessonModal
-          open={openLessonForm}
+          open={openLessonForm.open}
           setOpen={setOpenLessonForm}
           setLessonListFunc={setLessonListFunc}
+          initialValues={openLessonForm.initialValues}
         />
-      }
+      )}
     </div>
   );
 };

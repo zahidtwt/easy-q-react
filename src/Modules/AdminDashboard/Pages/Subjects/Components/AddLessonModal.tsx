@@ -23,9 +23,16 @@ const AddLessonModal = ({
   initialValues,
 }: {
   open: boolean;
-  setOpen: Dispatch<SetStateAction<boolean>>;
+  setOpen: Dispatch<
+    SetStateAction<{
+      open: boolean;
+      initialValues: null | {
+        title: string;
+      };
+    }>
+  >;
   setLessonListFunc: (param: string) => void;
-  initialValues?: {
+  initialValues: null | {
     title: string;
   };
 }) => {
@@ -45,13 +52,15 @@ const AddLessonModal = ({
   } = formMethods;
 
   const dataDecorator = (data: unknown) => {
-    setOpen(false);
+    setOpen({
+      open: false,
+      initialValues: null,
+    });
     reset();
     return data;
   };
 
   const submitForm: SubmitHandler<QuestionCategoryFormFields> = async (data) => {
-    //     console.log(data);
     dataDecorator(data);
     setLessonListFunc(data.title);
   };
@@ -60,7 +69,7 @@ const AddLessonModal = ({
     <Dialog
       open={open}
       onOpenChange={() => {
-        setOpen(false);
+        dataDecorator(null);
       }}>
       <DialogContent>
         <DialogHeader>
