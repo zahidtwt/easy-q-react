@@ -5,7 +5,7 @@ import SubjectDetailFormModal from "./SubjectDetailFormModal";
 import { Separator } from "@/components/ui/separator";
 import { useNavigate } from "react-router-dom";
 
-const SubjectDetailCard = ({ subject }: { subject: ISubject }) => {
+const SubjectCard = ({ subject }: { subject: ISubject }) => {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   return (
@@ -36,7 +36,6 @@ const SubjectDetailCard = ({ subject }: { subject: ISubject }) => {
 
       {open && (
         <SubjectDetailFormModal
-          classId={subject.class}
           initialValues={subject}
           open={open}
           setOpen={setOpen}
@@ -46,4 +45,4 @@ const SubjectDetailCard = ({ subject }: { subject: ISubject }) => {
   );
 };
 
-export default SubjectDetailCard;
+export default SubjectCard;

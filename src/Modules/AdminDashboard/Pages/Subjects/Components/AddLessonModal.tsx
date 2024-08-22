@@ -7,10 +7,15 @@ import { Form, FormControl, FormField, FormItem, FormMessage } from "@/component
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { ILesson } from "@/interfaces/lesson.interface";
+import { useCreateLesson, useUpdateLesson } from "@/hooks/useLesson";
 
 const QuestionCategoryFormSchema = zod.object({
-  title: zod.string().min(2, {
+  lessonName: zod.string().min(2, {
     message: "name must be at least 2 characters.",
+  }),
+  lessonNo: zod.number().min(1, {
+    message: "Lesson number must be greater than 0.",
   }),
 });
 
@@ -19,28 +24,25 @@ type QuestionCategoryFormFields = zod.infer<typeof QuestionCategoryFormSchema>;
 const AddLessonModal = ({
   open,
   setOpen,
-  setLessonListFunc,
   initialValues,
+  subjectId,
 }: {
   open: boolean;
   setOpen: Dispatch<
     SetStateAction<{
       open: boolean;
-      initialValues: null | {
-        title: string;
-      };
+      initialValues: null | ILesson;
     }>
   >;
-  setLessonListFunc: (param: string) => void;
-  initialValues: null | {
-    title: string;
-  };
+  initialValues: null | ILesson;
+  subjectId: string;
 }) => {
   const formMethods = useForm<QuestionCategoryFormFields>({
     resolver: zodResolver(QuestionCategoryFormSchema),
     mode: "all",
     defaultValues: initialValues || {
-      title: "",
+      lessonName: "",
+      lessonNo: 1,
     },
   });
 
@@ -60,9 +62,21 @@ const AddLessonModal = ({
     return data;
   };
 
+  const { mutate: createLesson, isPending: createLoading } = useCreateLesson({ dataDecorator });
+  const { mutate: updateLesson, isPending: updateLoading } = useUpdateLesson({ dataDecorator });
+
   const submitForm: SubmitHandler<QuestionCategoryFormFields> = async (data) => {
     dataDecorator(data);
-    setLessonListFunc(data.title);
+
+    if (initialValues) {
+      updateLesson({
+        ...initialValues,
+        lessonName: data.lessonName,
+        lessonNo: data.lessonNo,
+      });
+    } else {
+      createLesson({ ...data, subjectId: subjectId });
+    }
   };
 
   return (
@@ -84,17 +98,36 @@ const AddLessonModal = ({
               className="space-y-4 sm:space-y-6 p-1 w-[300px] sm:w-[350px] lg:w-[450px]">
               <FormField
                 control={control}
-                name="title"
+                name="lessonNo"
                 render={({ field }) => (
                   <FormItem>
-                    <label htmlFor="title">Title</label>
+                    <label htmlFor="lessonNo">Lesson No</label>
                     <FormControl>
                       <Input
                         placeholder="Subject Name here..."
+                        type="number"
+                        {...field}
+                        onChange={(e) => field.onChange(Number(e.target.value))}
+                      />
+                    </FormControl>
+                    <FormMessage>{errors.lessonNo?.message}</FormMessage>
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={control}
+                name="lessonName"
+                render={({ field }) => (
+                  <FormItem>
+                    <label htmlFor="lessonName">Lesson Title</label>
+                    <FormControl>
+                      <Input
+                        placeholder="Lesson Title here..."
                         {...field}
                       />
                     </FormControl>
-                    <FormMessage>{errors.title?.message}</FormMessage>
+                    <FormMessage>{errors.lessonName?.message}</FormMessage>
                   </FormItem>
                 )}
               />
@@ -102,6 +135,7 @@ const AddLessonModal = ({
               <div className="flex justify-center align-middle gap-14">
                 <Button
                   variant="secondary"
+                  disabled={updateLoading || createLoading}
                   onClick={() => {
                     dataDecorator(false);
                   }}>
@@ -111,7 +145,7 @@ const AddLessonModal = ({
                 <Button
                   type="submit"
                   className="cursor-pointer"
-                  disabled={isSubmitting || !isDirty || !isValid}>
+                  disabled={!isDirty || !isValid || updateLoading || createLoading}>
                   {isSubmitting ? (
                     <div className="mr-2">
                       <SpinningLoader />

@@ -5,14 +5,12 @@ import { useState } from "react";
 import { useParams } from "react-router-dom";
 import AddQuestionCategoryModal from "./Components/AddQuestionCategoryModal";
 import AddLessonModal from "./Components/AddLessonModal";
-
-interface IQuestionCategory {
-  title: string;
-  pattern: string;
-}
-interface ILesson {
-  title: string;
-}
+import AddQuestionModal from "./Components/AddQuestionModal";
+import { useGetQuestionCategoryList } from "@/hooks/useQuestionCategory";
+import { IQuestionCategory } from "@/interfaces/question-category.interface";
+import { useGetLessonList } from "@/hooks/useLesson";
+import { ILesson } from "@/interfaces/lesson.interface";
+import { IQuestionPayload } from "@/interfaces/question.interface";
 
 interface IOpenLessonFormType {
   open: boolean;
@@ -22,6 +20,10 @@ interface IOpenLessonFormType {
 interface IOpenCategoryFormType {
   open: boolean;
   initialValues: null | IQuestionCategory;
+}
+interface IOpenQuestionFormType {
+  open: boolean;
+  initialValues: null | IQuestionPayload;
 }
 
 const SubjectDetail = () => {
@@ -35,17 +37,18 @@ const SubjectDetail = () => {
     open: false,
     initialValues: null,
   });
-  // const [openQuestionForm, setOpenQuestionForm] = useState(false);
+  const [openQuestionForm, setOpenQuestionForm] = useState<IOpenQuestionFormType>({
+    open: false,
+    initialValues: null,
+  });
 
-  const [lessonList, setLessonList] = useState<string[]>([]);
-  const [myCategories, setMyCategories] = useState<IQuestionCategory[]>([]);
+  const { data: questionCategoryList, isLoading: questionCategoryListLoading } = useGetQuestionCategoryList({
+    filterData: { subjectId: subjectId || "" },
+  });
 
-  const setMyCategoryFunc = (data: { title: string; pattern: string }) => {
-    setMyCategories([...myCategories, data]);
-  };
-  const setLessonListFunc = (data: string) => {
-    setLessonList([...lessonList, data]);
-  };
+  const { data: lessonList, isLoading: lessonListLoading } = useGetLessonList({
+    filterData: { subjectId: subjectId || "" },
+  });
 
   return (
     <div className="container mt-8">
@@ -53,7 +56,7 @@ const SubjectDetail = () => {
         <h1 className="text-center text-3xl border-b-gray-400 border-b-2 mb-6 pb-2">Bangla {subjectId}</h1>
 
         <div className="grid grid-cols-9 gap-8">
-          <div className="col-span-3">
+          <div className="col-span-3 border-r-gray-400 border-r-2 pr-6">
             <div className="grid grid-cols-1 gap-6">
               {/* Question Category  */}
               <div className="">
@@ -61,7 +64,7 @@ const SubjectDetail = () => {
                   <h4 className="text-xl font-semibold mb-2">Question Category List: </h4>
                   <Button
                     onClick={() =>
-                      setOpenLessonForm({
+                      setOpenCategoryForm({
                         open: true,
                         initialValues: null,
                       })
@@ -77,18 +80,20 @@ const SubjectDetail = () => {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <ul className="list-disc pl-5">
-                        {myCategories.map((category, index) => (
-                          <li
-                            key={index}
-                            onClick={() =>
-                              setOpenLessonForm({
-                                open: true,
-                                initialValues: category,
-                              })
-                            }>
-                            {category.title}
-                          </li>
-                        ))}
+                        {!questionCategoryListLoading &&
+                          questionCategoryList &&
+                          questionCategoryList.map((category, index) => (
+                            <li
+                              key={index}
+                              onClick={() =>
+                                setOpenCategoryForm({
+                                  open: true,
+                                  initialValues: category,
+                                })
+                              }>
+                              {category.questionCategoryName}
+                            </li>
+                          ))}
                       </ul>
                     </div>
                   </div>
@@ -116,18 +121,20 @@ const SubjectDetail = () => {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <ul className="list-disc pl-5">
-                        {lessonList.map((lesson, index) => (
-                          <li
-                            key={index}
-                            onClick={() =>
-                              setOpenLessonForm({
-                                open: true,
-                                initialValues: { title: lesson },
-                              })
-                            }>
-                            {lesson}
-                          </li>
-                        ))}
+                        {!lessonListLoading &&
+                          lessonList &&
+                          lessonList.map((lesson, index) => (
+                            <li
+                              key={index}
+                              onClick={() =>
+                                setOpenLessonForm({
+                                  open: true,
+                                  initialValues: lesson,
+                                })
+                              }>
+                              {lesson.lessonName}
+                            </li>
+                          ))}
                       </ul>
                     </div>
                   </div>
@@ -135,6 +142,8 @@ const SubjectDetail = () => {
               </div>
             </div>
           </div>
+
+          {/* lesson accordion */}
           <div className="col-span-6">
             <Accordion
               type="single"
@@ -144,7 +153,12 @@ const SubjectDetail = () => {
                 <div className="w-full flex justify-between border-b-2 border-gray-400 mb-2">
                   <AccordionTrigger className="text-lg font-semibold uppercase">Lesson 1</AccordionTrigger>
                   <Button
-                    type="submit"
+                    onClick={() =>
+                      setOpenQuestionForm({
+                        open: true,
+                        initialValues: null,
+                      })
+                    }
                     className="cursor-pointer">
                     Add Question
                   </Button>
@@ -188,20 +202,31 @@ const SubjectDetail = () => {
         </div>
       </div>
 
-      {openCategoryForm && (
+      {openCategoryForm.open && subjectId && (
         <AddQuestionCategoryModal
           open={openCategoryForm.open}
           setOpen={setOpenCategoryForm}
-          setMyCategoryFunc={setMyCategoryFunc}
+          subjectId={subjectId}
+          initialValues={openCategoryForm.initialValues}
         />
       )}
 
-      {openLessonForm.open && (
+      {openLessonForm.open && subjectId && (
         <AddLessonModal
           open={openLessonForm.open}
           setOpen={setOpenLessonForm}
-          setLessonListFunc={setLessonListFunc}
           initialValues={openLessonForm.initialValues}
+          subjectId={subjectId}
+        />
+      )}
+
+      {openQuestionForm.open && questionCategoryList && lessonList && (
+        <AddQuestionModal
+          open={openQuestionForm.open}
+          setOpen={setOpenQuestionForm}
+          initialValues={openQuestionForm.initialValues}
+          questionCategoryList={questionCategoryList}
+          lessonList={lessonList}
         />
       )}
     </div>

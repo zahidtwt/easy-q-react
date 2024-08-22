@@ -7,12 +7,14 @@ import { Form, FormControl, FormField, FormItem, FormMessage } from "@/component
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { IQuestionCategory } from "@/interfaces/question-category.interface";
+import { useCreateQuestionCategory, useUpdateQuestionCategory } from "@/hooks/useQuestionCategory";
 
 const QuestionCategoryFormSchema = zod.object({
-  title: zod.string().min(2, {
+  questionCategoryName: zod.string().min(2, {
     message: "name must be at least 2 characters.",
   }),
-  pattern: zod.string().min(1, {
+  selectedPatternKey: zod.string().min(1, {
     message: "code must be at least 2 characters.",
   }),
 });
@@ -22,31 +24,25 @@ type QuestionCategoryFormFields = zod.infer<typeof QuestionCategoryFormSchema>;
 const AddQuestionCategoryModal = ({
   open,
   setOpen,
-  setMyCategoryFunc,
+  subjectId,
   initialValues,
 }: {
   open: boolean;
   setOpen: Dispatch<
     SetStateAction<{
       open: boolean;
-      initialValues: null | {
-        title: string;
-        pattern: string;
-      };
+      initialValues: null | IQuestionCategory;
     }>
   >;
-  setMyCategoryFunc: (param: { title: string; pattern: string }) => void;
-  initialValues?: {
-    title: string;
-    pattern: string;
-  };
+  subjectId: string;
+  initialValues: null | IQuestionCategory;
 }) => {
   const formMethods = useForm<QuestionCategoryFormFields>({
     resolver: zodResolver(QuestionCategoryFormSchema),
     mode: "all",
     defaultValues: initialValues || {
-      title: "",
-      pattern: "",
+      questionCategoryName: "",
+      selectedPatternKey: "",
     },
   });
 
@@ -66,10 +62,21 @@ const AddQuestionCategoryModal = ({
     return data;
   };
 
+  const { mutate: createQuestionCategory, isPending: createLoading } = useCreateQuestionCategory({ dataDecorator });
+  const { mutate: updateQuestionCategory, isPending: updateLoading } = useUpdateQuestionCategory({ dataDecorator });
+
   const submitForm: SubmitHandler<QuestionCategoryFormFields> = async (data) => {
-    //     console.log(data);
     dataDecorator(data);
-    setMyCategoryFunc(data);
+
+    if (initialValues) {
+      updateQuestionCategory({
+        ...initialValues,
+        questionCategoryName: data.questionCategoryName,
+        selectedPatternKey: data.selectedPatternKey,
+      });
+    } else {
+      createQuestionCategory({ ...data, subjectId: subjectId });
+    }
   };
 
   const questionPattern = [
@@ -176,7 +183,7 @@ const AddQuestionCategoryModal = ({
               className="space-y-4 sm:space-y-6 p-1 w-[300px] sm:w-[350px] lg:w-[450px]">
               <FormField
                 control={control}
-                name="title"
+                name="questionCategoryName"
                 render={({ field }) => (
                   <FormItem>
                     <label htmlFor="title">Title</label>
@@ -186,7 +193,7 @@ const AddQuestionCategoryModal = ({
                         {...field}
                       />
                     </FormControl>
-                    <FormMessage>{errors.title?.message}</FormMessage>
+                    <FormMessage>{errors.questionCategoryName?.message}</FormMessage>
                   </FormItem>
                 )}
               />
@@ -194,7 +201,7 @@ const AddQuestionCategoryModal = ({
               {/* field.onChange(fileUrl); */}
               <Controller
                 control={formMethods.control}
-                name="pattern"
+                name="selectedPatternKey"
                 render={({ field }) => (
                   <div className="w-full overflow-x-auto">
                     <div className="flex gap-4 w-auto">
@@ -219,6 +226,7 @@ const AddQuestionCategoryModal = ({
               <div className="flex justify-center align-middle gap-14">
                 <Button
                   variant="secondary"
+                  disabled={updateLoading || createLoading}
                   onClick={() => {
                     dataDecorator(false);
                   }}>
@@ -228,7 +236,7 @@ const AddQuestionCategoryModal = ({
                 <Button
                   type="submit"
                   className="cursor-pointer"
-                  disabled={isSubmitting || !isDirty || !isValid}>
+                  disabled={!isDirty || !isValid || updateLoading || createLoading}>
                   {isSubmitting ? (
                     <div className="mr-2">
                       <SpinningLoader />

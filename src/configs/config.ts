@@ -11,7 +11,9 @@ export const endpoints = {
     institution: "api/institution/",
     users: "api/auth/",
     questions: "api/question/",
-    subject: "api/subject/",
+    questionsCategory: "api/question-category",
+    lesson: "api/lesson",
+    subject: "api/subject",
     userRole: "api/user-roles/",
   },
 };

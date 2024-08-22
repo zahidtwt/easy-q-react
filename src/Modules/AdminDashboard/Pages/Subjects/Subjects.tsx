@@ -5,23 +5,22 @@ import { useState } from "react";
 // import { useNavigate } from "react-router-dom";
 // import SubjectModal from "./Components/SubjectModal";
 import ClassSkeleton from "../ClassList/Components/ClassSkeleton";
-import SubjectDetailCard from "./Components/SubjectDetailCard";
+import SubjectDetailCard from "./Components/SubjectCard";
 import { useGetSubjectList } from "@/hooks/useSubject";
 import SubjectDetailFormModal from "./Components/SubjectDetailFormModal";
 
 const Subjects = () => {
   // const navigate = useNavigate();
   const [open, setOpen] = useState(false);
-  // 6686eb3f1533098cead90dd7
 
   let filterData = {
     query: {},
-    sortField: "name",
+    sortField: "createdAt",
     sortOrder: 1,
   };
 
   // make this conditional
-  filterData = { ...filterData, query: { class: "6686eb3f1533098cead90dd7" } };
+  filterData = { ...filterData, query: {} };
 
   const { data: subjectList, isLoading: subjectListLoading } = useGetSubjectList({
     filterData,
