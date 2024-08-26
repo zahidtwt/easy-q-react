@@ -10,7 +10,9 @@ import { useGetQuestionCategoryList } from "@/hooks/useQuestionCategory";
 import { IQuestionCategory } from "@/interfaces/question-category.interface";
 import { useGetLessonList } from "@/hooks/useLesson";
 import { ILesson } from "@/interfaces/lesson.interface";
-import { IQuestionPayload } from "@/interfaces/question.interface";
+import { IEditQuestionPayload } from "@/interfaces/question.interface";
+import { useGetQuestionList } from "@/hooks/useQuestions";
+import PatternViews from "./Components/PatternViews";
 
 interface IOpenLessonFormType {
   open: boolean;
@@ -23,11 +25,11 @@ interface IOpenCategoryFormType {
 }
 interface IOpenQuestionFormType {
   open: boolean;
-  initialValues: null | IQuestionPayload;
+  initialValues: null | IEditQuestionPayload;
 }
 
 const SubjectDetail = () => {
-  const { subjectId } = useParams();
+  const { subjectId, subjectName } = useParams();
 
   const [openLessonForm, setOpenLessonForm] = useState<IOpenLessonFormType>({
     open: false,
@@ -50,10 +52,20 @@ const SubjectDetail = () => {
     filterData: { subjectId: subjectId || "" },
   });
 
+  const { data: lessonListWithQuestion, isLoading: lessonListWithQuestionLoading } = useGetQuestionList({
+    filterData: {
+      query: {
+        subject: subjectId || "",
+      },
+      sortField: "lessonNo",
+      sortOrder: 1,
+    },
+  });
+
   return (
     <div className="container mt-8">
       <div className="border-2 border-gray-400 rounded-md p-3">
-        <h1 className="text-center text-3xl border-b-gray-400 border-b-2 mb-6 pb-2">Bangla {subjectId}</h1>
+        <h1 className="text-center text-3xl border-b-gray-400 border-b-2 mb-6 pb-2">{subjectName}</h1>
 
         <div className="grid grid-cols-9 gap-8">
           <div className="col-span-3 border-r-gray-400 border-r-2 pr-6">
@@ -145,59 +157,104 @@ const SubjectDetail = () => {
 
           {/* lesson accordion */}
           <div className="col-span-6">
-            <Accordion
-              type="single"
-              collapsible
-              className="w-full">
-              <AccordionItem value={"1"}>
-                <div className="w-full flex justify-between border-b-2 border-gray-400 mb-2">
-                  <AccordionTrigger className="text-lg font-semibold uppercase">Lesson 1</AccordionTrigger>
-                  <Button
-                    onClick={() =>
-                      setOpenQuestionForm({
-                        open: true,
-                        initialValues: null,
-                      })
-                    }
-                    className="cursor-pointer">
-                    Add Question
-                  </Button>
-                </div>
+            <div className="flex justify-end mb-3">
+              <Button
+                onClick={() =>
+                  setOpenQuestionForm({
+                    open: true,
+                    initialValues: null,
+                  })
+                }
+                className="cursor-pointer">
+                Add Question
+              </Button>
+            </div>
 
-                <AccordionContent>
-                  <div className="flex flex-col gap-10 ml-6">
-                    <div className="">
-                      <p className="text-base font-semibold leading-none mb-2">শব্দের অর্থ লেখ</p>
-                      <p>
-                        সৃষ্টিকর্তা, সৃষ্টি করা, বেঁটে, পাহাড়, পর্বত, হ্রদ, কীট, পতঙ্গ, সম্পদ, কয়লা, তারা, গ্রহ, গন্ধ,
-                        শরীর, যন্ত্রপাতি, হৃৎপিণ্ড, পাকস্থলী, বড়, বিশ্ব, অদ্বিতীয়
-                      </p>
-                    </div>
-                    <div className="">
-                      <p className="text-base font-semibold leading-none mb-2">যুক্তবর্ণ ভেঙে নতুন শব্দ তৈরি কর</p>
-                      <p>সৃষ্টি, পতঙ্গ, গন্ধ, যন্ত্রপাতি</p>
-                    </div>
-                    <div className="">
-                      <p className="text-base font-semibold leading-none mb-2">নিচের প্রশ্নগুলোর উত্তর দাও</p>
-                      <p>
-                        এ বিশ্বের সৃষ্টিকর্তা কে? মাটির নিচে যে সম্পদ গুলো লুকানো আছে তাদের কয়েকটি নাম লিখ। রাতের বেলা
-                        আমরা আকাশে কি কি দেখতে পাই? আমাদের দেহের ভেতরকার দু’টি যন্ত্রের নাম লিখ এবং তাদের কাজ কি কি লিখ।
-                        আল্লাহ সকল কিছু কি জন্য সৃষ্টি করেছেন? তোমাদের চারদিকের দশটি বস্তুর নাম লিখ। আল্লাহকে অদ্বিতীয়
-                        বলা হয় কেন? মানুষের আকৃতি কেমন?
-                      </p>
-                    </div>
-                    <div className="">
-                      <p className="text-base font-semibold leading-none mb-2">বিপরীত শব্দ লিখ</p>
-                      <p>সাদা, বেঁটে, ধনী, দিন, ভেতর, বড়, উপকার</p>
-                    </div>
-                    <div className="">
-                      <p className="text-base font-semibold leading-none mb-2">বাক্য রচনা কর</p>
-                      <p>দুনিয়া, কীট-পতঙ্গ, সূর্য, শরীর, অদ্বিতীয়</p>
-                    </div>
+            {lessonListWithQuestionLoading ? (
+              <div className="animate-pulse">
+                <div className="w-full flex justify-between border-b-2 border-gray-400 mb-2">
+                  <div className="h-6 bg-gray-300 rounded w-1/3"></div>
+                  <div className="h-10 bg-gray-300 rounded w-24"></div>
+                </div>
+                <div className="mt-4 space-y-6 ml-6">
+                  <div>
+                    <div className="h-4 bg-gray-300 rounded w-1/2 mb-2"></div>
+                    <div className="h-4 bg-gray-200 rounded"></div>
+                    <div className="h-4 bg-gray-200 rounded mt-2"></div>
+                    <div className="h-4 bg-gray-200 rounded mt-2"></div>
                   </div>
-                </AccordionContent>
-              </AccordionItem>
-            </Accordion>
+                  <div>
+                    <div className="h-4 bg-gray-300 rounded w-1/2 mb-2"></div>
+                    <div className="h-4 bg-gray-200 rounded"></div>
+                  </div>
+                  <div>
+                    <div className="h-4 bg-gray-300 rounded w-1/2 mb-2"></div>
+                    <div className="h-4 bg-gray-200 rounded"></div>
+                    <div className="h-4 bg-gray-200 rounded mt-2"></div>
+                    <div className="h-4 bg-gray-200 rounded mt-2"></div>
+                    <div className="h-4 bg-gray-200 rounded mt-2"></div>
+                    <div className="h-4 bg-gray-200 rounded mt-2"></div>
+                  </div>
+                  <div>
+                    <div className="h-4 bg-gray-300 rounded w-1/2 mb-2"></div>
+                    <div className="h-4 bg-gray-200 rounded"></div>
+                    <div className="h-4 bg-gray-200 rounded mt-2"></div>
+                    <div className="h-4 bg-gray-200 rounded mt-2"></div>
+                  </div>
+                  <div>
+                    <div className="h-4 bg-gray-300 rounded w-1/2 mb-2"></div>
+                    <div className="h-4 bg-gray-200 rounded"></div>
+                    <div className="h-4 bg-gray-200 rounded mt-2"></div>
+                    <div className="h-4 bg-gray-200 rounded mt-2"></div>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              lessonListWithQuestion?.map((question) => (
+                <Accordion
+                  key={question._id}
+                  type="single"
+                  collapsible
+                  className="w-full">
+                  <AccordionItem value={"1"}>
+                    <div className="w-full flex justify-between border-b-2 border-gray-400 mb-2">
+                      {/* <Button
+                      onClick={() =>
+                        setOpenQuestionForm({
+                          open: true,
+                          initialValues: null,
+                        })
+                      }
+                      className="cursor-pointer">
+                      Add Question
+                    </Button> */}
+                    </div>
+
+                    <AccordionTrigger className="text-lg font-semibold uppercase">
+                      {(question.lesson as ILesson).lessonNo}. {(question.lesson as ILesson).lessonName}
+                    </AccordionTrigger>
+
+                    <AccordionContent>
+                      <div className="flex flex-col gap-10 ml-6">
+                        {question.questions &&
+                          question.questions.map((question, index) => (
+                            <div key={index}>
+                              <div className="text-base font-semibold leading-none pt-1 mb-2">
+                                {(question.questionCategory as IQuestionCategory).questionCategoryName}
+                              </div>
+
+                              <PatternViews
+                                patternKey={(question.questionCategory as IQuestionCategory).selectedPatternKey}
+                                value={question.question}
+                              />
+                            </div>
+                          ))}
+                      </div>
+                    </AccordionContent>
+                  </AccordionItem>
+                </Accordion>
+              ))
+            )}
           </div>
         </div>
       </div>
@@ -220,13 +277,14 @@ const SubjectDetail = () => {
         />
       )}
 
-      {openQuestionForm.open && questionCategoryList && lessonList && (
+      {openQuestionForm.open && questionCategoryList && lessonList && subjectId && (
         <AddQuestionModal
           open={openQuestionForm.open}
           setOpen={setOpenQuestionForm}
           initialValues={openQuestionForm.initialValues}
           questionCategoryList={questionCategoryList}
           lessonList={lessonList}
+          subject={subjectId}
         />
       )}
     </div>
@@ -234,3 +292,51 @@ const SubjectDetail = () => {
 };
 
 export default SubjectDetail;
+
+// <Accordion
+//   type="single"
+//   collapsible
+//   className="w-full"
+//   key={index}>
+//   <AccordionItem value={question._id}>
+//     <div className="w-full flex justify-between border-b-2 border-gray-400 mb-2">
+//       <Button
+//         onClick={() =>
+//           setOpenQuestionForm({
+//             open: true,
+//             initialValues: question,
+//           })
+//         }
+//         className="cursor-pointer">
+//         Edit Question
+//       </Button>
+//     </div>
+
+//     <AccordionTrigger className="text-lg font-semibold uppercase">{question.question}</AccordionTrigger>
+
+//     <AccordionContent>
+//       <div className="flex flex-col gap-10 ml-6">
+//         <div className="">
+//           <p className="text-base font-semibold leading-none mb-2">{question.question}</p>
+//           <p>{question.answer}</p>
+//         </div>
+//         <div className="">
+//           <p className="text-base font-semibold leading-none mb-2">{question.question}</p>
+//           <p>{question.answer}</p>
+//         </div>
+//         <div className="">
+//           <p className="text-base font-semibold leading-none mb-2">{question.question}</p>
+//           <p>{question.answer}</p>
+//         </div>
+//         <div className="">
+//           <p className="text-base font-semibold leading-none mb-2">{question.question}</p>
+//           <p>{question.answer}</p>
+//         </div>
+//         <div className="">
+//           <p className="text-base font-semibold leading-none mb-2">{question.question}</p>
+//           <p>{question.answer}</p>
+//         </div>
+//       </div>
+//     </AccordionContent>
+//   </AccordionItem>
+// </Accordion>

@@ -13,21 +13,40 @@ export interface IQuestionPaper {
   Questions: IQuestion[];
 }
 
-export interface IQuestionPayload {
-  question: string[];
-  questionCategory: string;
-  lesson: string;
-}
 export interface IQuestion {
   _id: string;
   question: string[];
-  answer?: string;
   questionCategory: string | IQuestionCategory;
+  subject: string;
   lesson: string | ILesson;
+  questionInput: string;
+  answer?: string;
   tags: string[];
   createdAt?: Date;
   updatedAt?: Date;
 }
 
-export interface IQuestionPayload extends Omit<IQuestion, "_id" | "createdAt" | "updatedAt" | "tags"> {}
-export interface IEditQuestionPayload extends Pick<IQuestion, "_id" | "questionCategory" | "question" | "tags"> {}
+export interface ILessonListWithQuestion {
+  _id: string;
+  questions: IQuestion[];
+  lesson: ILesson;
+}
+
+export interface IQuestionPayload {
+  lesson: string;
+  questionCategory: string;
+  question: string[];
+  questionInput: string;
+  subject: string;
+}
+// export interface IQuestionPayload extends Omit<IQuestion, "_id" | "createdAt" | "updatedAt" | "tags"> {}
+// export interface IEditQuestionPayload extends Omit<IQuestion, "createdAt" | "updatedAt"> {}
+export interface IEditQuestionPayload {
+  _id: string;
+  lesson: string;
+  questionCategory: string | IQuestionCategory;
+  question: string[];
+  questionInput: string;
+  tags: string[];
+  subject: string;
+}

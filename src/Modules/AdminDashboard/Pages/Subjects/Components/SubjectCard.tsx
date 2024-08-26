@@ -18,7 +18,7 @@ const SubjectCard = ({ subject }: { subject: ISubject }) => {
           <Pencil className="h-5 w-5" />
         </button>
 
-        <div onClick={() => navigate(`/dashboard/subjects-detail/${subject._id}`)}>
+        <div onClick={() => navigate(`/dashboard/subjects-detail/${subject._id}/${subject.name}`)}>
           <h5 className="p-1 font-medium text-center capitalize cursor-pointer">{subject.name}</h5>
 
           <div className="w-full">

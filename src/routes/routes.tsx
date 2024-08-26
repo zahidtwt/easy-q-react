@@ -155,7 +155,7 @@ export const routes = createBrowserRouter([
             index: true,
           },
           {
-            path: "subjects-detail/:subjectId",
+            path: "subjects-detail/:subjectId/:subjectName",
             element: <SubjectDetail />,
             index: true,
           },
