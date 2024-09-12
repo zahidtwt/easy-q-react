@@ -1,5 +1,6 @@
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { IClass } from "@/interfaces/class";
+// import { IClass } from "@/interfaces/class";
+// import { IClassRes } from "@/interfaces/class.interface";
 import { EducationBoard } from "@/interfaces/education-board";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
@@ -37,11 +38,11 @@ const SelectItemsForBoardCard = ({
   title: string;
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
-  itemList: EducationBoard[] | IClass[];
+  itemList: EducationBoard[];
 }) => {
   const [cardList, setCardList] = useState(itemList);
 
-  const removeItem = (removeItem: EducationBoard | IClass) => {
+  const removeItem = (removeItem: EducationBoard) => {
     setCardList((prev) => prev.filter((item) => item._id !== removeItem._id));
   };
 

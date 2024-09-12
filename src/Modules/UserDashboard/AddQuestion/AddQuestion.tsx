@@ -9,9 +9,9 @@ import SelectClass from "./Components/SelectClass";
 import SelectSubject from "./Components/SelectSubject";
 import { EducationBoard } from "@/interfaces/education-board";
 import { IInstitution } from "@/interfaces/institution";
-import { IClass } from "@/interfaces/class";
 import { ISubject } from "@/interfaces/subject.interface";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { IClassRes } from "@/interfaces/class.interface";
 
 const AddQuestion = () => {
   // const [searchParams, setSearchParams] = useSearchParams();
@@ -37,7 +37,7 @@ const AddQuestion = () => {
   // const [selectedBoard, setSelectedBoard] = useState<EducationBoard>({} as EducationBoard);
   const [, setSelectedBoard] = useState<EducationBoard>({} as EducationBoard);
   const [selectedInstitution, setSelectedInstitution] = useState<IInstitution>({} as IInstitution);
-  const [selectedClass, setSelectedClass] = useState<IClass>({} as IClass);
+  const [selectedClass, setSelectedClass] = useState<IClassRes>({} as IClassRes);
   const [selectedSubject, setSelectedSubject] = useState<ISubject>({} as ISubject);
 
   const [currentTab, setCurrentTab] = useState(1);

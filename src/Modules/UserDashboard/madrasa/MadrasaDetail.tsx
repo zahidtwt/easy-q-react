@@ -8,7 +8,7 @@ import { useGetInstitutionDetail } from "@/hooks/useInstitution";
 import { useGetEducationBoardList } from "@/hooks/useEducationBoard";
 import { useGetClassList } from "@/hooks/useClass";
 import Clip from "@/components/Clip";
-import { IClass } from "@/interfaces/class";
+import { IClassRes } from "@/interfaces/class.interface";
 import { EducationBoard } from "@/interfaces/education-board";
 import { ArrowLeft } from "lucide-react";
 
@@ -18,7 +18,7 @@ const MadrasaDetail = () => {
 
   const { isLoading, data: madrasaDetail } = useGetInstitutionDetail({ id: id });
   const { data: eduBoardList } = useGetEducationBoardList({});
-  const { data: classList } = useGetClassList({});
+  const { data: classList } = useGetClassList({ boardId: "" });
 
   const [open, setOpen] = useState(false);
 
@@ -32,7 +32,7 @@ const MadrasaDetail = () => {
   }, [eduBoardList, madrasaDetail]);
 
   const decoratedClassList = useMemo(() => {
-    const educationListDecorator = (): IClass[] | [] => {
+    const educationListDecorator = (): IClassRes[] | [] => {
       if (classList === undefined) return [];
 
       return classList.filter((item) => madrasaDetail?.classes.includes(item._id));

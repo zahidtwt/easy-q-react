@@ -1,16 +1,16 @@
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useGetClassList } from "@/hooks/useClass";
-import { IClass } from "@/interfaces/class";
+import { IClassRes } from "@/interfaces/class.interface";
 
 const SelectClass = ({
   setCurrentTab,
   setSelectedClass,
 }: {
   setCurrentTab: (tab: number) => void;
-  setSelectedClass: (item: IClass) => void;
+  setSelectedClass: (item: IClassRes) => void;
 }) => {
-  const { isLoading, data: classList } = useGetClassList({});
+  const { isLoading, data: classList } = useGetClassList({ boardId: "" });
 
   return (
     <Card className="max-w-md w-full">

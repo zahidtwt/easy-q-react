@@ -13,7 +13,7 @@ import ImageUploadField from "@/components/ImageUploadField";
 import { useFileUpload } from "@/hooks/useFileUpload";
 import Select from "react-select";
 import { useGetEducationBoardList } from "@/hooks/useEducationBoard";
-import { useGetClassList } from "@/hooks/useClass";
+// import { useGetClassList } from "@/hooks/useClass";
 import getUserDataFromLocalStorage from "@/utils/getUserDataFromLocalStorage";
 // import { EducationBoard } from "@/interfaces/education-board";
 
@@ -129,7 +129,7 @@ const InstituteFormModal = ({
 
   // console.log(eduBoardList);
 
-  const { data: classList } = useGetClassList({});
+  // const { data: classList } = useGetClassList({});
 
   const { mutate: createInstitution } = useCreateInstitution({ dataDecorator });
   const { mutate: updateInstitution } = useUpdateInstitution({ dataDecorator });
@@ -147,17 +147,17 @@ const InstituteFormModal = ({
     return educationListDecorator();
   }, [eduBoardList]);
 
-  const decoratedClassList = useMemo(() => {
-    const educationListDecorator = (): { value: string; label: string }[] | [] => {
-      if (classList === undefined) return [];
+  // const decoratedClassList = useMemo(() => {
+  //   const educationListDecorator = (): { value: string; label: string }[] | [] => {
+  //     if (classList === undefined) return [];
 
-      return classList.map((item) => ({
-        value: item._id,
-        label: item.name,
-      }));
-    };
-    return educationListDecorator();
-  }, [classList]);
+  //     return classList.map((item) => ({
+  //       value: item._id,
+  //       label: item.name,
+  //     }));
+  //   };
+  //   return educationListDecorator();
+  // }, [classList]);
 
   return (
     <Dialog
@@ -275,7 +275,7 @@ const InstituteFormModal = ({
                 />
               )}
 
-              {classList && decoratedClassList && (
+              {/* {classList && decoratedClassList && (
                 <FormField
                   control={control}
                   name="classes"
@@ -294,7 +294,7 @@ const InstituteFormModal = ({
                     </FormItem>
                   )}
                 />
-              )}
+              )} */}
 
               <div className="flex justify-center">
                 <Button
