@@ -1,6 +1,6 @@
 import { useState } from "react";
 import BoardCard from "./BoardCard";
-import SelectItemsForBoardCard from "./SelectItemsForBoardCard";
+// import SelectItemsForBoardCard from "./SelectItemsForBoardCard";
 import { useGetClassList } from "@/hooks/useClass";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -19,12 +19,13 @@ const BoardCardSkeleton = () => {
 const MyClasses = () => {
   const title = "Classes";
 
-  const [open, setOpen] = useState(false);
+  // const [open, setOpen] = useState(false);
+  const [, setOpen] = useState(false);
   const modalToggoler = () => {
     setOpen(true);
   };
 
-  const { isLoading, data: classList } = useGetClassList({});
+  const { isLoading, data: classList } = useGetClassList({ boardId: "" });
 
   if (isLoading) {
     return (
@@ -46,14 +47,14 @@ const MyClasses = () => {
         list={(classList && classList) || []}
       />
 
-      {open && (
+      {/* {open && (
         <SelectItemsForBoardCard
           title={"Classes"}
           open={open}
           setOpen={setOpen}
           itemList={(classList && classList) || []}
         />
-      )}
+      )} */}
     </>
   );
 };
