@@ -34,12 +34,12 @@ const SubjectDetailFormSchema = zod.object({
 type SubjectDetailFormFields = zod.infer<typeof SubjectDetailFormSchema>;
 
 const SubjectDetailFormModal = ({
-  classId,
+  // classId,
   open,
   setOpen,
   initialValues,
 }: {
-  classId: string;
+  // classId: string;
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
   initialValues?: IEditSubjectPayload;
@@ -91,9 +91,9 @@ const SubjectDetailFormModal = ({
 
   const submitForm: SubmitHandler<SubjectDetailFormFields> = async (data) => {
     if (initialValues) {
-      updateSubject({ ...data, _id: initialValues._id, class: initialValues.class });
+      updateSubject({ ...data, _id: initialValues._id });
     } else {
-      createSubject({ ...data, class: classId });
+      createSubject({ ...data });
     }
   };
   return (

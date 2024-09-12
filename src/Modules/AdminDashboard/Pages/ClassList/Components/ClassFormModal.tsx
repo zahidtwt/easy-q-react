@@ -7,28 +7,30 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import zod from "zod";
 import { Button } from "@/components/ui/button";
 import SpinningLoader from "@/components/loader";
-import { IEditClassPayload } from "@/interfaces/class";
 import { useCreateClass, useUpdateClass } from "@/hooks/useClass";
+import { IEditClassPayload } from "@/interfaces/class.interface";
 
-const EduBoardFormSchema = zod.object({
+const classFormSchema = zod.object({
   name: zod.string().min(2, {
     message: "name must be at least 2 characters.",
   }),
 });
 
-type EduBoardFormFields = zod.infer<typeof EduBoardFormSchema>;
+type classFormFields = zod.infer<typeof classFormSchema>;
 
 const ClassFormModal = ({
   open,
   setOpen,
+  boardId,
   initialValues,
 }: {
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
+  boardId: string;
   initialValues?: IEditClassPayload;
 }) => {
-  const formMethods = useForm<EduBoardFormFields>({
-    resolver: zodResolver(EduBoardFormSchema),
+  const formMethods = useForm<classFormFields>({
+    resolver: zodResolver(classFormSchema),
     mode: "all",
     defaultValues: initialValues || {
       name: "",
@@ -49,11 +51,11 @@ const ClassFormModal = ({
   const { mutate: createClass } = useCreateClass({ dataDecorator });
   const { mutate: updateClass } = useUpdateClass({ dataDecorator });
 
-  const submitForm: SubmitHandler<EduBoardFormFields> = async (data) => {
+  const submitForm: SubmitHandler<classFormFields> = async (data) => {
     if (initialValues) {
       updateClass({ ...data, _id: initialValues._id });
     } else {
-      createClass(data);
+      createClass({ ...data, subjectList: [], educationBoard: boardId });
     }
   };
 

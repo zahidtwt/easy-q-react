@@ -25,26 +25,26 @@ export const questionPatternList = {
     method: (params: string): string[] => {
       const lines = params.split("\n");
       const nonEmptyLines = lines.filter((line) => line.trim() !== "");
-      // console.log(nonEmptyLines);
       return nonEmptyLines;
     },
   },
-  // table_match: {
-  //   id: "4",
-  //   key: "table_match",
-  //   patternDetector: ["|", ","],
-  //   method: (params: string): string[] => {
-  //     return [params];
-  //   },
-  // },
-  // feel_in_the_blanks: {
-  //   id: "5",
-  //   key: "feel_in_the_blanks",
-  //   patternDetector: [],
-  //   method: (params: string): string[] => {
-  //     return [params];
-  //   },
-  // },
+  table_match: {
+    id: "4",
+    key: "table_match",
+    patternDetector: ["|", ","],
+    method: (params: string): string[] => {
+      const elements = params.split("\n").map((line) => line.trim());
+      return elements;
+    },
+  },
+  feel_in_the_blanks: {
+    id: "5",
+    key: "feel_in_the_blanks",
+    patternDetector: [],
+    method: (params: string): string[] => {
+      return [params];
+    },
+  },
   // question_with_story: {
   //   id: "6",
   //   key: "question_with_story",

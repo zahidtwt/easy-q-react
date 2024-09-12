@@ -1,6 +1,6 @@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
-import { PlusCircle } from "lucide-react";
+import { FilePenLine, PlusCircle } from "lucide-react";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import AddQuestionCategoryModal from "./Components/AddQuestionCategoryModal";
@@ -63,9 +63,9 @@ const SubjectDetail = () => {
   });
 
   return (
-    <div className="container mt-8">
+    <div className="container mt-8 pb-8">
       <div className="border-2 border-gray-400 rounded-md p-3">
-        <h1 className="text-center text-3xl border-b-gray-400 border-b-2 mb-6 pb-2">{subjectName}</h1>
+        <h1 className="text-center text-3xl border-b-gray-400 border-b-2 mb-6 pb-2 uppercase">{subjectName}</h1>
 
         <div className="grid grid-cols-9 gap-8">
           <div className="col-span-3 border-r-gray-400 border-r-2 pr-6">
@@ -210,37 +210,38 @@ const SubjectDetail = () => {
                 </div>
               </div>
             ) : (
-              lessonListWithQuestion?.map((question) => (
+              lessonListWithQuestion?.map((lessonQuestions) => (
                 <Accordion
-                  key={question._id}
+                  key={lessonQuestions._id}
                   type="single"
                   collapsible
                   className="w-full">
                   <AccordionItem value={"1"}>
-                    <div className="w-full flex justify-between border-b-2 border-gray-400 mb-2">
-                      {/* <Button
-                      onClick={() =>
-                        setOpenQuestionForm({
-                          open: true,
-                          initialValues: null,
-                        })
-                      }
-                      className="cursor-pointer">
-                      Add Question
-                    </Button> */}
-                    </div>
+                    <div className="w-full flex justify-between border-b-2 border-gray-400 mb-2"></div>
 
                     <AccordionTrigger className="text-lg font-semibold uppercase">
-                      {(question.lesson as ILesson).lessonNo}. {(question.lesson as ILesson).lessonName}
+                      {(lessonQuestions.lesson as ILesson).lessonNo}. {(lessonQuestions.lesson as ILesson).lessonName}
                     </AccordionTrigger>
 
                     <AccordionContent>
                       <div className="flex flex-col gap-10 ml-6">
-                        {question.questions &&
-                          question.questions.map((question, index) => (
+                        {lessonQuestions.questions &&
+                          lessonQuestions.questions.map((question, index) => (
                             <div key={index}>
-                              <div className="text-base font-semibold leading-none pt-1 mb-2">
+                              <div
+                                onClick={() =>
+                                  setOpenQuestionForm({
+                                    open: true,
+                                    initialValues: {
+                                      ...question,
+                                      lesson: (lessonQuestions.lesson as ILesson)._id,
+                                      questionCategory: question.questionCategory as IQuestionCategory,
+                                    },
+                                  })
+                                }
+                                className="text-base font-semibold leading-none pt-1 mb-4 flex gap-4 align-middle cursor-pointer">
                                 {(question.questionCategory as IQuestionCategory).questionCategoryName}
+                                <FilePenLine size={16} />
                               </div>
 
                               <PatternViews

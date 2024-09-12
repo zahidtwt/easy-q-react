@@ -146,7 +146,7 @@ const AddQuestionModal = ({
           <Form {...formMethods}>
             <form
               onSubmit={handleSubmit(submitForm)}
-              className="space-y-4 sm:space-y-6 p-1 w-[300px] sm:w-[350px] lg:w-[450px]">
+              className="space-y-4 sm:space-y-6 p-1">
               {showPreview ? (
                 <div className="grid gap-4">
                   <div>

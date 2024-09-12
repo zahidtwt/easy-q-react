@@ -3,7 +3,7 @@ import AdminDashboardLayout from "@/Modules/AdminDashboard/Layout/AdminDashboard
 import BoardList from "@/Modules/AdminDashboard/Pages/BoardList/BoardList";
 import ClassList from "@/Modules/AdminDashboard/Pages/ClassList/ClassList";
 import InstitutionList from "@/Modules/AdminDashboard/Pages/InstitutionList/InstitutionList";
-import QuestionsList from "@/Modules/AdminDashboard/Pages/QuestionsList/QuestionsList";
+// import QuestionsList from "@/Modules/AdminDashboard/Pages/QuestionsList/QuestionsList";
 import UserList from "@/Modules/AdminDashboard/Pages/UserList/UserList";
 import NotFoundPage from "@/components/not-found";
 import AuthLayout from "@/Modules/Auth/layout";
@@ -145,7 +145,7 @@ export const routes = createBrowserRouter([
             index: true,
           },
           {
-            path: "classes",
+            path: ":boardId/classes",
             element: <ClassList />,
             index: true,
           },
@@ -168,11 +168,11 @@ export const routes = createBrowserRouter([
             element: <InstitutionList />,
             index: true,
           },
-          {
-            path: "questions",
-            element: <QuestionsList />,
-            index: true,
-          },
+          // {
+          //   path: "questions",
+          //   element: <QuestionsList />,
+          //   index: true,
+          // },
           {
             path: "users",
             element: <UserList />,

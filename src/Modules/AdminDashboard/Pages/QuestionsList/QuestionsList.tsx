@@ -12,7 +12,7 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { useGetClassList } from "@/hooks/useClass";
 import { useGetSubjectList } from "@/hooks/useSubject";
-import { IClass } from "@/interfaces/class";
+// import { IClass } from "@/interfaces/class";
 import { ISubject } from "@/interfaces/subject.interface";
 import { ListFilter, PlusCircle, Search } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -20,6 +20,7 @@ import { debounce } from "lodash";
 import { useGetQuestionList } from "@/hooks/useQuestions";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import QuestionFormModal from "./Components/QuestionFormModal";
+import { IClassRes } from "@/interfaces/class.interface";
 
 const QuestionsList = () => {
   const defaultSubject = {
@@ -31,7 +32,7 @@ const QuestionsList = () => {
     active: "active",
   };
 
-  const [selectedClass, setSelectedClass] = useState<IClass>({} as IClass);
+  const [selectedClass, setSelectedClass] = useState<IClassRes>({} as IClassRes);
   const [selectedSubject, setSelectedSubject] = useState<ISubject>(defaultSubject as ISubject);
   const [queryText, setQueryText] = useState("");
 
@@ -65,7 +66,7 @@ const QuestionsList = () => {
     debouncedSearch(value);
   };
 
-  const { data: classList, isLoading: isLoadingClassList } = useGetClassList({});
+  const { data: classList, isLoading: isLoadingClassList } = useGetClassList({ boardId: "" }); // add the boardId
 
   const {
     data: subjectList,
@@ -96,7 +97,7 @@ const QuestionsList = () => {
 
   useEffect(() => {
     if (classList?.length) {
-      setSelectedClass(classList[0] as IClass);
+      setSelectedClass(classList[0] as IClassRes);
     }
   }, [classList]);
 
@@ -212,18 +213,18 @@ const QuestionsList = () => {
                         key={question._id}
                         value={question._id}>
                         <AccordionTrigger className="uppercase">
-                          {question.question}
+                          {question.questions[0].question}
                           <Badge
                             className="ml-auto font-normal text-xs"
                             variant="secondary">
-                            {question.questionCategory}
+                            {question.questions[0].question}
                           </Badge>
                         </AccordionTrigger>
                         <AccordionContent>
                           <div>
                             <div>
                               <p className="text-sm font-medium leading-none mb-2">Question Detail:</p>
-                              <p>{question.answer}</p>
+                              <p>{question.questions[0].question}</p>
                             </div>
                           </div>
                         </AccordionContent>
