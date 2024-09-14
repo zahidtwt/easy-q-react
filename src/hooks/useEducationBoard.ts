@@ -38,7 +38,11 @@ const updateBoard = async ({ _id, ...restPayload }: IEditEducationBoardPayload) 
   return res.data;
 };
 
-export const useGetEducationBoardList = ({ dataDecorator }: { dataDecorator?: (data: unknown) => unknown }) => {
+export const useGetEducationBoardList = ({
+  dataDecorator,
+}: {
+  dataDecorator?: (data: EducationBoard[]) => EducationBoard[];
+}) => {
   return useQuery<EducationBoard[], Error>({
     queryKey: ["educationBoardList"],
     queryFn: () => fetchBoardList(),

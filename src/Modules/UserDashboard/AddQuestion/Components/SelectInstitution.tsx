@@ -7,7 +7,7 @@ const SelectInstitution = ({
   setCurrentTab,
   setSelectedInstitution,
 }: {
-  setCurrentTab: (tab: number) => void;
+  setCurrentTab: React.Dispatch<React.SetStateAction<number>>;
   setSelectedInstitution: (board: IInstitution) => void;
 }) => {
   const { isLoading, data: institutionList } = useGetInstitutionList({});
@@ -32,7 +32,7 @@ const SelectInstitution = ({
             <Button
               key={item._id}
               onClick={() => {
-                setCurrentTab(3);
+                setCurrentTab((prev) => prev + 1);
                 setSelectedInstitution(item);
               }}
               className="bg-gray-100 hover:bg-gray-200 py-2 rounded-lg text-gray-950">

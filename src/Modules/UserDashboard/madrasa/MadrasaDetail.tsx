@@ -6,9 +6,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import MadrasaForm from "./components/MadrasaForm";
 import { useGetInstitutionDetail } from "@/hooks/useInstitution";
 import { useGetEducationBoardList } from "@/hooks/useEducationBoard";
-import { useGetClassList } from "@/hooks/useClass";
 import Clip from "@/components/Clip";
-import { IClassRes } from "@/interfaces/class.interface";
 import { EducationBoard } from "@/interfaces/education-board";
 import { ArrowLeft } from "lucide-react";
 
@@ -18,7 +16,6 @@ const MadrasaDetail = () => {
 
   const { isLoading, data: madrasaDetail } = useGetInstitutionDetail({ id: id });
   const { data: eduBoardList } = useGetEducationBoardList({});
-  const { data: classList } = useGetClassList({ boardId: "" });
 
   const [open, setOpen] = useState(false);
 
@@ -30,15 +27,6 @@ const MadrasaDetail = () => {
     };
     return educationListDecorator();
   }, [eduBoardList, madrasaDetail]);
-
-  const decoratedClassList = useMemo(() => {
-    const educationListDecorator = (): IClassRes[] | [] => {
-      if (classList === undefined) return [];
-
-      return classList.filter((item) => madrasaDetail?.classes.includes(item._id));
-    };
-    return educationListDecorator();
-  }, [classList, madrasaDetail]);
 
   if (isLoading) {
     return <p> loading ...</p>;
@@ -103,25 +91,6 @@ const MadrasaDetail = () => {
               <div className="flex flex-wrap gap-3 p-2">
                 {decoratedEducationList &&
                   decoratedEducationList.map((item) => (
-                    <Clip
-                      key={item._id}
-                      name={item.name}
-                    />
-                  ))}
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="col-span-12">
-          <div className="w-full">
-            <div className="w-full flex justify-between items-center mb-2">
-              <p className="font-medium text-xl">{"Board"}</p>
-            </div>
-            <div className="w-full border-2 border-spacing-1 border-gray-50 rounded-md min-h-10">
-              <div className="flex flex-wrap gap-3 p-2">
-                {decoratedClassList &&
-                  decoratedClassList.map((item) => (
                     <Clip
                       key={item._id}
                       name={item.name}
