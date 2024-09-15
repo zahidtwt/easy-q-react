@@ -18,11 +18,13 @@ import MadrasaDetail from "@/Modules/UserDashboard/madrasa/MadrasaDetail";
 import Questions from "@/Modules/UserDashboard/questions";
 import { Navigate, Route, Routes, createBrowserRouter } from "react-router-dom";
 import ClassDetail from "@/Modules/AdminDashboard/Pages/ClassDetail/ClassDetail";
-import AddQuestion from "@/Modules/UserDashboard/AddQuestion/AddQuestion";
+// import AddQuestion from "@/Modules/UserDashboard/AddQuestion/AddQuestion";
 import Profile from "@/Modules/UserDashboard/profile/profile";
 import QuestionPatterns from "@/Modules/AdminDashboard/Pages/QuestionPatterns/QuestionPatterns";
 import Subjects from "@/Modules/AdminDashboard/Pages/Subjects/Subjects";
 import SubjectDetail from "@/Modules/AdminDashboard/Pages/Subjects/SubjectDetail";
+import InitializeQuestionPaper from "@/Modules/UserDashboard/initializeQuestionPaper/InitializeQuestionPaper";
+import PrepareQuestionPaper from "@/Modules/UserDashboard/prepareQuestionPaper/PrepareQuestionPaper";
 
 export const routes = createBrowserRouter([
   {
@@ -106,7 +108,13 @@ export const routes = createBrowserRouter([
           },
           {
             path: "add-questions",
-            element: <AddQuestion />,
+            // element: <AddQuestion />,
+            element: <InitializeQuestionPaper />,
+          },
+          {
+            path: "prepare-questions/:id",
+            // element: <AddQuestion />,
+            element: <PrepareQuestionPaper />,
           },
           {
             path: "download",

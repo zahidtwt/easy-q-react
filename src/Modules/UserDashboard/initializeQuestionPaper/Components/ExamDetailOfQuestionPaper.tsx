@@ -6,9 +6,9 @@ import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import zod from "zod";
-import { IExamDetail } from "../AddQuestion";
 import { Label } from "@/components/ui/label";
 import { ArrowLeft } from "lucide-react";
+import { IExamDetail } from "@/interfaces/question-paper.interface";
 
 const ExamDetailFormSchema = zod.object({
   // IExamDetail
@@ -72,9 +72,9 @@ const ExamDetailOfQuestionPaper = ({
           }}>
           <ArrowLeft size={24} />
         </Button>
-        প্রতিষ্ঠান নির্বাচন করুন
+        পরিক্ষার নাম, পূর্ণমান ও সময় নির্ধারণ করুন
       </CardHeader>
-      <CardContent className="grid grid-cols-1 gap-4 p-6 max-h-[40vh] overflow-y-auto overflow-x-hidden">
+      <CardContent className="grid grid-cols-1 gap-4 p-6 max-h-[70vh] overflow-y-auto overflow-x-hidden">
         <Form {...formMethods}>
           <form
             onSubmit={handleSubmit(submitForm)}

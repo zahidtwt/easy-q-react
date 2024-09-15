@@ -15,5 +15,6 @@ export const endpoints = {
     lesson: "api/lesson",
     subject: "api/subject",
     userRole: "api/user-roles/",
+    questionPaper: "api/question-paper",
   },
 };
