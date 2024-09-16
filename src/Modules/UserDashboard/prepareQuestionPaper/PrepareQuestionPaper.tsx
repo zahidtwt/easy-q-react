@@ -12,7 +12,9 @@ import {
   // DrawerTrigger,
 } from "@/components/ui/drawer";
 import { useGetQuestionCategoryList } from "@/hooks/useQuestionCategory";
-import { useGetQuestionPaperDetails } from "@/hooks/useQuestionPaper";
+import { useAddCategoryInQuestionPaper, useGetQuestionPaperDetails } from "@/hooks/useQuestionPaper";
+// import { IQuestionCategory } from "@/interfaces/question-category.interface";
+import { IQuestionPaperRes } from "@/interfaces/question-paper.interface";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 
@@ -20,17 +22,41 @@ const SelectCategory = ({
   open,
   setOpen,
   subjectId,
+  questionPaperId,
   selectedCategories = [],
 }: {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   subjectId: string;
+  questionPaperId: string;
   selectedCategories: string[];
 }) => {
+  // const dataDecorator = (data: IQuestionCategory[]): IQuestionCategory[] => {
+  //   const filterData = data.filter((item) => !selectedCategories.includes(item._id));
+  //   return filterData;
+  // };
+
+  // console.log(selectedCategories);
+
   const { data: questionCategoryList, isLoading: questionCategoryListLoading } = useGetQuestionCategoryList({
     filterData: { subjectId: subjectId || "" },
+    // dataDecorator,
   });
-  const [selectedCategory, setSelectedCategory] = useState<string[]>(selectedCategories);
+
+  const addDataDecorator = (data: IQuestionPaperRes): IQuestionPaperRes => {
+    setSelectedCategory([]);
+    setOpen(false);
+    return data;
+  };
+  const { mutate: addCategory, isPending: IsCategoryAddedLoading } = useAddCategoryInQuestionPaper({
+    dataDecorator: addDataDecorator,
+  });
+
+  const [selectedCategory, setSelectedCategory] = useState<string[]>([]);
+
+  const updateSelectedCategory = () => {
+    addCategory({ _id: questionPaperId, categoryList: selectedCategory });
+  };
 
   return (
     <Drawer
@@ -49,33 +75,36 @@ const SelectCategory = ({
               <DrawerDescription>
                 <div className="grid grid-cols-1 gap-2">
                   {!questionCategoryListLoading &&
-                    questionCategoryList?.map((item) => (
-                      <div
-                        key={item._id}
-                        className="col-span-1 bg-gray-100 p-2 rounded-lg mt-2">
-                        {/* <div>{item.questionCategoryName}</div> */}
-                        <div className="items-top flex space-x-2">
-                          <Checkbox
-                            id={item._id}
-                            checked={selectedCategory.includes(item._id)}
-                            onCheckedChange={() => {
-                              if (selectedCategory.includes(item._id)) {
-                                setSelectedCategory((prev) => prev.filter((i) => i !== item._id));
-                              } else {
-                                setSelectedCategory((prev) => [...prev, item._id]);
-                              }
-                            }}
-                          />
-                          <div className="grid gap-1.5 leading-none">
-                            <label
-                              htmlFor={item._id}
-                              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                              {item.questionCategoryName}
-                            </label>
+                    questionCategoryList?.map(
+                      (item) =>
+                        !selectedCategories.includes(item._id) && (
+                          <div
+                            key={item._id}
+                            className="col-span-1 bg-gray-100 p-2 rounded-lg mt-2">
+                            {/* <div>{item.questionCategoryName}</div> */}
+                            <div className="items-top flex space-x-2">
+                              <Checkbox
+                                id={item._id}
+                                checked={selectedCategory.includes(item._id)}
+                                onCheckedChange={() => {
+                                  if (selectedCategory.includes(item._id)) {
+                                    setSelectedCategory((prev) => prev.filter((i) => i !== item._id));
+                                  } else {
+                                    setSelectedCategory((prev) => [...prev, item._id]);
+                                  }
+                                }}
+                              />
+                              <div className="grid gap-1.5 leading-none">
+                                <label
+                                  htmlFor={item._id}
+                                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                                  {item.questionCategoryName}
+                                </label>
+                              </div>
+                            </div>
                           </div>
-                        </div>
-                      </div>
-                    ))}
+                        )
+                    )}
                 </div>
               </DrawerDescription>
             </DrawerHeader>
@@ -83,7 +112,12 @@ const SelectCategory = ({
               <DrawerClose className="col-span-1">
                 <Button variant="outline">Cancel</Button>
               </DrawerClose>
-              <Button className="col-span-1">Done</Button>
+              <Button
+                disabled={IsCategoryAddedLoading}
+                onClick={updateSelectedCategory}
+                className="col-span-1">
+                Done
+              </Button>
             </DrawerFooter>
           </div>
         </div>
@@ -137,11 +171,12 @@ const PrepareQuestionPaper = () => {
         </div>
       )}
 
-      {open && questionPaperDetails && (
+      {questionPaperDetails && id && (
         <SelectCategory
           open={open}
           setOpen={setOpen}
           subjectId={questionPaperDetails?.subject._id}
+          questionPaperId={id}
           selectedCategories={questionPaperDetails.questionCategory.map((item) => item.questionCategoryId)}
         />
       )}

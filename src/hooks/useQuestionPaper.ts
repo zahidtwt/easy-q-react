@@ -17,7 +17,7 @@ const createQuestionPaper = async (data: IQuestionPaperPayload) => {
 
 const fetchQuestionPaperDetails = async (id?: string) => {
   return (
-    await axiosInstance.get(`${endpoints.dashboard.questionPaper}/${id}`, {
+    await axiosInstance.get(`${endpoints.dashboard.questionPaper}/details/${id}`, {
       headers: {
         ...axiosInstance.defaults.headers.common,
         Authorization: `Bearer ${Cookies.get("token")}`,
@@ -26,10 +26,33 @@ const fetchQuestionPaperDetails = async (id?: string) => {
   ).data;
 };
 
-const updateQuestionPaperCategory = async ({ _id, subjectList }: { _id: string; subjectList: string[] }) => {
+const addQuestionPaperCategory = async ({ _id, categoryList }: { _id: string; categoryList: string[] }) => {
+  const questionCategory: { questionCategoryId: string; position: number; marks: number }[] = [];
+
+  categoryList.map((item) => {
+    questionCategory.push({ questionCategoryId: item, position: 0, marks: 0 });
+  });
+
+  const res = await axiosInstance.post(
+    `${endpoints.dashboard.questionPaper}/add-question-category`,
+    {
+      questionPaperId: _id,
+      questionCategory: questionCategory,
+    },
+    {
+      headers: {
+        ...axiosInstance.defaults.headers.common,
+        Authorization: `Bearer ${Cookies.get("token")}`,
+      },
+    }
+  );
+  return res.data;
+};
+
+const removeQuestionPaperCategory = async ({ _id, categoryId }: { _id: string; categoryId: string }) => {
   const res = await axiosInstance.put(
-    `${endpoints.dashboard.class}/update-subject-list/${_id}`,
-    { subjectList },
+    `${endpoints.dashboard.questionPaper}/remove-question-category`,
+    { questionPaperId: _id, questionCategoryId: categoryId },
     {
       headers: {
         ...axiosInstance.defaults.headers.common,
@@ -67,13 +90,40 @@ export const useCreateQuestionPaper = ({
   });
 };
 
-export const useUpdateQuestionPaperCategory = ({ dataDecorator }: { dataDecorator?: (data: unknown) => void }) => {
+export const useAddCategoryInQuestionPaper = ({
+  dataDecorator,
+}: {
+  dataDecorator?: (data: IQuestionPaperRes) => IQuestionPaperRes;
+}) => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (payload: { _id: string; subjectList: string[] }) => updateQuestionPaperCategory(payload),
+    mutationFn: (payload: { _id: string; categoryList: string[] }) => addQuestionPaperCategory(payload),
     onSuccess: (data) => {
       queryClient.invalidateQueries({
-        queryKey: ["classList"],
+        queryKey: ["question-paper-detail", "questionCategoryList"],
+      });
+
+      toast.success("Class update successfully");
+      if (dataDecorator) {
+        return dataDecorator(data);
+      }
+
+      return data;
+    },
+    onError: (error) => {
+      toast.error(error.message);
+      throw new Error(error.message);
+    },
+  });
+};
+
+export const useRemoveCategoryFromQuestionPaper = ({ dataDecorator }: { dataDecorator?: (data: unknown) => void }) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (payload: { _id: string; categoryId: string }) => removeQuestionPaperCategory(payload),
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({
+        queryKey: ["question-paper-detail", "questionCategoryList"],
       });
 
       toast.success("Class update successfully");
