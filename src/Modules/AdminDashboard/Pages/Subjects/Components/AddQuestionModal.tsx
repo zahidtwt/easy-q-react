@@ -55,7 +55,9 @@ const AddQuestionModal = ({
   subject: string;
 }) => {
   const [showPreview, setShowPreview] = useState(false);
-  const [questionCategory, setQuestionCategory] = useState<IQuestionCategory | null>(null);
+  const [questionCategory, setQuestionCategory] = useState<IQuestionCategory | null>(
+    (initialValues?.questionCategory as IQuestionCategory) ?? null
+  );
 
   const formMethods = useForm<QuestionFormFields>({
     resolver: zodResolver(QuestionFormSchema),

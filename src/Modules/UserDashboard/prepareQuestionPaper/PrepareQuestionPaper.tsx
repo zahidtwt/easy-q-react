@@ -1,147 +1,125 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Checkbox } from "@/components/ui/checkbox";
+// import { Label } from "@/components/ui/label";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+// import { SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerDescription,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerTitle,
-  // DrawerTrigger,
-} from "@/components/ui/drawer";
-import { useGetQuestionCategoryList } from "@/hooks/useQuestionCategory";
-import { useAddCategoryInQuestionPaper, useGetQuestionPaperDetails } from "@/hooks/useQuestionPaper";
+  useGetQuestionPaperDetails,
+  useGetQuestionPaperDownloadPermission,
+  useRemoveCategoryFromQuestionPaper,
+} from "@/hooks/useQuestionPaper";
+import { IQuestionCategory } from "@/interfaces/question-category.interface";
 // import { IQuestionCategory } from "@/interfaces/question-category.interface";
-import { IQuestionPaperRes } from "@/interfaces/question-paper.interface";
+import PatternViews from "@/Modules/AdminDashboard/Pages/Subjects/Components/PatternViews";
+// import { Select } from "@radix-ui/react-select";
+import { ArrowLeft, Pencil, Trash2 } from "lucide-react";
 import { useState } from "react";
-import { useParams } from "react-router-dom";
-
-const SelectCategory = ({
-  open,
-  setOpen,
-  subjectId,
-  questionPaperId,
-  selectedCategories = [],
-}: {
+import { useNavigate, useParams } from "react-router-dom";
+import SelectCategory from "./Components/SelectCategory";
+// import { useGetQuestionList } from "@/hooks/useQuestions";
+import QuestionSelectionModal from "./Components/QuestionSelectionModal";
+import { useGetQuestionListForCategory } from "@/hooks/useQuestions";
+import { IEditQuestionPaperCategoryPayload, IQuestionPaperRes } from "@/interfaces/question-paper.interface";
+import { Label } from "@/components/ui/label";
+import { BlobProvider } from "@react-pdf/renderer";
+import { QuestionPaperPDF } from "@/sections/question-paper/question-paper-pdf";
+import { Download, Loader } from "lucide-react";
+import { toast } from "sonner";
+interface IQuestionSelectModalOpenType {
   open: boolean;
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  subjectId: string;
-  questionPaperId: string;
-  selectedCategories: string[];
-}) => {
-  // const dataDecorator = (data: IQuestionCategory[]): IQuestionCategory[] => {
-  //   const filterData = data.filter((item) => !selectedCategories.includes(item._id));
-  //   return filterData;
-  // };
-
-  // console.log(selectedCategories);
-
-  const { data: questionCategoryList, isLoading: questionCategoryListLoading } = useGetQuestionCategoryList({
-    filterData: { subjectId: subjectId || "" },
-    // dataDecorator,
-  });
-
-  const addDataDecorator = (data: IQuestionPaperRes): IQuestionPaperRes => {
-    setSelectedCategory([]);
-    setOpen(false);
-    return data;
-  };
-  const { mutate: addCategory, isPending: IsCategoryAddedLoading } = useAddCategoryInQuestionPaper({
-    dataDecorator: addDataDecorator,
-  });
-
-  const [selectedCategory, setSelectedCategory] = useState<string[]>([]);
-
-  const updateSelectedCategory = () => {
-    addCategory({ _id: questionPaperId, categoryList: selectedCategory });
-  };
-
-  return (
-    <Drawer
-      open={open}
-      onOpenChange={setOpen}>
-      {/* <DrawerTrigger>Open</DrawerTrigger> */}
-      {/* <DrawerTrigger asChild>
-         <Button variant="outline">Edit Profile</Button>
-       </DrawerTrigger> */}
-
-      <DrawerContent className="">
-        <div className="flex justify-center">
-          <div className="w-[500px] bg-white">
-            <DrawerHeader>
-              <DrawerTitle>Category List</DrawerTitle>
-              <DrawerDescription>
-                <div className="grid grid-cols-1 gap-2">
-                  {!questionCategoryListLoading &&
-                    questionCategoryList?.map(
-                      (item) =>
-                        !selectedCategories.includes(item._id) && (
-                          <div
-                            key={item._id}
-                            className="col-span-1 bg-gray-100 p-2 rounded-lg mt-2">
-                            {/* <div>{item.questionCategoryName}</div> */}
-                            <div className="items-top flex space-x-2">
-                              <Checkbox
-                                id={item._id}
-                                checked={selectedCategory.includes(item._id)}
-                                onCheckedChange={() => {
-                                  if (selectedCategory.includes(item._id)) {
-                                    setSelectedCategory((prev) => prev.filter((i) => i !== item._id));
-                                  } else {
-                                    setSelectedCategory((prev) => [...prev, item._id]);
-                                  }
-                                }}
-                              />
-                              <div className="grid gap-1.5 leading-none">
-                                <label
-                                  htmlFor={item._id}
-                                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                                  {item.questionCategoryName}
-                                </label>
-                              </div>
-                            </div>
-                          </div>
-                        )
-                    )}
-                </div>
-              </DrawerDescription>
-            </DrawerHeader>
-            <DrawerFooter className="grid grid-cols-2 gap-3">
-              <DrawerClose className="col-span-1">
-                <Button variant="outline">Cancel</Button>
-              </DrawerClose>
-              <Button
-                disabled={IsCategoryAddedLoading}
-                onClick={updateSelectedCategory}
-                className="col-span-1">
-                Done
-              </Button>
-            </DrawerFooter>
-          </div>
-        </div>
-      </DrawerContent>
-    </Drawer>
-  );
-};
+  initialValues: null | IEditQuestionPaperCategoryPayload;
+}
 
 const PrepareQuestionPaper = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
+  // const [primarySymbol, setPrimarySymbol] = useState<"1." | "a" | "(A)">("1.");
+  const [selectedCategory, setSelectedCategory] = useState<IQuestionCategory | null>(null);
+  const [questionSelectModalOpen, setQuestionSelectModalOpen] = useState<IQuestionSelectModalOpenType>({
+    open: false,
+    initialValues: null,
+  });
 
-  const { data: questionPaperDetails } = useGetQuestionPaperDetails({
+  // const examInfo = {
+  //   schoolName: "বর্ডারগার্ড পাবলিক স্কুল অ্যান্ড কলেজ, রংপুর",
+  //   className: "৯ম শ্রেণী",
+  //   subject: "বাংলা প্রথম পত্র",
+  //   subjectCode: "১০১",
+  //   examDate: "২০২৩",
+  // };
+  // const questions = [
+  //   {
+  //     id: 1,
+  //     text: "সাদাকাল আর রঙিনতার মধ্যে মূল ফারাক কী?",
+  //     subQuestions: [
+  //       { id: "ক", text: "বর্ণনা করুন।" },
+  //       { id: "খ", text: "সাদাকালের প্রভাব ব্যাখ্যা করুন।" },
+  //     ],
+  //   },
+  //   {
+  //     id: 2,
+  //     text: "মা-মরা মেয়ে বলতে কী বোঝায়?",
+  //   },
+  //   {
+  //     id: 3,
+  //     text: "তোমার প্রিয় বইটি সম্পর্কে লিখ।",
+  //   },
+  // ];
+
+  const downloadPermissionDecorator = (data: IQuestionPaperRes): IQuestionPaperRes => {
+    if (data?.downloadCount > 0) {
+      const downloadLink = document.getElementById("download-link");
+      if (downloadLink) {
+        downloadLink.click();
+      }
+    }
+
+    return data;
+  };
+
+  const { data: questionPaperDetails, isLoading: questionPaperDetailsLoading } = useGetQuestionPaperDetails({
     id: id,
   });
 
+  const {
+    data: lessonListWithQuestion,
+    isPending: lessonListWithQuestionLoading,
+    mutate: getQuestionList,
+  } = useGetQuestionListForCategory({});
+
+  const { mutate: removeCategoryFunc } = useRemoveCategoryFromQuestionPaper({});
+
+  const {
+    mutate: getDownloadPermission,
+    isPending: permissionPending,
+    // data: downloadPermissionData,
+  } = useGetQuestionPaperDownloadPermission({
+    dataDecorator: downloadPermissionDecorator,
+  });
+
+  const handleDownload = async () => {
+    if (!id) {
+      toast.success("Question Paper not found");
+    }
+    getDownloadPermission(id as string);
+  };
+
   return (
-    <div className="relative max-h-full h-full px-3">
+    <div className="relative  px-3">
       {questionPaperDetails && (
-        <div
-          id="tab_5"
-          className="w-full">
-          <Card className="w-full bg-purple-200 rounded-lg shadow-lg">
-            <CardHeader className="bg-purple-500 text-white text-center font-bold rounded-t-lg p-2">
+        <div className="w-full ">
+          <Card className="w-full bg-purple-200 rounded-lg shadow-lg mt-4">
+            <CardHeader className="bg-purple-500 text-white text-center font-bold rounded-t-lg p-2 relative">
+              <div className="absolute top-2 left-2">
+                <Button
+                  variant="ghost"
+                  className="text-blue-500 font-semibold bg-transparent"
+                  onClick={() => navigate(-1)}>
+                  <ArrowLeft size="24" />
+                </Button>
+              </div>
+
               {questionPaperDetails?.institute.name}
             </CardHeader>
             <CardContent className="grid grid-cols-6 gap-4 mt-4">
@@ -163,11 +141,192 @@ const PrepareQuestionPaper = () => {
             </CardContent>
           </Card>
 
-          <div className="min-h-[calc(100vh-300px)] w-full">
-            <div className="flex justify-end pt-3">
+          <div className="w-full">
+            <div className="flex justify-between items-center pt-3">
+              {/* <div className="flex items-center gap-3">
+                <div className="flex items-center">
+                  <Label>Primary Symbol :</Label>
+                  <div className="w-14">
+                    <Select
+                      onValueChange={(value) => {
+                        setPrimarySymbol(value);
+                      }}
+                      defaultValue={primarySymbol}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select a verified email to display" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="null">Active</SelectItem>
+                        <SelectItem value="active">Active</SelectItem>
+                        <SelectItem value="inactive">Inactive</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+
+                <div className="flex items-center">
+                  <Label>Secondary Symbol :</Label>
+                  <div className="w-14">
+                    <Select
+                      onValueChange={(value) => {
+                        setPrimarySymbol(value);
+                      }}
+                      defaultValue={primarySymbol}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select a verified email to display" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="null">Active</SelectItem>
+                        <SelectItem value="active">Active</SelectItem>
+                        <SelectItem value="inactive">Inactive</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+              </div> */}
               <Button onClick={() => setOpen(true)}>Select Category</Button>
+
+              <Button
+                title="Download"
+                onClick={handleDownload}
+                disabled={permissionPending}
+                variant="outline">
+                <>
+                  {permissionPending ? (
+                    <div className="flex gap-4 justify-center align-middle">
+                      <Loader /> Loading...
+                    </div>
+                  ) : (
+                    <div className="flex gap-4 justify-center align-middle">
+                      <Download /> Download Question Paper
+                    </div>
+                  )}
+                </>
+              </Button>
+
+              {/* Hidden link to trigger automatic download once data is ready */}
+              {questionPaperDetails && questionPaperDetails.downloadCount >= 0 && (
+                <BlobProvider document={<QuestionPaperPDF questionPaperDetails={questionPaperDetails} />}>
+                  {({ url, loading }) =>
+                    !loading &&
+                    url && (
+                      <a
+                        id="download-link"
+                        href={url}
+                        download="question-paper.pdf"
+                        style={{ display: "none" }}>
+                        Download
+                      </a>
+                    )
+                  }
+                </BlobProvider>
+              )}
             </div>
           </div>
+
+          {!questionPaperDetailsLoading && questionPaperDetails.questionCategory.length > 0 && (
+            <div>
+              {questionPaperDetails.questionCategory
+                .sort((a, b) => a.position - b.position)
+                .map((item) => (
+                  <div
+                    key={item.questionCategoryId._id}
+                    className="bg-gray-100 p-2 rounded-lg mt-2">
+                    <div className="items-top flex justify-between align-middle pt-1">
+                      <Label className="text-sm font-medium truncate max-w-[250px] peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                        {item.position}. {item.questionCategoryId.questionCategoryName}
+                      </Label>
+
+                      <div className="flex justify-between space-x-2 align-middle">
+                        <div className="text-xs">Marks: {item.marks}</div>
+                        <Popover>
+                          <PopoverTrigger>
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="18"
+                              height="18"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              // stroke-width="2"
+                              // stroke-linecap="round"
+                              // stroke-linejoin="round"
+                              className="lucide lucide-ellipsis-vertical">
+                              <circle
+                                cx="12"
+                                cy="12"
+                                r="1"
+                              />
+                              <circle
+                                cx="12"
+                                cy="5"
+                                r="1"
+                              />
+                              <circle
+                                cx="12"
+                                cy="19"
+                                r="1"
+                              />
+                            </svg>
+                          </PopoverTrigger>
+                          <PopoverContent className="w-36 sm:mr-2 md:mr-20 lg:mr-20 xl:mr-20">
+                            <div className="flex flex-col gap-3">
+                              <Button
+                                onClick={() => {
+                                  setSelectedCategory(item.questionCategoryId);
+                                  setQuestionSelectModalOpen({
+                                    open: true,
+                                    initialValues: {
+                                      marks: item.marks,
+                                      position: item.position,
+                                      question: item.question ?? [""],
+                                      questionInput: item.questionInput ?? "",
+                                      questionCategoryId: item.questionCategoryId._id,
+                                      questionPaperId: questionPaperDetails._id,
+                                    },
+                                  });
+
+                                  getQuestionList({
+                                    query: {
+                                      subject: questionPaperDetails.subject._id,
+                                      questionCategory: item.questionCategoryId._id,
+                                    },
+                                    sortField: "lessonNo",
+                                    sortOrder: 1,
+                                  });
+                                }}
+                                variant="outline"
+                                className="flex gap-2 align-middle">
+                                <Pencil size={16} /> <span>Edit</span>
+                              </Button>
+                              <Button
+                                onClick={() => {
+                                  removeCategoryFunc({ _id: questionPaperDetails._id, categoryId: item._id });
+                                }}
+                                variant="outline"
+                                className="flex gap-2 align-middle text-red-700">
+                                <Trash2 size={16} /> <span>Delete</span>
+                              </Button>
+                            </div>
+                          </PopoverContent>
+                        </Popover>
+                      </div>
+                    </div>
+
+                    {item?.question.length ? (
+                      <div>
+                        <PatternViews
+                          patternKey={(item.questionCategoryId as IQuestionCategory).selectedPatternKey}
+                          value={item.question}
+                        />
+                      </div>
+                    ) : (
+                      <div></div>
+                    )}
+                  </div>
+                ))}
+            </div>
+          )}
         </div>
       )}
 
@@ -177,9 +336,23 @@ const PrepareQuestionPaper = () => {
           setOpen={setOpen}
           subjectId={questionPaperDetails?.subject._id}
           questionPaperId={id}
-          selectedCategories={questionPaperDetails.questionCategory.map((item) => item.questionCategoryId)}
+          selectedCategories={questionPaperDetails.questionCategory.map((item) => item.questionCategoryId._id)}
         />
       )}
+
+      {questionSelectModalOpen.open &&
+        selectedCategory &&
+        selectedCategory._id &&
+        questionPaperDetails?.subject._id && (
+          <QuestionSelectionModal
+            selectedCategory={selectedCategory}
+            open={questionSelectModalOpen.open}
+            initialValues={questionSelectModalOpen.initialValues}
+            setOpen={setQuestionSelectModalOpen}
+            lessonListWithQuestion={lessonListWithQuestion}
+            lessonListWithQuestionLoading={lessonListWithQuestionLoading}
+          />
+        )}
     </div>
   );
 };

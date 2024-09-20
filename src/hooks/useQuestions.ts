@@ -78,6 +78,25 @@ export const useGetQuestionList = ({
   });
 };
 
+export const useGetQuestionListForCategory = ({ dataDecorator }: { dataDecorator?: (data: unknown) => void }) => {
+  // const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (filterData: userQueryPayload) => getQuestionList(filterData),
+    onSuccess: (data) => {
+      // queryClient.invalidateQueries({
+      //   queryKey: ["questionList"],
+      // });
+      // toast.success("Question update successfully.");
+
+      if (dataDecorator) {
+        return dataDecorator(data);
+      }
+
+      return data as ILessonListWithQuestion[];
+    },
+  });
+};
+
 export const useAddQuestion = ({ dataDecorator }: { dataDecorator?: (data: unknown) => void }) => {
   const queryClient = useQueryClient();
   return useMutation({

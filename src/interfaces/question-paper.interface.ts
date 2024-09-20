@@ -20,11 +20,21 @@ export interface questionCategory {
 }
 
 export interface questionCategoryRes {
+  _id: string;
   question: string[];
   questionInput: string;
   questionCategoryId: IQuestionCategory;
   position: number;
   marks: number;
+}
+
+export interface IEditQuestionPaperCategoryPayload {
+  marks: number;
+  position: number;
+  question: string[];
+  questionInput: string;
+  questionCategoryId: string;
+  questionPaperId: string;
 }
 
 export interface IQuestionPaperPayload {
@@ -49,7 +59,7 @@ export interface IQuestionPaperRes {
   classId: IClassRes;
   board: EducationBoard;
   institute: IInstitution;
-  questionCategory: questionCategory[];
+  questionCategory: questionCategoryRes[];
   markView: string;
   subMarkView: string;
   downloadCount: number;
