@@ -1,17 +1,17 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-// import { Label } from "@/components/ui/label";
+import { Label } from "@/components/ui/label";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-// import { SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import {
   useGetQuestionPaperDetails,
   useGetQuestionPaperDownloadPermission,
   useRemoveCategoryFromQuestionPaper,
+  useUpdateQuestionPaper,
 } from "@/hooks/useQuestionPaper";
 import { IQuestionCategory } from "@/interfaces/question-category.interface";
 // import { IQuestionCategory } from "@/interfaces/question-category.interface";
 import PatternViews from "@/Modules/AdminDashboard/Pages/Subjects/Components/PatternViews";
-// import { Select } from "@radix-ui/react-select";
 import { ArrowLeft, Pencil, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -20,11 +20,11 @@ import SelectCategory from "./Components/SelectCategory";
 import QuestionSelectionModal from "./Components/QuestionSelectionModal";
 import { useGetQuestionListForCategory } from "@/hooks/useQuestions";
 import { IEditQuestionPaperCategoryPayload, IQuestionPaperRes } from "@/interfaces/question-paper.interface";
-import { Label } from "@/components/ui/label";
 import { BlobProvider } from "@react-pdf/renderer";
 import { QuestionPaperPDF } from "@/sections/question-paper/question-paper-pdf";
 import { Download, Loader } from "lucide-react";
 import { toast } from "sonner";
+import { convertNumber } from "@/utils/number-converter";
 interface IQuestionSelectModalOpenType {
   open: boolean;
   initialValues: null | IEditQuestionPaperCategoryPayload;
@@ -34,7 +34,9 @@ const PrepareQuestionPaper = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
-  // const [primarySymbol, setPrimarySymbol] = useState<"1." | "a" | "(A)">("1.");
+  // const [primarySymbol, setPrimarySymbol] = useState<string>("null");
+  // const [secondarySymbol, setSecondarySymbol] = useState<string>("null");
+  // const [optionSymbol, setOptionSymbol] = useState<string>("null");
   const [selectedCategory, setSelectedCategory] = useState<IQuestionCategory | null>(null);
   const [questionSelectModalOpen, setQuestionSelectModalOpen] = useState<IQuestionSelectModalOpenType>({
     open: false,
@@ -89,6 +91,7 @@ const PrepareQuestionPaper = () => {
   } = useGetQuestionListForCategory({});
 
   const { mutate: removeCategoryFunc } = useRemoveCategoryFromQuestionPaper({});
+  const { mutate: updateQuestionSymbol, isPending: symbolUpdateLoading } = useUpdateQuestionPaper({});
 
   const {
     mutate: getDownloadPermission,
@@ -98,7 +101,7 @@ const PrepareQuestionPaper = () => {
     dataDecorator: downloadPermissionDecorator,
   });
 
-  const handleDownload = async () => {
+  const handleDownload = () => {
     if (!id) {
       toast.success("Question Paper not found");
     }
@@ -110,7 +113,7 @@ const PrepareQuestionPaper = () => {
       {questionPaperDetails && (
         <div className="w-full ">
           <Card className="w-full bg-purple-200 rounded-lg shadow-lg mt-4">
-            <CardHeader className="bg-purple-500 text-white text-center font-bold rounded-t-lg p-2 relative">
+            <CardHeader className="bg-purple-500 text-white text-center font-bold rounded-t-lg p-4 relative">
               <div className="absolute top-2 left-2">
                 <Button
                   variant="ghost"
@@ -141,49 +144,117 @@ const PrepareQuestionPaper = () => {
             </CardContent>
           </Card>
 
+          <div className="w-full pt-4">
+            <div className="flex items-center justify-between gap-4">
+              <div className="flex flex-col items-start">
+                <Label className="pb-2">Primary Symbol :</Label>
+                <div className="w-full min-w-44">
+                  <Select
+                    onValueChange={(value) => {
+                      // setPrimarySymbol(value);
+                      updateQuestionSymbol({
+                        _id: id as string,
+                        primarySymbol: value,
+                        secondarySymbol: questionPaperDetails?.secondarySymbol ?? "null",
+                        optionSymbol: questionPaperDetails?.optionSymbol ?? "null",
+                      });
+                    }}
+                    // value={primarySymbol}
+                    value={questionPaperDetails?.primarySymbol ?? "null"}
+                    disabled={symbolUpdateLoading}
+                    defaultValue={questionPaperDetails?.primarySymbol ?? "null"}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select a verified email to display" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="null">No Symbol</SelectItem>
+                      <SelectItem value="numeric">1.</SelectItem>
+                      <SelectItem value="roman">I.</SelectItem>
+                      <SelectItem value="smallRoman">i.</SelectItem>
+                      <SelectItem value="bangle">ক.</SelectItem>
+                      <SelectItem value="smallEnglish">a.</SelectItem>
+                      <SelectItem value="capitalEnglish">A.</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+
+              <div className="flex flex-col items-start">
+                <Label className="pb-2">Secondary Symbol :</Label>
+                <div className="w-full min-w-44">
+                  <Select
+                    onValueChange={(value) => {
+                      // setSecondarySymbol(value);
+                      updateQuestionSymbol({
+                        _id: id as string,
+                        // primarySymbol: primarySymbol,
+                        // secondarySymbol: value,
+                        // optionSymbol: optionSymbol,
+                        primarySymbol: questionPaperDetails?.primarySymbol ?? "null",
+                        secondarySymbol: value,
+                        optionSymbol: questionPaperDetails?.optionSymbol ?? "null",
+                      });
+                    }}
+                    // value={secondarySymbol}
+                    // defaultValue={secondarySymbol}
+                    value={questionPaperDetails?.secondarySymbol ?? "null"}
+                    disabled={symbolUpdateLoading}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select a verified email to display" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="null">No Symbol</SelectItem>
+                      <SelectItem value="numeric">1.</SelectItem>
+                      <SelectItem value="roman">I.</SelectItem>
+                      <SelectItem value="smallRoman">i.</SelectItem>
+                      <SelectItem value="bangle">ক.</SelectItem>
+                      <SelectItem value="smallEnglish">a.</SelectItem>
+                      <SelectItem value="capitalEnglish">A.</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+
+              <div className="flex flex-col items-start">
+                <Label className="pb-2">Option Symbol :</Label>
+                <div className="w-full min-w-44">
+                  <Select
+                    onValueChange={(value) => {
+                      // setOptionSymbol(value);
+                      updateQuestionSymbol({
+                        _id: id as string,
+                        // primarySymbol: primarySymbol,
+                        // secondarySymbol: secondarySymbol,
+                        // optionSymbol: value,
+                        primarySymbol: questionPaperDetails?.primarySymbol ?? "null",
+                        secondarySymbol: questionPaperDetails?.secondarySymbol ?? "null",
+                        optionSymbol: value,
+                      });
+                    }}
+                    // value={optionSymbol}
+                    // defaultValue={optionSymbol}
+                    value={questionPaperDetails?.optionSymbol ?? "null"}
+                    disabled={symbolUpdateLoading}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select a verified email to display" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="null">No Symbol</SelectItem>
+                      <SelectItem value="numeric">1.</SelectItem>
+                      <SelectItem value="roman">I.</SelectItem>
+                      <SelectItem value="smallRoman">i.</SelectItem>
+                      <SelectItem value="bangle">ক.</SelectItem>
+                      <SelectItem value="smallEnglish">a.</SelectItem>
+                      <SelectItem value="capitalEnglish">A.</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <div className="w-full">
             <div className="flex justify-between items-center pt-3">
-              {/* <div className="flex items-center gap-3">
-                <div className="flex items-center">
-                  <Label>Primary Symbol :</Label>
-                  <div className="w-14">
-                    <Select
-                      onValueChange={(value) => {
-                        setPrimarySymbol(value);
-                      }}
-                      defaultValue={primarySymbol}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select a verified email to display" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="null">Active</SelectItem>
-                        <SelectItem value="active">Active</SelectItem>
-                        <SelectItem value="inactive">Inactive</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                </div>
-
-                <div className="flex items-center">
-                  <Label>Secondary Symbol :</Label>
-                  <div className="w-14">
-                    <Select
-                      onValueChange={(value) => {
-                        setPrimarySymbol(value);
-                      }}
-                      defaultValue={primarySymbol}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select a verified email to display" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="null">Active</SelectItem>
-                        <SelectItem value="active">Active</SelectItem>
-                        <SelectItem value="inactive">Inactive</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                </div>
-              </div> */}
               <Button onClick={() => setOpen(true)}>Select Category</Button>
 
               <Button
@@ -234,7 +305,8 @@ const PrepareQuestionPaper = () => {
                     className="bg-gray-100 p-2 rounded-lg mt-2">
                     <div className="items-top flex justify-between align-middle pt-1">
                       <Label className="text-sm font-medium truncate max-w-[250px] peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                        {item.position}. {item.questionCategoryId.questionCategoryName}
+                        {convertNumber(item.position, questionPaperDetails?.primarySymbol)}.{" "}
+                        {item.questionCategoryId.questionCategoryName}
                       </Label>
 
                       <div className="flex justify-between space-x-2 align-middle">
@@ -318,6 +390,8 @@ const PrepareQuestionPaper = () => {
                         <PatternViews
                           patternKey={(item.questionCategoryId as IQuestionCategory).selectedPatternKey}
                           value={item.question}
+                          secondarySymbol={questionPaperDetails?.secondarySymbol}
+                          optionSymbol={questionPaperDetails?.optionSymbol}
                         />
                       </div>
                     ) : (

@@ -1,13 +1,7 @@
 import { useMemo } from "react";
 import { Page, View, Text, Font, Document, StyleSheet } from "@react-pdf/renderer";
 import { IQuestionPaperRes } from "@/interfaces/question-paper.interface";
-// import { Page, View, Text, Font, Image, Document, StyleSheet } from "@react-pdf/renderer";
-
-// import { fDate } from "src/utils/format-time";
-// import { fCurrency } from "src/utils/format-number";
-// import { IInvoice } from "@/interfaces/invoice";
-// import { fDate } from "@/utils/format-time";
-// import { fCurrency } from "@/utils/format-number";
+import { convertNumber } from "@/utils/number-converter";
 
 // ----------------------------------------------------------------------
 
@@ -15,65 +9,6 @@ Font.register({
   family: "NotoSansBengali",
   fonts: [{ src: "/fonts/NotoSerifBengali-Regular.ttf" }, { src: "/fonts/NotoSerifBengali-Bold.ttf" }],
 });
-
-// const useStyles = () =>
-//   useMemo(
-//     () =>
-//       StyleSheet.create({
-//         // layout
-//         page: {
-//           fontSize: 9,
-//           lineHeight: 1.6,
-//           fontFamily: "Roboto",
-//           backgroundColor: "#FFFFFF",
-//           padding: "40px 24px 120px 24px",
-//         },
-//         footer: {
-//           left: 0,
-//           right: 0,
-//           bottom: 0,
-//           padding: 24,
-//           margin: "auto",
-//           borderTopWidth: 1,
-//           borderStyle: "solid",
-//           position: "absolute",
-//           borderColor: "#e9ecef",
-//         },
-//         container: {
-//           flexDirection: "row",
-//           justifyContent: "space-between",
-//         },
-//         // margin
-//         mb4: { marginBottom: 4 },
-//         mb8: { marginBottom: 8 },
-//         mb40: { marginBottom: 40 },
-//         // text
-//         h3: { fontSize: 16, fontWeight: 700 },
-//         h4: { fontSize: 13, fontWeight: 700 },
-//         body1: { fontSize: 10 },
-//         subtitle1: { fontSize: 10, fontWeight: 700 },
-//         body2: { fontSize: 9 },
-//         subtitle2: { fontSize: 9, fontWeight: 700 },
-//         // table
-//         table: { display: "flex", width: "100%" },
-//         row: {
-//           padding: "10px 0 8px 0",
-//           flexDirection: "row",
-//           borderBottomWidth: 1,
-//           borderStyle: "solid",
-//           borderColor: "#e9ecef",
-//         },
-//         cell_1: { width: "5%" },
-//         cell_2: { width: "50%" },
-//         cell_3: { width: "15%", paddingLeft: 32 },
-//         cell_4: { width: "15%", paddingLeft: 8 },
-//         cell_5: { width: "15%" },
-//         noBorder: { paddingTop: "10px", paddingBottom: 0, borderBottomWidth: 0 },
-//       }),
-//     []
-//   );
-
-// ----------------------------------------------------------------------
 
 const useStyles = () =>
   useMemo(
@@ -101,27 +36,64 @@ const useStyles = () =>
           marginLeft: 20,
           marginBottom: 4,
         },
+        optionText: {
+          marginLeft: 40,
+          marginBottom: 4,
+        },
+
+        table: {
+          // display: "table",
+          marginLeft: 20,
+          display: "flex",
+          width: "80%",
+          borderStyle: "solid",
+          borderWidth: 1,
+          borderRightWidth: 0,
+          borderBottomWidth: 0,
+        },
+        tableRow: {
+          flexDirection: "row",
+        },
+        tableCol: {
+          width: "50%",
+          borderStyle: "solid",
+          borderWidth: 1,
+          borderLeftWidth: 0,
+          borderTopWidth: 0,
+        },
+        tableHeader: {
+          margin: 4,
+          fontSize: 10,
+          fontWeight: "bold",
+          textAlign: "center",
+        },
+        tableCell: {
+          margin: 4,
+          fontSize: 10,
+          textAlign: "center",
+        },
       }),
     []
   );
 
-// type Props = {
-//   examInfo: {
-//     schoolName: string;
-//     className: string;
-//     subject: string;
-//     examDate: string;
-//     subjectCode: string;
-//   };
-//   questions: Array<{
-//     id: number;
-//     text: string;
-//     subQuestions?: Array<{
-//       id: string;
-//       text: string;
-//     }>;
-//   }>;
-// };
+const chunkArray = (array: string[], chunkSize: number) => {
+  const chunks = [];
+  for (let i = 0; i < array.length; i += chunkSize) {
+    chunks.push(array.slice(i, i + chunkSize));
+  }
+  return chunks;
+};
+
+const createTableData = (array: string[]) => {
+  const separatorIndex = array.indexOf("|");
+  const leftElements = array.slice(2, separatorIndex);
+  const rightElements = array.slice(separatorIndex + 1);
+
+  return leftElements.map((left, index) => ({
+    left,
+    right: rightElements[index],
+  }));
+};
 
 export function QuestionPaperPDF({ questionPaperDetails }: { questionPaperDetails: IQuestionPaperRes }) {
   const styles = useStyles();
@@ -141,20 +113,85 @@ export function QuestionPaperPDF({ questionPaperDetails }: { questionPaperDetail
 
   const renderQuestions = questionPaperDetails.questionCategory
     .sort((a, b) => a.position - b.position)
-    .map((question) => (
+    .map((questionCategory) => (
       <View
-        key={question._id}
+        key={questionCategory._id}
         style={styles.questionContainer}>
         <Text style={styles.questionText}>
-          {question.position}. {question.questionCategoryId.questionCategoryName}
+          {convertNumber(questionCategory.position, questionPaperDetails?.primarySymbol)}.{" "}
+          {questionCategory.questionCategoryId.questionCategoryName}
         </Text>
-        {/* {question.subQuestions?.map((subQuestion) => (
-        <Text
-          key={subQuestion.id}
-          style={styles.subQuestion}>
-          {subQuestion.id}) {subQuestion.text}
-        </Text>
-      ))} */}
+
+        {questionCategory.questionCategoryId.selectedPatternKey &&
+          questionCategory.questionCategoryId.selectedPatternKey === "word_by_word" && (
+            <Text style={styles.subQuestion}>{questionCategory.question.join(", ")}</Text>
+          )}
+
+        {questionCategory.questionCategoryId.selectedPatternKey &&
+          questionCategory.questionCategoryId.selectedPatternKey === "one_line_question" &&
+          questionCategory.question.map((oneLineQuestion, index) => (
+            <Text
+              key={index}
+              style={styles.subQuestion}>
+              {convertNumber(index + 1, questionPaperDetails.secondarySymbol ?? "null")}. {oneLineQuestion}
+            </Text>
+          ))}
+
+        {questionCategory.questionCategoryId.selectedPatternKey &&
+          questionCategory.questionCategoryId.selectedPatternKey === "question_with_options" &&
+          // <Text style={styles.questionText}>
+          //   {questionCategory.questionCategoryId.selectedPatternKey} প্রশ্নগুলো শুনে উত্তর দিন
+          // </Text>
+
+          chunkArray(questionCategory.question, 5).map((chunk, index) => (
+            <View key={index}>
+              <Text style={styles.subQuestion}>
+                {convertNumber(index + 1, questionPaperDetails.secondarySymbol ?? "null")}.{chunk[0]}
+              </Text>
+              {chunk.slice(1).map((question, index) => (
+                <Text
+                  key={index}
+                  style={styles.optionText}>
+                  {convertNumber(index + 1, questionPaperDetails.optionSymbol ?? "null")}. {question}
+                </Text>
+              ))}
+            </View>
+          ))}
+
+        {questionCategory.questionCategoryId.selectedPatternKey &&
+          questionCategory.questionCategoryId.selectedPatternKey === "table_match" && (
+            <View style={styles.table}>
+              {/* Table Header */}
+              <View style={styles.tableRow}>
+                {questionCategory.question.slice(0, 2).map((header, index) => (
+                  <View
+                    key={index}
+                    style={styles.tableCol}>
+                    <Text style={styles.tableHeader}>{header}</Text>
+                  </View>
+                ))}
+              </View>
+
+              {/* Table Rows */}
+              {createTableData(questionCategory.question).map((row, index) => (
+                <View
+                  key={index}
+                  style={styles.tableRow}>
+                  <View style={styles.tableCol}>
+                    <Text style={styles.tableCell}>{row.left}</Text>
+                  </View>
+                  <View style={styles.tableCol}>
+                    <Text style={styles.tableCell}>{row.right}</Text>
+                  </View>
+                </View>
+              ))}
+            </View>
+          )}
+
+        {questionCategory.questionCategoryId.selectedPatternKey &&
+          questionCategory.questionCategoryId.selectedPatternKey === "feel_in_the_blanks" && (
+            <Text style={styles.subQuestion}>{questionCategory.question[0]}</Text>
+          )}
       </View>
     ));
 

@@ -60,8 +60,11 @@ export interface IQuestionPaperRes {
   board: EducationBoard;
   institute: IInstitution;
   questionCategory: questionCategoryRes[];
-  markView: string;
-  subMarkView: string;
+  // markView: string;
+  // subMarkView: string;
+  primarySymbol: string;
+  secondarySymbol: string;
+  optionSymbol: string;
   downloadCount: number;
   examName: string;
   examYear: number;
