@@ -36,9 +36,9 @@ const InstitutionBoardFormSchema = zod.object({
   educationBoardIds: zod.array(zod.string()).min(1, {
     message: "Minimum One education Board need to select.",
   }),
-  classes: zod.array(zod.string()).min(1, {
-    message: "Minimum One Class need to select.",
-  }),
+  // classes: zod.array(zod.string()).min(1, {
+  //   message: "Minimum One Class need to select.",
+  // }),
   // userId: zod.string().min(2, {
   //   message: "userId must be at least 2 characters.",
   // }),
@@ -67,7 +67,7 @@ const InstituteFormModal = ({
       phoneNumber: "",
       email: "",
       educationBoardIds: [],
-      classes: [],
+      // classes: [],
       // userId: "",
       imageURL: "",
     },
@@ -76,7 +76,7 @@ const InstituteFormModal = ({
   const {
     handleSubmit,
     control,
-    formState: { errors, isSubmitting, isDirty },
+    formState: { errors, isSubmitting, isDirty, isValid },
   } = formMethods;
 
   // console.log(errors, "errors");
@@ -92,6 +92,7 @@ const InstituteFormModal = ({
       updateInstitution({ ...data, _id: initialValues._id, userId: initialValues.userId });
     } else {
       const userData = getUserDataFromLocalStorage();
+      // console.log(userData);
       if (userData === null) return;
 
       createInstitution({ ...data, userId: userData._id });
@@ -300,7 +301,7 @@ const InstituteFormModal = ({
                 <Button
                   type="submit"
                   className="mt-4 cursor-pointer"
-                  disabled={isSubmitting || !isDirty}>
+                  disabled={isSubmitting || !isDirty || !isValid}>
                   {isSubmitting ? (
                     <div className="mr-2">
                       <SpinningLoader />

@@ -88,7 +88,7 @@ const AddLessonModal = ({
       <DialogContent>
         <DialogHeader>
           <DialogTitle>
-            <h5 className="text-center">Subject Details</h5>
+            <h5 className="text-center">Lesson</h5>
           </DialogTitle>
         </DialogHeader>
         <DialogDescription className="">

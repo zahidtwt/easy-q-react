@@ -9,9 +9,7 @@ const ClassCard = ({ classItem }: { classItem: IClassRes }) => {
   const navigate = useNavigate();
   return (
     <>
-      <div
-        onClick={() => navigate(`/dashboard/class-details/${classItem._id}`)}
-        className="relative">
+      <div className="relative">
         <div>
           <button
             onClick={() => setOpen(true)}
@@ -20,7 +18,9 @@ const ClassCard = ({ classItem }: { classItem: IClassRes }) => {
             <Pencil className="h-5 w-5" />
           </button>
         </div>
-        <div className="w-full rounded-md shadow-md hover:shadow-lg min-h-10 flex flex-col items-center justify-center bg-white p-4 border border-gray-200 transition-all duration-300 cursor-pointer">
+        <div
+          onClick={() => navigate(`/dashboard/class-details/${classItem._id}`)}
+          className="w-full rounded-md shadow-md hover:shadow-lg min-h-10 flex flex-col items-center justify-center bg-white p-4 border border-gray-200 transition-all duration-300 cursor-pointer">
           <h5 className="p-1 font-medium text-center capitalize">{classItem.name}</h5>
         </div>
       </div>

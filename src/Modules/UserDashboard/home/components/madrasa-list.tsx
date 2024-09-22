@@ -27,13 +27,13 @@ const MadrasaList = ({ madrasas }: { madrasas: IInstitution[] }) => {
   return (
     <RenderListItems
       items={madrasas}
+      className="space-y-3"
       renderItem={(madrasa: IInstitution) => (
         <MadrasaCard
           madrasa={madrasa}
           key={madrasa._id}
         />
       )}
-      className="space-y-6"
     />
   );
 };

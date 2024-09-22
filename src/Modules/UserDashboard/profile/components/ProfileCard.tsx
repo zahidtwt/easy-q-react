@@ -12,7 +12,7 @@ const ProfileCard = ({ handleEditClick }: { handleEditClick: () => void }) => {
     <div>
       <div className="flex justify-between">
         <Avatar className="border border-slate-300 size-24">
-          <AvatarImage src={userData.image} />
+          <AvatarImage src={userData.imageURL} />
           <AvatarFallback className="uppercase">{userData?.firstName.slice(0, 2)}</AvatarFallback>
         </Avatar>
 
@@ -35,7 +35,9 @@ const ProfileCard = ({ handleEditClick }: { handleEditClick: () => void }) => {
         </div>
       </div>
 
-      <h2 className="text-lg font-semibold mb-2">{userData?.name}</h2>
+      <h2 className="text-xl font-bold mb-2">
+        {userData?.firstName} {userData?.lastName}
+      </h2>
       <p>
         <strong>Phone:</strong> {userData?.phone}
       </p>

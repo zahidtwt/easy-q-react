@@ -10,7 +10,6 @@ import { Button } from "@/components/ui/button";
 import SpinningLoader from "@/components/loader";
 import { useFileUpload } from "@/hooks/useFileUpload";
 import { useUpdateUser } from "@/hooks/useUser";
-import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
 const ProfileFormSchema = zod.object({
@@ -28,8 +27,6 @@ type ProfileFormFields = zod.infer<typeof ProfileFormSchema>;
 
 const ProfileForm = ({ setIsEditing }: { setIsEditing: (value: boolean) => void }) => {
   const userData = getUserDataFromLocalStorage();
-
-  const navigate = useNavigate();
   const formMethods = useForm<ProfileFormFields>({
     resolver: zodResolver(ProfileFormSchema),
     mode: "all",
@@ -68,7 +65,8 @@ const ProfileForm = ({ setIsEditing }: { setIsEditing: (value: boolean) => void 
   const onUpdateUser = (userData: object) => {
     toast.success("Profile Update Successfully.");
     localStorage.setItem("userData", JSON.stringify(userData));
-    navigate("/profile", { replace: true });
+    // navigate("/profile", { replace: true });
+    setIsEditing(false);
   };
 
   const [imageFile, setImageFile] = useState<File | null>(null);

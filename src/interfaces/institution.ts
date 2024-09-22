@@ -5,7 +5,7 @@ export interface IInstitution {
   phoneNumber: string;
   email: string;
   educationBoardIds: string[];
-  classes: string[];
+  // classes: string[];
   userId: string;
   imageURL: string;
   createdAt: string;

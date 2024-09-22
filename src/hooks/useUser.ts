@@ -1,17 +1,29 @@
 import { endpoints } from "@/configs/config";
 import axiosInstance from "@/utils/axios";
 import { useMutation } from "@tanstack/react-query";
+import Cookies from "js-cookie";
 import { toast } from "sonner";
 
 export const useUpdateUser = ({ onUpdateUser }: { onUpdateUser: (userData: object) => void }) => {
   return useMutation({
     mutationFn: async ({ payload, id }: { payload: object; id: string }) => {
-      return (await axiosInstance.post(`${endpoints.dashboard.users}update/${id}`, { ...payload })).data;
+      return (
+        await axiosInstance.put(
+          `${endpoints.dashboard.users}update/${id}`,
+          { ...payload },
+          {
+            headers: {
+              ...axiosInstance.defaults.headers.common, // Merge existing common headers
+              Authorization: `Bearer ${Cookies.get("token")}`, // Add authorization header
+            },
+          }
+        )
+      ).data;
     },
 
     onSuccess(data) {
-      if (data?.token) {
-        onUpdateUser(data.token);
+      if (data?.phone) {
+        onUpdateUser(data);
         return data;
       }
       throw new Error("Login Failed");
