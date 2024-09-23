@@ -106,6 +106,10 @@ export const useCreateInstitution = ({ dataDecorator }: { dataDecorator?: (data:
 
       return data;
     },
+    onError: (error) => {
+      toast.error(error.message);
+      throw new Error(error.message);
+    },
   });
 };
 
@@ -115,7 +119,7 @@ export const useUpdateInstitution = ({ dataDecorator }: { dataDecorator?: (data:
     mutationFn: (payload: IEditInstitutionPayload) => updateInstitution(payload),
     onSuccess: (data) => {
       queryClient.invalidateQueries({
-        queryKey: ["institutionList"],
+        queryKey: ["madrasaDetail"],
       });
 
       toast.success("Institution details update successfully");

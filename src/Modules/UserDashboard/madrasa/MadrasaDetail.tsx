@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useMemo, useState } from "react";
 import InstituteFormModal from "@/Modules/AdminDashboard/Pages/InstitutionList/Components/InstituteFormModal";
@@ -6,17 +6,16 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import MadrasaForm from "./components/MadrasaForm";
 import { useGetInstitutionDetail } from "@/hooks/useInstitution";
 import { useGetEducationBoardList } from "@/hooks/useEducationBoard";
-import { useGetClassList } from "@/hooks/useClass";
 import Clip from "@/components/Clip";
-import { IClass } from "@/interfaces/class";
 import { EducationBoard } from "@/interfaces/education-board";
+import { ArrowLeft } from "lucide-react";
 
 const MadrasaDetail = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
 
   const { isLoading, data: madrasaDetail } = useGetInstitutionDetail({ id: id });
   const { data: eduBoardList } = useGetEducationBoardList({});
-  const { data: classList } = useGetClassList({});
 
   const [open, setOpen] = useState(false);
 
@@ -29,28 +28,27 @@ const MadrasaDetail = () => {
     return educationListDecorator();
   }, [eduBoardList, madrasaDetail]);
 
-  const decoratedClassList = useMemo(() => {
-    const educationListDecorator = (): IClass[] | [] => {
-      if (classList === undefined) return [];
-
-      return classList.filter((item) => madrasaDetail?.classes.includes(item._id));
-    };
-    return educationListDecorator();
-  }, [classList, madrasaDetail]);
-
   if (isLoading) {
     return <p> loading ...</p>;
   }
 
   return (
     <div className="p-3 relative">
-      <div className="absolute top-0 right-0">
+      <div className="absolute top-2 right-2">
+        <Button
+          variant="outline"
+          className="text-blue-500 font-semibold bg-transparent border-blue-500"
+          onClick={() => setOpen(true)}>
+          Edit
+        </Button>
+      </div>
+
+      <div className="absolute top-2 left-2">
         <Button
           variant="ghost"
-          className="text-red-500"
-          onClick={() => setOpen(true)}>
-          {/* onClick={() => setEditable(true)}> */}
-          Edit
+          className="text-blue-500 font-semibold bg-transparent"
+          onClick={() => navigate(-1)}>
+          <ArrowLeft size="24" />
         </Button>
       </div>
 
@@ -93,25 +91,6 @@ const MadrasaDetail = () => {
               <div className="flex flex-wrap gap-3 p-2">
                 {decoratedEducationList &&
                   decoratedEducationList.map((item) => (
-                    <Clip
-                      key={item._id}
-                      name={item.name}
-                    />
-                  ))}
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="col-span-12">
-          <div className="w-full">
-            <div className="w-full flex justify-between items-center mb-2">
-              <p className="font-medium text-xl">{"Board"}</p>
-            </div>
-            <div className="w-full border-2 border-spacing-1 border-gray-50 rounded-md min-h-10">
-              <div className="flex flex-wrap gap-3 p-2">
-                {decoratedClassList &&
-                  decoratedClassList.map((item) => (
                     <Clip
                       key={item._id}
                       name={item.name}

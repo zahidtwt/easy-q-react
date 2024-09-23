@@ -4,12 +4,15 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import ClassSkeleton from "./Components/ClassSkeleton";
 import { useGetClassList } from "@/hooks/useClass";
-import { IClass } from "@/interfaces/class";
 import ClassCard from "./Components/ClassCard";
 import ClassFormModal from "./Components/ClassFormModal";
+import { useParams } from "react-router-dom";
+import { IClassRes } from "@/interfaces/class.interface";
 
 const ClassList = () => {
-  const { isLoading, data: classList } = useGetClassList({});
+  const { boardId } = useParams();
+
+  const { isLoading, data: classList } = useGetClassList({ boardId });
 
   const [open, setOpen] = useState(false);
 
@@ -46,7 +49,7 @@ const ClassList = () => {
                 <ClassSkeleton />
               </>
             )}
-            {classList?.map((classItem: IClass) => (
+            {classList?.map((classItem: IClassRes) => (
               <ClassCard
                 key={classItem._id}
                 classItem={classItem}
@@ -57,9 +60,10 @@ const ClassList = () => {
         <CardFooter></CardFooter>
       </Card>
 
-      {open && (
+      {open && boardId && (
         <ClassFormModal
           open={open}
+          boardId={boardId}
           setOpen={setOpen}
         />
       )}

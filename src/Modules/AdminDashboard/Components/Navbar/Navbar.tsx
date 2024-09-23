@@ -10,24 +10,29 @@ const navbarMenus = [
     title: "Boards",
     icon: null,
   },
-  {
-    path: "/dashboard/classes",
-    title: "Classes",
-    icon: null,
-  },
+  // {
+  //   path: "/dashboard/classes",
+  //   title: "Classes",
+  //   icon: null,
+  // },
   {
     path: "/dashboard/institutes",
     title: "Institutes",
     icon: null,
   },
-  {
-    path: "/dashboard/questions",
-    title: "Questions",
-    icon: null,
-  },
+  // {
+  //   path: "/dashboard/questions",
+  //   title: "Questions",
+  //   icon: null,
+  // },
   {
     path: "/dashboard/users",
     title: "Users",
+    icon: null,
+  },
+  {
+    path: "/dashboard/subjects",
+    title: "Subjects",
     icon: null,
   },
 ] as const;

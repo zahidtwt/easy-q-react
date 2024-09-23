@@ -3,7 +3,7 @@ import AdminDashboardLayout from "@/Modules/AdminDashboard/Layout/AdminDashboard
 import BoardList from "@/Modules/AdminDashboard/Pages/BoardList/BoardList";
 import ClassList from "@/Modules/AdminDashboard/Pages/ClassList/ClassList";
 import InstitutionList from "@/Modules/AdminDashboard/Pages/InstitutionList/InstitutionList";
-import QuestionsList from "@/Modules/AdminDashboard/Pages/QuestionsList/QuestionsList";
+// import QuestionsList from "@/Modules/AdminDashboard/Pages/QuestionsList/QuestionsList";
 import UserList from "@/Modules/AdminDashboard/Pages/UserList/UserList";
 import NotFoundPage from "@/components/not-found";
 import AuthLayout from "@/Modules/Auth/layout";
@@ -15,11 +15,16 @@ import Home from "@/Modules/UserDashboard/home";
 import UserDashboardLayout from "@/Modules/UserDashboard/layout";
 import CreateMadrasa from "@/Modules/UserDashboard/madrasa/CreateMadrasa";
 import MadrasaDetail from "@/Modules/UserDashboard/madrasa/MadrasaDetail";
-import Profile from "@/Modules/UserDashboard/profile";
 import Questions from "@/Modules/UserDashboard/questions";
 import { Navigate, Route, Routes, createBrowserRouter } from "react-router-dom";
 import ClassDetail from "@/Modules/AdminDashboard/Pages/ClassDetail/ClassDetail";
-import AddQuestion from "@/Modules/UserDashboard/AddQuestion/AddQuestion";
+// import AddQuestion from "@/Modules/UserDashboard/AddQuestion/AddQuestion";
+import Profile from "@/Modules/UserDashboard/profile/profile";
+import QuestionPatterns from "@/Modules/AdminDashboard/Pages/QuestionPatterns/QuestionPatterns";
+import Subjects from "@/Modules/AdminDashboard/Pages/Subjects/Subjects";
+import SubjectDetail from "@/Modules/AdminDashboard/Pages/Subjects/SubjectDetail";
+import InitializeQuestionPaper from "@/Modules/UserDashboard/initializeQuestionPaper/InitializeQuestionPaper";
+import PrepareQuestionPaper from "@/Modules/UserDashboard/prepareQuestionPaper/PrepareQuestionPaper";
 
 export const routes = createBrowserRouter([
   {
@@ -103,7 +108,13 @@ export const routes = createBrowserRouter([
           },
           {
             path: "add-questions",
-            element: <AddQuestion />,
+            // element: <AddQuestion />,
+            element: <InitializeQuestionPaper />,
+          },
+          {
+            path: "prepare-questions/:id",
+            // element: <AddQuestion />,
+            element: <PrepareQuestionPaper />,
           },
           {
             path: "download",
@@ -137,8 +148,23 @@ export const routes = createBrowserRouter([
             index: true,
           },
           {
-            path: "classes",
+            path: "question-patterns",
+            element: <QuestionPatterns />,
+            index: true,
+          },
+          {
+            path: ":boardId/classes",
             element: <ClassList />,
+            index: true,
+          },
+          {
+            path: "subjects",
+            element: <Subjects />,
+            index: true,
+          },
+          {
+            path: "subjects-detail/:subjectId/:subjectName",
+            element: <SubjectDetail />,
             index: true,
           },
           {
@@ -150,11 +176,11 @@ export const routes = createBrowserRouter([
             element: <InstitutionList />,
             index: true,
           },
-          {
-            path: "questions",
-            element: <QuestionsList />,
-            index: true,
-          },
+          // {
+          //   path: "questions",
+          //   element: <QuestionsList />,
+          //   index: true,
+          // },
           {
             path: "users",
             element: <UserList />,

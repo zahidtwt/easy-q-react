@@ -13,7 +13,7 @@ import ImageUploadField from "@/components/ImageUploadField";
 import { useFileUpload } from "@/hooks/useFileUpload";
 import Select from "react-select";
 import { useGetEducationBoardList } from "@/hooks/useEducationBoard";
-import { useGetClassList } from "@/hooks/useClass";
+// import { useGetClassList } from "@/hooks/useClass";
 import getUserDataFromLocalStorage from "@/utils/getUserDataFromLocalStorage";
 // import { EducationBoard } from "@/interfaces/education-board";
 
@@ -36,9 +36,9 @@ const InstitutionBoardFormSchema = zod.object({
   educationBoardIds: zod.array(zod.string()).min(1, {
     message: "Minimum One education Board need to select.",
   }),
-  classes: zod.array(zod.string()).min(1, {
-    message: "Minimum One Class need to select.",
-  }),
+  // classes: zod.array(zod.string()).min(1, {
+  //   message: "Minimum One Class need to select.",
+  // }),
   // userId: zod.string().min(2, {
   //   message: "userId must be at least 2 characters.",
   // }),
@@ -67,7 +67,7 @@ const InstituteFormModal = ({
       phoneNumber: "",
       email: "",
       educationBoardIds: [],
-      classes: [],
+      // classes: [],
       // userId: "",
       imageURL: "",
     },
@@ -76,7 +76,7 @@ const InstituteFormModal = ({
   const {
     handleSubmit,
     control,
-    formState: { errors, isSubmitting, isDirty },
+    formState: { errors, isSubmitting, isDirty, isValid },
   } = formMethods;
 
   // console.log(errors, "errors");
@@ -92,6 +92,7 @@ const InstituteFormModal = ({
       updateInstitution({ ...data, _id: initialValues._id, userId: initialValues.userId });
     } else {
       const userData = getUserDataFromLocalStorage();
+      // console.log(userData);
       if (userData === null) return;
 
       createInstitution({ ...data, userId: userData._id });
@@ -129,7 +130,7 @@ const InstituteFormModal = ({
 
   // console.log(eduBoardList);
 
-  const { data: classList } = useGetClassList({});
+  // const { data: classList } = useGetClassList({});
 
   const { mutate: createInstitution } = useCreateInstitution({ dataDecorator });
   const { mutate: updateInstitution } = useUpdateInstitution({ dataDecorator });
@@ -147,17 +148,17 @@ const InstituteFormModal = ({
     return educationListDecorator();
   }, [eduBoardList]);
 
-  const decoratedClassList = useMemo(() => {
-    const educationListDecorator = (): { value: string; label: string }[] | [] => {
-      if (classList === undefined) return [];
+  // const decoratedClassList = useMemo(() => {
+  //   const educationListDecorator = (): { value: string; label: string }[] | [] => {
+  //     if (classList === undefined) return [];
 
-      return classList.map((item) => ({
-        value: item._id,
-        label: item.name,
-      }));
-    };
-    return educationListDecorator();
-  }, [classList]);
+  //     return classList.map((item) => ({
+  //       value: item._id,
+  //       label: item.name,
+  //     }));
+  //   };
+  //   return educationListDecorator();
+  // }, [classList]);
 
   return (
     <Dialog
@@ -275,7 +276,7 @@ const InstituteFormModal = ({
                 />
               )}
 
-              {classList && decoratedClassList && (
+              {/* {classList && decoratedClassList && (
                 <FormField
                   control={control}
                   name="classes"
@@ -294,13 +295,13 @@ const InstituteFormModal = ({
                     </FormItem>
                   )}
                 />
-              )}
+              )} */}
 
               <div className="flex justify-center">
                 <Button
                   type="submit"
                   className="mt-4 cursor-pointer"
-                  disabled={isSubmitting || !isDirty}>
+                  disabled={isSubmitting || !isDirty || !isValid}>
                   {isSubmitting ? (
                     <div className="mr-2">
                       <SpinningLoader />

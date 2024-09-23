@@ -3,8 +3,10 @@ import { EducationBoard } from "@/interfaces/education-board";
 import { Pencil } from "lucide-react";
 import AddBoardModal from "./AddBoardModal";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const BoardCard = ({ board }: { board: EducationBoard }) => {
+  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
 
   return (
@@ -18,15 +20,19 @@ const BoardCard = ({ board }: { board: EducationBoard }) => {
             <Pencil className="h-5 w-5" />
           </button>
         </div>
-        <Avatar className="border border-gray-200 flex justify-center items-center h-[50px] w-[50px]">
-          <AvatarImage
-            src={board.imageURL}
-            alt={`${board.name}'s Picture`}
-          />
-          <AvatarFallback className="uppercase">{board.name.slice(0, 2)}</AvatarFallback>
-        </Avatar>
-        <h5 className="p-1 font-medium text-center capitalize">{board.name}</h5>
-        <small className="text-gray-500">{board.address}</small>
+        <div
+          className="flex flex-col items-center justify-center cursor-pointer"
+          onClick={() => navigate(`/dashboard/${board._id}/classes`)}>
+          <Avatar className="border border-gray-200 flex justify-center items-center h-[50px] w-[50px]">
+            <AvatarImage
+              src={board.imageURL}
+              alt={`${board.name}'s Picture`}
+            />
+            <AvatarFallback className="uppercase">{board.name.slice(0, 2)}</AvatarFallback>
+          </Avatar>
+          <h5 className="p-1 font-medium text-center capitalize">{board.name}</h5>
+          <small className="text-gray-500">{board.address}</small>
+        </div>
       </div>
 
       {open && (

@@ -9,7 +9,7 @@ import { toast } from "sonner";
 const getSUbjectList = async ({ query, sortField, sortOrder = 1 }: userQueryPayload) => {
   return (
     await axiosInstance.post(
-      `${endpoints.dashboard.subject}`,
+      `${endpoints.dashboard.subject}/list`,
       {
         query,
         sortField,
@@ -44,7 +44,7 @@ const addQuestionCategory = async ({ id, questionCategory }: { id: string; quest
 
 const addSubject = async (payload: ISubjectPayload) => {
   return (
-    await axiosInstance.post(`${endpoints.dashboard.subject}create`, payload, {
+    await axiosInstance.post(`${endpoints.dashboard.subject}/create`, payload, {
       headers: {
         ...axiosInstance.defaults.headers.common, // Merge existing common headers
         Authorization: `Bearer ${Cookies.get("token")}`, // Add authorization header
@@ -55,7 +55,7 @@ const addSubject = async (payload: ISubjectPayload) => {
 
 const updateSubject = async ({ _id, ...payload }: IEditSubjectPayload) => {
   return (
-    await axiosInstance.put(`${endpoints.dashboard.subject}${_id}`, payload, {
+    await axiosInstance.put(`${endpoints.dashboard.subject}/${_id}`, payload, {
       headers: {
         ...axiosInstance.defaults.headers.common, // Merge existing common headers
         Authorization: `Bearer ${Cookies.get("token")}`, // Add authorization header
@@ -72,9 +72,8 @@ export const useGetSubjectList = ({
   filterData: userQueryPayload;
 }) => {
   return useQuery<ISubject[], Error>({
-    queryKey: ["subjectList", filterData.query.class],
+    queryKey: ["subjectList"],
     queryFn: () => getSUbjectList(filterData),
-    enabled: !!filterData.query.class,
     select: (data) => {
       if (dataDecorator) {
         return dataDecorator(data) as ISubject[];

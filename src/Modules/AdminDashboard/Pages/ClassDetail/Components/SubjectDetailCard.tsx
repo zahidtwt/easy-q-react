@@ -2,7 +2,7 @@ import { ISubject } from "@/interfaces/subject.interface";
 import { Pencil } from "lucide-react";
 import { useState } from "react";
 import SubjectDetailFormModal from "./SubjectDetailFormModal";
-import { Badge } from "@/components/ui/badge";
+// import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 
 const SubjectDetailCard = ({ subject }: { subject: ISubject }) => {
@@ -34,13 +34,13 @@ const SubjectDetailCard = ({ subject }: { subject: ISubject }) => {
           <div>
             <p className="text-sm font-medium leading-none mb-2">Question Category:</p>
             <div className=" flex gap-2 flex-wrap">
-              {subject?.questionCategory?.map((category) => (
+              {/* {subject?.questionCategory?.map((category) => (
                 <Badge
                   key={category}
                   variant="outline">
                   {category}
                 </Badge>
-              ))}
+              ))} */}
             </div>
           </div>
         </div>
@@ -48,7 +48,7 @@ const SubjectDetailCard = ({ subject }: { subject: ISubject }) => {
 
       {open && (
         <SubjectDetailFormModal
-          classId={subject.class}
+          // classId={""}
           initialValues={subject}
           open={open}
           setOpen={setOpen}

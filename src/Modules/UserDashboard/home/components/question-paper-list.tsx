@@ -1,37 +1,67 @@
 import RenderListItems from "@/components/render-list-items";
-import { CardContent } from "@/components/ui/card";
-import { boardNameMapping, classNameMapping, subjectNameMapping } from "@/interfaces/dummy-name-mappings";
-import { IQuestionPaper } from "@/interfaces/question.interface";
+// import { boardNameMapping, classNameMapping, subjectNameMapping } from "@/interfaces/dummy-name-mappings";
+import { IQuestionPaperRes } from "@/interfaces/question-paper.interface";
+import { Download, Share, Trash2 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+// import { IQuestionPaper } from "@/interfaces/question.interface"; // need to remove
+import moment from "moment";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-const QuestionPaperCard = ({ questionPaper }: { questionPaper: IQuestionPaper }) => {
-  const boardName = boardNameMapping[questionPaper.Education_Board_id] || "Unknown Board";
-  const className = classNameMapping[questionPaper.Class_id] || "Unknown Class";
-  const subjectName = subjectNameMapping[questionPaper.Subject_id] || "Unknown Subject";
+const BookCard = ({ questionPaper }: { questionPaper: IQuestionPaperRes }) => {
+  const navigate = useNavigate();
+
   return (
-    <div className="flex flex-col justify-center items-center">
-      <div className="bg-white size-20 shadow-md rounded-sm border border-gray-500"></div>
-      <p>
-        {boardName} {className}
-      </p>
-      <small>{subjectName} Question</small>
+    <div
+      className="flex bg-white rounded-lg shadow-lg cursor-pointer w-full"
+      onClick={() => navigate(`/prepare-questions/${questionPaper._id}`)}>
+      {/* Left Side: Book Image */}
+      <div className="w-1/3">
+        <Avatar className="border border-gray-200 flex justify-center items-center rounded-l-lg rounded-r-none h-full w-full">
+          <AvatarImage
+            src={"https://res.cloudinary.com/dlqrqkxn4/image/upload/v1726929897/rhwykjvmyo0pqinmcgit.jpg"}
+            alt={`${questionPaper.subject.name}'s Picture`}
+          />
+          <AvatarFallback className="uppercase">{questionPaper.subject.name.slice(0, 2)}</AvatarFallback>
+        </Avatar>
+      </div>
+
+      {/* Right Side: Book Details */}
+      <div className="w-2/3 m-4 flex justify-between">
+        <div>
+          <h3 className="text-xl font-semibold text-gray-800">{questionPaper.subject.name}</h3>
+          <p className="text-sm text-gray-600">
+            {questionPaper.examName} - {questionPaper.examYear}
+          </p>
+          <p className="text-sm text-gray-600">{questionPaper.classId.name}</p>
+          <p className="text-sm text-gray-600">{moment(questionPaper.createdAt).format("DD-MMMM-YYYY")}</p>
+          <p className="text-sm text-gray-600 truncate">{questionPaper.institute.name}</p>
+        </div>
+
+        {/* Action buttons */}
+        <div className="flex flex-col justify-between">
+          <Trash2 className="text-gray-500 cursor-pointer hover:text-red-600" />
+          <Share className="text-gray-500 cursor-pointer hover:text-blue-600" />
+          <Download className="text-gray-500 cursor-pointer hover:text-green-600" />
+        </div>
+      </div>
     </div>
   );
 };
 
-const QuestionPaperList = ({ questionPapers }: { questionPapers: IQuestionPaper[] }) => {
+// export default BookCard;
+
+const QuestionPaperList = ({ questionPapers }: { questionPapers: IQuestionPaperRes[] }) => {
   return (
-    <CardContent>
-      <RenderListItems
-        items={questionPapers}
-        className="grid grid-cols-3 gap-4 mt-4 "
-        renderItem={(questionPaper: IQuestionPaper) => (
-          <QuestionPaperCard
-            questionPaper={questionPaper}
-            key={questionPaper._id}
-          />
-        )}
-      />
-    </CardContent>
+    <RenderListItems
+      items={questionPapers}
+      className="space-y-3"
+      renderItem={(questionPaper: IQuestionPaperRes) => (
+        <BookCard
+          questionPaper={questionPaper}
+          key={questionPaper._id}
+        />
+      )}
+    />
   );
 };
 

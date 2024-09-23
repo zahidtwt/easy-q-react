@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Madrasas from "./components/madrasas";
 import QuestionPapers from "./components/question-papers";
 import { useNavigate } from "react-router-dom";
@@ -8,6 +8,19 @@ const Home = () => {
   const [activeTab, setActiveTab] = useState(1);
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
+  // home?tab=questions
+  const tab = new URLSearchParams(location.search).get("tab");
+  // console.log(tab);
+
+  useEffect(() => {
+    if (tab === "questions") {
+      setActiveTab(2);
+    }
+  }, [tab]);
+
+  // if (tab === "questions") {
+  //   setActiveTab(2);
+  // }
 
   return (
     <div className="relative max-h-full h-full px-2">
@@ -16,6 +29,7 @@ const Home = () => {
           <button
             onClick={() => {
               setActiveTab(1);
+              navigate("/home");
             }}
             className={`rounded-full p-1 ${activeTab === 1 ? "bg-gradient-to-r  from-indigo-500 to-indigo-500 text-slate-50" : ""}`}>
             All Madrasa
@@ -23,6 +37,8 @@ const Home = () => {
           <button
             onClick={() => {
               setActiveTab(2);
+              // set active tab search query in url
+              navigate("?tab=questions");
             }}
             className={`rounded-full p-1 ${activeTab === 2 ? "bg-gradient-to-l from-pink-500 to-pink-500 text-slate-50" : ""}`}>
             Your work
