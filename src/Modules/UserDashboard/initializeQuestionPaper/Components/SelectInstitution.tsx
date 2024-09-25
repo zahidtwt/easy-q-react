@@ -1,6 +1,6 @@
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { useGetInstitutionList } from "@/hooks/useInstitution";
+import { useGetUserInstitutionList } from "@/hooks/useInstitution";
 import { IInstitution } from "@/interfaces/institution";
 
 const SelectInstitution = ({
@@ -10,7 +10,7 @@ const SelectInstitution = ({
   setCurrentTab: React.Dispatch<React.SetStateAction<number>>;
   setSelectedInstitution: (board: IInstitution) => void;
 }) => {
-  const { isLoading, data: institutionList } = useGetInstitutionList({});
+  const { isLoading, data: institutionList } = useGetUserInstitutionList({});
 
   return (
     <Card className="max-w-md w-full">

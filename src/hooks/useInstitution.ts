@@ -19,6 +19,17 @@ const fetchInstitutionList = async (payload: IQueryPayload) => {
   ).data;
 };
 
+const fetchUserInstitutionList = async (payload: IQueryPayload) => {
+  return (
+    await axiosInstance.post(`${endpoints.dashboard.getAllInstitute}users-institution`, payload, {
+      headers: {
+        ...axiosInstance.defaults.headers.common, // Merge existing common headers
+        Authorization: `Bearer ${Cookies.get("token")}`, // Add authorization header
+      },
+    })
+  ).data;
+};
+
 export const fetchInstitutionDetail = async ({ id }: { id: string | undefined }) => {
   return (
     await axiosInstance.get(`${endpoints.dashboard.institution}${id}`, {
@@ -76,6 +87,24 @@ export const useGetInstitutionList = ({ dataDecorator }: { dataDecorator?: (data
     queryKey: ["institutionList"],
     queryFn: () =>
       fetchInstitutionList({
+        query: {},
+        sortField: "name",
+        sortOrder: 1,
+      }),
+    select: (data) => {
+      if (dataDecorator) {
+        return dataDecorator(data) as IInstitution[];
+      }
+      return data;
+    },
+  });
+};
+
+export const useGetUserInstitutionList = ({ dataDecorator }: { dataDecorator?: (data: unknown) => unknown }) => {
+  return useQuery<IInstitution[], Error>({
+    queryKey: ["institutionList"],
+    queryFn: () =>
+      fetchUserInstitutionList({
         query: {},
         sortField: "name",
         sortOrder: 1,
