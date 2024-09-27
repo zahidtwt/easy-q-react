@@ -53,9 +53,9 @@ const addSubject = async (payload: ISubjectPayload) => {
   ).data;
 };
 
-const updateSubject = async ({ _id, ...payload }: IEditSubjectPayload) => {
+const updateSubject = async (payload: IEditSubjectPayload) => {
   return (
-    await axiosInstance.put(`${endpoints.dashboard.subject}/${_id}`, payload, {
+    await axiosInstance.put(`${endpoints.dashboard.subject}/update`, payload, {
       headers: {
         ...axiosInstance.defaults.headers.common, // Merge existing common headers
         Authorization: `Bearer ${Cookies.get("token")}`, // Add authorization header
@@ -132,7 +132,7 @@ export const useUpdateSubject = ({ dataDecorator }: { dataDecorator?: (data: unk
       queryClient.invalidateQueries({
         queryKey: ["subjectList"],
       });
-      toast.success("Class created successfully");
+      toast.success("Subject Detail Updated !!");
 
       if (dataDecorator) {
         return dataDecorator(data);

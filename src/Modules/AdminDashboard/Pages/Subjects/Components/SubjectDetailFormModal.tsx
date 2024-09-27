@@ -9,13 +9,7 @@ import { Button } from "@/components/ui/button";
 import SpinningLoader from "@/components/loader";
 import { useAddSubject, useUpdateSubject } from "@/hooks/useSubject";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-// import Clip from "@/components/Clip";
 import { IEditSubjectPayload } from "@/interfaces/subject.interface";
-
-// type Field = {
-//   value: string[];
-//   onChange: (newValue: string[]) => void;
-// };
 
 const SubjectDetailFormSchema = zod.object({
   name: zod.string().min(2, {
@@ -24,10 +18,6 @@ const SubjectDetailFormSchema = zod.object({
   code: zod.string().min(2, {
     message: "code must be at least 2 characters.",
   }),
-  // questionCategory: zod.array(zod.string()).nonempty({
-  //   message: "questionCategory must be at least 1 characters.",
-  // }),
-  // active should be either active or inactive
   active: zod.enum(["active", "inactive"]),
 });
 
@@ -48,7 +38,6 @@ const SubjectDetailFormModal = ({
     defaultValues: initialValues || {
       name: "",
       code: "",
-      // questionCategory: [],
       active: "active",
     },
   });
@@ -66,27 +55,6 @@ const SubjectDetailFormModal = ({
     return data;
   };
 
-  const { mutate: createSubject } = useAddSubject({ dataDecorator });
-  const { mutate: updateSubject } = useUpdateSubject({ dataDecorator });
-
-  // const [inputValue, setInputValue] = useState("");
-
-  // const handleAddBadge = (value: string, field: Field) => {
-  //   if (value && !field.value.includes(value)) {
-  //     field.onChange([...field.value, value]);
-  //     setInputValue("");
-  //   } else {
-  //     // throw new Error("Category already exists");
-  //   }
-  // };
-
-  // const handleRemoveBadge = (value: string, field: Field) => {
-  //   if (value && field.value.includes(value)) {
-  //     field.onChange(field.value.filter((badge) => badge !== value));
-  //     // setInputValue("");
-  //   }
-  // };
-
   const submitForm: SubmitHandler<SubjectDetailFormFields> = async (data) => {
     if (initialValues) {
       updateSubject({ ...data, _id: initialValues._id });
@@ -94,6 +62,10 @@ const SubjectDetailFormModal = ({
       createSubject({ ...data });
     }
   };
+
+  const { mutate: createSubject } = useAddSubject({ dataDecorator });
+  const { mutate: updateSubject, isPending: updatingSubject } = useUpdateSubject({ dataDecorator });
+
   return (
     <Dialog
       open={open}
@@ -167,46 +139,12 @@ const SubjectDetailFormModal = ({
                 )}
               />
 
-              {/* <FormField
-                control={control}
-                name="questionCategory"
-                render={({ field }) => (
-                  <FormItem>
-                    <Input
-                      placeholder="Question Category here..."
-                      value={inputValue}
-                      onChange={(e) => setInputValue(e.target.value)}
-                      onKeyDown={(e) => {
-                        if (e.key === "Enter") {
-                          handleAddBadge(inputValue, field);
-                          e.preventDefault();
-                        }
-                      }}
-                      onBlur={() => handleAddBadge(inputValue, field)}
-                    />
-
-                    <div className="flex gap-2 flex-wrap">
-                      {field?.value.map((badge) => (
-                        <Clip
-                          key={badge}
-                          name={badge}
-                          borderColor={"border-red-400"}
-                          bgColor={"bg-red-400"}
-                          func={() => handleRemoveBadge(badge, field)}
-                        />
-                      ))}
-                    </div>
-                    <FormMessage>{errors.questionCategory?.message}</FormMessage>
-                  </FormItem>
-                )}
-              /> */}
-
               <div className="flex justify-center">
                 <Button
                   type="submit"
                   className="mt-4 cursor-pointer"
                   disabled={isSubmitting || !isDirty}>
-                  {isSubmitting ? (
+                  {isSubmitting || updatingSubject ? (
                     <div className="mr-2">
                       <SpinningLoader />
                     </div>
