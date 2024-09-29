@@ -113,7 +113,10 @@ const InitializeQuestionPaper = () => {
               </div>
               <div className="col-span-2 bg-purple-300 text-center py-2 rounded-lg">{selectedClass.name}</div>
               <div className="col-span-2 bg-purple-300 text-center py-2 rounded-lg">
-                সময়ঃ {examDetail.examDuration ? examDetail?.examDuration / 60 + " ঘন্টা" : "----"}
+                সময়ঃ{" "}
+                {examDetail.examDuration
+                  ? `${Math.floor(examDetail?.examDuration / 60)}:${examDetail?.examDuration % 60}` + " ঘন্টা"
+                  : "----"}
               </div>
               <div className="col-span-2 bg-purple-300 text-center py-2 rounded-lg">বিষয়ঃ {selectedSubject.name}</div>
               <div className="col-span-2 bg-purple-300 text-center py-2 rounded-lg">

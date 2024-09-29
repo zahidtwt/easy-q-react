@@ -89,25 +89,23 @@ const SubjectDetail = () => {
                 </div>
 
                 <div className="container mx-auto p-4">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <ul className="list-disc pl-5">
-                        {!questionCategoryListLoading &&
-                          questionCategoryList &&
-                          questionCategoryList.map((category, index) => (
-                            <li
-                              key={index}
-                              onClick={() =>
-                                setOpenCategoryForm({
-                                  open: true,
-                                  initialValues: category,
-                                })
-                              }>
-                              {category.questionCategoryName}
-                            </li>
-                          ))}
-                      </ul>
-                    </div>
+                  <div className="grid grid-cols-1 gap-4">
+                    <ul className="list-disc pl-5">
+                      {!questionCategoryListLoading &&
+                        questionCategoryList &&
+                        questionCategoryList.map((category, index) => (
+                          <li
+                            key={index}
+                            onClick={() =>
+                              setOpenCategoryForm({
+                                open: true,
+                                initialValues: category,
+                              })
+                            }>
+                            {category.questionCategoryName}
+                          </li>
+                        ))}
+                    </ul>
                   </div>
                 </div>
               </div>
@@ -130,25 +128,23 @@ const SubjectDetail = () => {
                   </Button>
                 </div>
                 <div className="container mx-auto p-4">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <ul className="list-disc pl-5">
-                        {!lessonListLoading &&
-                          lessonList &&
-                          lessonList.map((lesson, index) => (
-                            <li
-                              key={index}
-                              onClick={() =>
-                                setOpenLessonForm({
-                                  open: true,
-                                  initialValues: lesson,
-                                })
-                              }>
-                              {lesson.lessonName}
-                            </li>
-                          ))}
-                      </ul>
-                    </div>
+                  <div className="grid grid-cols-1gap-4">
+                    <ul className="list-disc pl-5">
+                      {!lessonListLoading &&
+                        lessonList &&
+                        lessonList.map((lesson, index) => (
+                          <li
+                            key={index}
+                            onClick={() =>
+                              setOpenLessonForm({
+                                open: true,
+                                initialValues: lesson,
+                              })
+                            }>
+                            {lesson.lessonId} -- {lesson.lessonName}
+                          </li>
+                        ))}
+                    </ul>
                   </div>
                 </div>
               </div>

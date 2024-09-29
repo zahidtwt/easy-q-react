@@ -17,6 +17,9 @@ const QuestionCategoryFormSchema = zod.object({
   lessonNo: zod.number().min(1, {
     message: "Lesson number must be greater than 0.",
   }),
+  lessonId: zod.string().min(2, {
+    message: "Lesson Id must be at least 2 characters.",
+  }),
 });
 
 type QuestionCategoryFormFields = zod.infer<typeof QuestionCategoryFormSchema>;
@@ -104,13 +107,30 @@ const AddLessonModal = ({
                     <label htmlFor="lessonNo">Lesson No</label>
                     <FormControl>
                       <Input
-                        placeholder="Subject Name here..."
+                        placeholder="Lesson No here..."
                         type="number"
                         {...field}
                         onChange={(e) => field.onChange(Number(e.target.value))}
                       />
                     </FormControl>
                     <FormMessage>{errors.lessonNo?.message}</FormMessage>
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={control}
+                name="lessonId"
+                render={({ field }) => (
+                  <FormItem>
+                    <label htmlFor="lessonId">Lesson Id</label>
+                    <FormControl>
+                      <Input
+                        placeholder="Lesson Id here..."
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage>{errors.lessonId?.message}</FormMessage>
                   </FormItem>
                 )}
               />

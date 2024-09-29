@@ -1,15 +1,17 @@
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import zod from "zod";
 import { Button } from "@/components/ui/button";
 import SpinningLoader from "@/components/loader";
 import { useAddSubject, useUpdateSubject } from "@/hooks/useSubject";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { IEditSubjectPayload } from "@/interfaces/subject.interface";
+import ImageUploadField from "@/components/ImageUploadField";
+import { useFileUpload } from "@/hooks/useFileUpload";
 
 const SubjectDetailFormSchema = zod.object({
   name: zod.string().min(2, {
@@ -18,6 +20,7 @@ const SubjectDetailFormSchema = zod.object({
   code: zod.string().min(2, {
     message: "code must be at least 2 characters.",
   }),
+  coverPhoto: zod.string(),
   active: zod.enum(["active", "inactive"]),
 });
 
@@ -38,6 +41,7 @@ const SubjectDetailFormModal = ({
     defaultValues: initialValues || {
       name: "",
       code: "",
+      coverPhoto: "",
       active: "active",
     },
   });
@@ -48,6 +52,8 @@ const SubjectDetailFormModal = ({
     formState: { errors, isSubmitting, isDirty },
     reset,
   } = formMethods;
+
+  const [imageFile, setImageFile] = useState<File | null>(null);
 
   const dataDecorator = (data: unknown) => {
     setOpen(false);
@@ -63,6 +69,29 @@ const SubjectDetailFormModal = ({
     }
   };
 
+  const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    try {
+      const file = event.target.files![0];
+      setImageFile(file);
+
+      const formData = new FormData();
+      formData.append("image", file);
+
+      const resData = await fileUploadFunc(formData);
+      if (isError) {
+        setImageFile(null);
+        return;
+      }
+
+      return resData;
+    } catch (error) {
+      if (isError) {
+        setImageFile(null);
+      }
+    }
+  };
+
+  const { mutateAsync: fileUploadFunc, isError, isPending: fileUploading } = useFileUpload({});
   const { mutate: createSubject } = useAddSubject({ dataDecorator });
   const { mutate: updateSubject, isPending: updatingSubject } = useUpdateSubject({ dataDecorator });
 
@@ -84,6 +113,20 @@ const SubjectDetailFormModal = ({
             <form
               onSubmit={handleSubmit(submitForm)}
               className="space-y-4 sm:space-y-6 p-1 w-[300px] sm:w-[350px] lg:w-[450px]">
+              <Controller
+                control={formMethods.control}
+                name="coverPhoto"
+                render={({ field }) => (
+                  <ImageUploadField
+                    handleImageUpload={handleImageUpload}
+                    field={field}
+                    imageFile={imageFile}
+                    fileUploading={fileUploading}
+                    initialImageUrl={initialValues?.coverPhoto}
+                  />
+                )}
+              />
+
               <FormField
                 control={control}
                 name="name"

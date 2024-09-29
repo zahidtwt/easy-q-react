@@ -49,7 +49,7 @@ const addQuestion = async (payload: IQuestionPayload) => {
 
 const updateQuestion = async (payload: IEditQuestionPayload) => {
   return (
-    await axiosInstance.put(`${endpoints.dashboard.subject}/update`, payload, {
+    await axiosInstance.put(`${endpoints.dashboard.questions}/update`, payload, {
       headers: {
         ...axiosInstance.defaults.headers.common, // Merge existing common headers
         Authorization: `Bearer ${Cookies.get("token")}`, // Add authorization header

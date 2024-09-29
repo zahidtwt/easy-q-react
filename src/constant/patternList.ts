@@ -17,7 +17,7 @@ export const questionPatternList = {
     title: "one line question",
     patternDetector: ["?", "|"],
     method: (params: string): string[] => {
-      const res = params.split(/(?=[?|।|])/).map((str) => str.replace(/\n/g, "").trim());
+      const res = params.split(/(?<=\?|।)/).map((str) => str.replace(/\n/g, "").trim());
       return res;
     },
     revert: (elements: string[]): string => {

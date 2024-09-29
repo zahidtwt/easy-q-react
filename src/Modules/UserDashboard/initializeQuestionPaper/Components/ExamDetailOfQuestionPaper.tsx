@@ -56,7 +56,7 @@ const ExamDetailOfQuestionPaper = ({
   } = formMethods;
 
   const submitForm: SubmitHandler<ExamDetailFormFields> = async (data) => {
-    //     console.log(data);
+    // console.log(data);
     setCurrentTab((prev) => prev + 1);
     setExamDetail(data);
   };
@@ -106,6 +106,7 @@ const ExamDetailOfQuestionPaper = ({
                     <Input
                       placeholder="YYYY"
                       {...field}
+                      type="number"
                       onChange={(e) => field.onChange(Number(e.target.value))}
                     />
                   </FormControl>
@@ -113,6 +114,7 @@ const ExamDetailOfQuestionPaper = ({
                 </FormItem>
               )}
             />
+
             <FormField
               control={control}
               name="examDuration"
@@ -120,16 +122,53 @@ const ExamDetailOfQuestionPaper = ({
                 <FormItem>
                   <Label htmlFor="examDuration">Exam Duration</Label>
                   <FormControl>
-                    <Input
-                      placeholder="In minutes"
-                      {...field}
-                      onChange={(e) => field.onChange(Number(e.target.value))}
-                    />
+                    <div className="flex gap-2">
+                      <div className="w-1/2">
+                        <Label htmlFor="examDuration">Hours</Label>
+                        <Input
+                          placeholder="Hours"
+                          type="number"
+                          min={0}
+                          max={24}
+                          onChange={(e) => {
+                            const hours = Number(e.target.value);
+                            const totalMinutes = hours * 60; // Update hours portion
+                            const extraMinutes = field.value % 60; // Get minutes portion for display
+                            if (extraMinutes > 0) {
+                              field.onChange(totalMinutes + extraMinutes);
+                            } else {
+                              field.onChange(totalMinutes);
+                            }
+                          }}
+                          value={Math.floor(field.value / 60)} // Convert minutes to hours for display
+                        />
+                      </div>
+                      <div className="w-1/2">
+                        <Label htmlFor="examDuration">Minutes</Label>
+                        <Input
+                          placeholder="Minutes"
+                          type="number"
+                          min="0"
+                          max="59"
+                          onChange={(e) => {
+                            const minutes = Number(e.target.value);
+                            const totalMinutes = Math.floor(field.value / 60) * 60 + minutes; // Update minutes portion
+                            if (totalMinutes < 0) {
+                              field.onChange(0);
+                            } else {
+                              field.onChange(totalMinutes);
+                            }
+                          }}
+                          value={field.value % 60} // Get minutes portion for display
+                        />
+                      </div>
+                    </div>
                   </FormControl>
                   <FormMessage>{errors.examDuration?.message}</FormMessage>
                 </FormItem>
               )}
             />
+
             <FormField
               control={control}
               name="examFullMarks"
@@ -140,6 +179,7 @@ const ExamDetailOfQuestionPaper = ({
                     <Input
                       placeholder="100"
                       {...field}
+                      type="number"
                       onChange={(e) => field.onChange(Number(e.target.value))}
                     />
                   </FormControl>
@@ -151,7 +191,7 @@ const ExamDetailOfQuestionPaper = ({
               <Button
                 type="submit"
                 disabled={!isDirty || isSubmitting}
-                className="bg-gray-100 hover:bg-gray-200 py-2 rounded-lg text-gray-950">
+                className="">
                 Submit
               </Button>
             </div>

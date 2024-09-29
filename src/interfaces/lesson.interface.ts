@@ -3,6 +3,7 @@ export interface ILesson {
   subjectId: string;
   lessonName: string;
   lessonNo: number;
+  lessonId: string;
   createdAt?: Date;
   updatedAt?: Date;
 }
