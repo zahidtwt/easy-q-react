@@ -1,5 +1,5 @@
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+// import { Button } from "@/components/ui/button";
 import { useGetUserInstitutionList } from "@/hooks/useInstitution";
 import { IInstitution } from "@/interfaces/institution";
 
@@ -29,15 +29,24 @@ const SelectInstitution = ({
       ) : (
         <CardContent className="grid grid-cols-2 gap-4 p-6 max-h-[40vh] overflow-y-auto overflow-x-hidden">
           {institutionList?.map((item) => (
-            <Button
+            // <Button
+            //   key={item._id}
+            //   onClick={() => {
+            //     setCurrentTab((prev) => prev + 1);
+            //     setSelectedInstitution(item);
+            //   }}
+            //   className="bg-gray-100 hover:bg-gray-200 py-2 rounded-lg text-gray-950">
+            //   <p className="w-full truncate overflow-hidden whitespace-nowrap text-ellipsis">{item.name}</p>
+            // </Button>
+            <div
               key={item._id}
               onClick={() => {
                 setCurrentTab((prev) => prev + 1);
                 setSelectedInstitution(item);
               }}
-              className="bg-gray-100 hover:bg-gray-200 py-2 rounded-lg text-gray-950">
-              {item.name}
-            </Button>
+              className="bg-gray-100 hover:bg-gray-200 py-2 px-1 rounded-lg text-gray-950 cursor-pointer">
+              <p className="w-full text-center">{item.name}</p>
+            </div>
           ))}
         </CardContent>
       )}

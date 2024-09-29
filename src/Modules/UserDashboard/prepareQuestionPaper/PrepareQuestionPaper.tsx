@@ -118,7 +118,7 @@ const PrepareQuestionPaper = () => {
                 <Button
                   variant="ghost"
                   className="text-blue-500 font-semibold bg-transparent"
-                  onClick={() => navigate(-1)}>
+                  onClick={() => navigate("/home?tab=questions")}>
                   <ArrowLeft size="24" />
                 </Button>
               </div>
