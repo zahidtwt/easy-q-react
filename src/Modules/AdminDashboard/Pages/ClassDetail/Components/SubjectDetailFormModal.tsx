@@ -21,12 +21,14 @@ const SubjectDetailFormSchema = zod.object({
   name: zod.string().min(2, {
     message: "name must be at least 2 characters.",
   }),
+
   code: zod.string().min(2, {
     message: "code must be at least 2 characters.",
   }),
   questionCategory: zod.array(zod.string()).nonempty({
     message: "questionCategory must be at least 1 characters.",
   }),
+  coverPhoto: zod.string(),
   // active should be either active or inactive
   active: zod.enum(["active", "inactive"]),
 });
@@ -50,6 +52,7 @@ const SubjectDetailFormModal = ({
     defaultValues: initialValues || {
       name: "",
       code: "",
+      coverPhoto: "",
       questionCategory: [],
       active: "active",
     },
