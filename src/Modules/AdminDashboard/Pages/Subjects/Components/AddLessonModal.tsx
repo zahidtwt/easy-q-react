@@ -46,6 +46,7 @@ const AddLessonModal = ({
     defaultValues: initialValues || {
       lessonName: "",
       lessonNo: 1,
+      lessonId: "",
     },
   });
 
@@ -76,6 +77,7 @@ const AddLessonModal = ({
         ...initialValues,
         lessonName: data.lessonName,
         lessonNo: data.lessonNo,
+        lessonId: data.lessonId,
       });
     } else {
       createLesson({ ...data, subjectId: subjectId });

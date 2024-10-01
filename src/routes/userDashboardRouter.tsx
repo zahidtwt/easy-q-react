@@ -1,0 +1,68 @@
+import InitializeQuestionPaper from "@/Modules/UserDashboard/initializeQuestionPaper/InitializeQuestionPaper";
+import UserDashboardLayout from "@/Modules/UserDashboard/layout";
+import CreateMadrasa from "@/Modules/UserDashboard/madrasa/CreateMadrasa";
+import MadrasaDetail from "@/Modules/UserDashboard/madrasa/MadrasaDetail";
+import PrepareQuestionPaper from "@/Modules/UserDashboard/prepareQuestionPaper/PrepareQuestionPaper";
+import Profile from "@/Modules/UserDashboard/profile/profile";
+import Questions from "@/Modules/UserDashboard/questions";
+import { Download, Home } from "lucide-react";
+import { Navigate, Route, Routes } from "react-router-dom";
+
+export const userDashboardRouter = {
+  element: <UserDashboardLayout />,
+
+  children: [
+    {
+      path: "",
+      element: (
+        <Routes>
+          <Route
+            path="*"
+            element={<Navigate to="/home" />}
+          />
+        </Routes>
+      ),
+    },
+    {
+      path: "home",
+      element: <Home />,
+      index: true,
+    },
+    {
+      path: "madrasa/:id",
+      element: <MadrasaDetail />,
+      index: true,
+    },
+    {
+      path: "add-madrasa",
+      element: <CreateMadrasa />,
+      index: true,
+    },
+    {
+      path: "profile",
+      element: <Profile />,
+    },
+    {
+      path: "questions",
+      element: <Questions />,
+    },
+    {
+      path: "add-questions",
+      // element: <AddQuestion />,
+      element: <InitializeQuestionPaper />,
+    },
+    {
+      path: "prepare-questions/:id",
+      // element: <AddQuestion />,
+      element: <PrepareQuestionPaper />,
+    },
+    {
+      path: "download",
+      element: <Download />,
+    },
+    // {
+    //   path: "education-board",
+    //   element: <EducationBoard />,
+    // },
+  ],
+};
