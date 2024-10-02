@@ -43,7 +43,7 @@ const Navbar = () => {
     <nav
       className="w-full h-14 bg-gray-200 dark:bg-gray-700 flex justify-between items-center"
       style={{ boxShadow: "inset 0 0 10px rgba(0,0,0,0.1)" }}>
-      <ul className="grid h-full max-w-2xl grid-cols-6 font-medium">
+      <ul className="grid h-full  grid-cols-5 font-medium">
         {navbarMenus.map((menu) => (
           <NavLink
             to={menu.path}
@@ -56,6 +56,14 @@ const Navbar = () => {
             {menu.title}
           </NavLink>
         ))}
+
+        <NavLink
+          to={"/home"}
+          className={
+            "inline-flex flex-col items-center justify-center px-5 border-gray-200 border-x hover:bg-gray-50 dark:hover:bg-gray-800 group dark:border-gray-600"
+          }>
+          User Dashboard
+        </NavLink>
       </ul>
 
       {/* <button className="">logout</button> */}

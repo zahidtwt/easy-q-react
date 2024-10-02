@@ -1,3 +1,5 @@
+import Download from "@/Modules/UserDashboard/download/download";
+import Home from "@/Modules/UserDashboard/home";
 import InitializeQuestionPaper from "@/Modules/UserDashboard/initializeQuestionPaper/InitializeQuestionPaper";
 import UserDashboardLayout from "@/Modules/UserDashboard/layout";
 import CreateMadrasa from "@/Modules/UserDashboard/madrasa/CreateMadrasa";
@@ -5,7 +7,6 @@ import MadrasaDetail from "@/Modules/UserDashboard/madrasa/MadrasaDetail";
 import PrepareQuestionPaper from "@/Modules/UserDashboard/prepareQuestionPaper/PrepareQuestionPaper";
 import Profile from "@/Modules/UserDashboard/profile/profile";
 import Questions from "@/Modules/UserDashboard/questions";
-import { Download, Home } from "lucide-react";
 import { Navigate, Route, Routes } from "react-router-dom";
 
 export const userDashboardRouter = {
