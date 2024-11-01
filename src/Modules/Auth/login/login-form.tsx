@@ -90,6 +90,13 @@ const LoginForm = () => {
             </FormItem>
           )}
         />
+        <div className="flex justify-end">
+          <a
+            href="/auth/forget-password"
+            className="text-sm text-blue-500 hover:underline text-right">
+            Forget password?
+          </a>
+        </div>
 
         <div className="flex justify-center">
           <SubmitButton

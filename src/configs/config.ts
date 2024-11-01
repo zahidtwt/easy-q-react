@@ -2,6 +2,7 @@ export const endpoints = {
   auth: {
     login: "api/auth/login",
     signup: "api/auth/signup",
+    updatePassword: "api/auth/update-password",
   },
   dashboard: {
     getAllInstitute: "api/institution/",

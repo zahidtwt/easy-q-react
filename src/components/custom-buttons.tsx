@@ -10,7 +10,7 @@ const SubmitButton = ({ isSubmitting, isDirty }: SubmitButtonProps) => {
   return (
     <Button
       type="submit"
-      className="mt-4 cursor-pointer"
+      className="cursor-pointer"
       disabled={isSubmitting || !isDirty}>
       {isSubmitting ? (
         <div className="mr-2">

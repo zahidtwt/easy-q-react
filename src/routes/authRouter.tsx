@@ -1,3 +1,4 @@
+import ForgetPassword from "@/Modules/Auth/forget-password/ForgetPassword";
 import AuthLayout from "@/Modules/Auth/layout";
 import LoginPage from "@/Modules/Auth/login";
 import SignUpPage from "@/Modules/Auth/sign-up";
@@ -25,6 +26,10 @@ export const authRouter = {
     {
       path: "auth/signup",
       element: <SignUpPage />,
+    },
+    {
+      path: "auth/forget-password",
+      element: <ForgetPassword />,
     },
     {
       path: "auth",
