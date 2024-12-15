@@ -15,6 +15,7 @@ const useSignUp = ({ onSuccessReg }: { onSuccessReg: (token: string) => void }) 
     onSuccess(data) {
       if (data?.token) {
         onSuccessReg(data.token);
+        localStorage.setItem("userData", JSON.stringify(data?.userData));
         return data;
       }
       throw new Error("Login Failed");

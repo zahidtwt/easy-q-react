@@ -15,6 +15,7 @@ const useLogin = ({ onSuccessLogin }: { onSuccessLogin: (token: string) => void 
       // console.log(data);
       if (data?.token) {
         onSuccessLogin(data.token);
+        localStorage.setItem("userData", JSON.stringify(data?.userData));
         return data;
       }
       throw new Error("Login Failed");
