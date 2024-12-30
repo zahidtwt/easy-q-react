@@ -6,6 +6,7 @@ import InstitutionList from "@/Modules/AdminDashboard/Pages/InstitutionList/Inst
 import QuestionPatterns from "@/Modules/AdminDashboard/Pages/QuestionPatterns/QuestionPatterns";
 import SubjectDetail from "@/Modules/AdminDashboard/Pages/Subjects/SubjectDetail";
 import Subjects from "@/Modules/AdminDashboard/Pages/Subjects/Subjects";
+import SubscriptionList from "@/Modules/AdminDashboard/Pages/SubscriptionList/SubscriptionList";
 import UserList from "@/Modules/AdminDashboard/Pages/UserList/UserList";
 import { Navigate, Route, Routes } from "react-router-dom";
 
@@ -62,6 +63,11 @@ export const adminDashboardRouter = {
     {
       path: "users",
       element: <UserList />,
+      index: true,
+    },
+    {
+      path: "subscription-list",
+      element: <SubscriptionList />,
       index: true,
     },
   ],

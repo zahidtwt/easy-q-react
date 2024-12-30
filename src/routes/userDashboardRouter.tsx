@@ -7,6 +7,8 @@ import MadrasaDetail from "@/Modules/UserDashboard/madrasa/MadrasaDetail";
 import PrepareQuestionPaper from "@/Modules/UserDashboard/prepareQuestionPaper/PrepareQuestionPaper";
 import Profile from "@/Modules/UserDashboard/profile/profile";
 import Questions from "@/Modules/UserDashboard/questions";
+import Subscription from "@/Modules/UserDashboard/subscription/subscription";
+import UserSubscriptionList from "@/Modules/UserDashboard/UserSubscriptionList/UserSubscriptionList";
 import { Navigate, Route, Routes } from "react-router-dom";
 
 export const userDashboardRouter = {
@@ -44,6 +46,10 @@ export const userDashboardRouter = {
       element: <Profile />,
     },
     {
+      path: "profile/subscription-list",
+      element: <UserSubscriptionList />,
+    },
+    {
       path: "questions",
       element: <Questions />,
     },
@@ -60,6 +66,10 @@ export const userDashboardRouter = {
     {
       path: "download",
       element: <Download />,
+    },
+    {
+      path: "subscription-package",
+      element: <Subscription />,
     },
     // {
     //   path: "education-board",

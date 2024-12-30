@@ -1,5 +1,16 @@
 import { IUserRole } from "./userRole.interface";
 
+interface ISubscription {
+  isSubscribed: boolean;
+  startDate: string;
+  endDate: string;
+  questionSetQuantity: number;
+  accessiblePermissions: string[];
+  packageDuration: number;
+  description: string;
+  _id: string;
+}
+
 export interface IUser {
   _id: string;
   firstName: string;
@@ -13,4 +24,8 @@ export interface IUser {
   totalInstitutes?: number;
   createdAt?: Date;
   updatedAt?: Date;
+  freeSubscription: ISubscription;
+  customSubscription: ISubscription;
+  premiumSubscription: ISubscription;
+  imageURL?: string;
 }

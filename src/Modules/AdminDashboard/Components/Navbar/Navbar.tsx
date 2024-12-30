@@ -35,6 +35,11 @@ const navbarMenus = [
     title: "Subjects",
     icon: null,
   },
+  {
+    path: "/dashboard/subscription-list",
+    title: "subscription List",
+    icon: null,
+  },
 ] as const;
 
 const Navbar = () => {
@@ -43,7 +48,7 @@ const Navbar = () => {
     <nav
       className="w-full h-14 bg-gray-200 dark:bg-gray-700 flex justify-between items-center"
       style={{ boxShadow: "inset 0 0 10px rgba(0,0,0,0.1)" }}>
-      <ul className="grid h-full  grid-cols-5 font-medium">
+      <ul className="flex h-full font-medium">
         {navbarMenus.map((menu) => (
           <NavLink
             to={menu.path}

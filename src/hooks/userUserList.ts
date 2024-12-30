@@ -19,7 +19,7 @@ type updateAccountRolePayload = { id: string; role: string };
 const fetchUserList = async ({ query, sortField, sortOrder = 1 }: userQueryPayload) => {
   return (
     await axiosInstance.post(
-      `${endpoints.dashboard.users}userList`,
+      `${endpoints.dashboard.users}/userList`,
       {
         query,
         sortField,
@@ -37,7 +37,7 @@ const fetchUserList = async ({ query, sortField, sortOrder = 1 }: userQueryPaylo
 
 const updateAccountStatus = async (payload: updateAccountStatusPayload) => {
   return (
-    await axiosInstance.patch(`${endpoints.dashboard.users}change-account-status`, payload, {
+    await axiosInstance.patch(`${endpoints.dashboard.users}/change-account-status`, payload, {
       headers: {
         ...axiosInstance.defaults.headers.common, // Merge existing common headers
         Authorization: `Bearer ${Cookies.get("token")}`, // Add authorization header
@@ -48,7 +48,7 @@ const updateAccountStatus = async (payload: updateAccountStatusPayload) => {
 
 const updateAccountRole = async (payload: updateAccountRolePayload) => {
   return (
-    await axiosInstance.patch(`${endpoints.dashboard.users}update-user-role`, payload, {
+    await axiosInstance.patch(`${endpoints.dashboard.users}/update-user-role`, payload, {
       headers: {
         ...axiosInstance.defaults.headers.common, // Merge existing common headers
         Authorization: `Bearer ${Cookies.get("token")}`, // Add authorization header
